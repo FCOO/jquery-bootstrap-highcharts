@@ -1,0 +1,49 @@
+{
+  "name": "jquery-bootstrap-highcharts",
+  "version": "1.0.0",
+  "homepage": "https://github.com/FCOO/jquery-bootstrap-highcharts",
+  "authors": [
+    "Niels Holt"
+  ],
+  "description": "",
+  "main": [
+    "dist/jquery-bootstrap-highcharts.js",
+    "dist/jquery-bootstrap-highcharts.css"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/FCOO/jquery-bootstrap-highcharts.git"
+  },
+  "dependencies": {
+    "jquery-bootstrap": "fcoo/jquery-bootstrap#^1.53.0",
+    "moment-simple-format": "https://github.com/FCOO/moment-simple-format.git#^1.6.0",
+    "highcharts": "^9.0.0",
+    "numeral": "^2.0.6"
+  },
+  "overrides": {
+    "highcharts": {
+      "dependencies": {
+        "jquery-bootstrap": "latest"
+      },
+      "main": [
+        "highstock.src.js"
+      ]
+    }
+  },
+  "devDependencies": {
+    "bourbon": "latest",
+    "modernizr-mixin": "latest",
+    "mathsass": "latest"
+  },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "moduleType": [
+    "es6"
+  ]
+}
