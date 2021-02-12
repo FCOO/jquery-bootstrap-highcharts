@@ -34,6 +34,7 @@
     <script src="../bower_components/highcharts/modules/exporting.src.js"></script>
     <script src="../bower_components/highcharts/modules/offline-exporting.src.js"></script>
 
+    <script src="../bower_components/highcharts/modules/map.src.js"></script>
 
     <script src="../src/jquery-bootstrap-highcharts.js"></script>
 
@@ -893,7 +894,6 @@ $.getJSON('data/aapl-ohlc.json', function (data) {
 Highcharts.chart('container7', {
     chart: {
         type: 'waterfall',
-        events: {redraw: function(){ console.log(this); } }
     },
 
     title: {
@@ -960,7 +960,7 @@ Highcharts.chart('container7', {
 });
 //*/
 
-/****************************************************************************************
+//****************************************************************************************
 Highcharts.chart('container8', {
 
     chart: {
@@ -1076,7 +1076,7 @@ function (chart) {
 //*/
             
 
-/****************************************************************************************
+//****************************************************************************************
 // Prepare random data
 var data = [
     ['DE.SH', 728],
