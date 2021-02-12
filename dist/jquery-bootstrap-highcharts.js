@@ -73,8 +73,9 @@ function test(name, options, parent = ''){
             downloadSVG : {da:'Hent som SVG',   en:'Download as SVG'},
             downloadXLS : {da:'Hent som XLS',   en:'Download as XLS'},
 
-viewFullscreen  : {da:'Vis i fuld skærm ???',         en:'View in full screen'},
-exitFullscreen  : {da:'Forlad fuld skærm?????',       en:'Exit full screen'/*Exit from full screen'},*/},
+            viewFullscreen  : {da:'Vis i fuld skærm',   en:'View in full screen'},
+            exitFullscreen  : {da:'Forlad fuld skærm',  en:'Exit full screen'/*Exit from full screen'},*/},
+
             drillUpText     : {da:'◁ Tilbage til {series.name}',   en:'◁ Back to {series.name}'},
 
             hideData        : {da:'Skjul data-tabel',   en: 'Hide data table'},
