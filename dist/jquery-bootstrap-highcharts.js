@@ -14,12 +14,29 @@
 	var //ns   = window,
         nsHC = Highcharts;
 
-    //Updates defaultOptions = default options for all charts
-    nsHC.setOptions({
-        chart: {
-            styledMode: true
-        },
+
+
+
+/*
+function test(name, options, parent = ''){
+    var result = null;
+
+    if (!isObject(options))
+        return null;
+
+    $.each(options, function(id, child){
+        var childName = (parent ? parent+'.' : '') + id;
+        if (childName == name)
+            result = child;
+        else
+            result = test(name, child, childName);
+        if (result)
+            return false;
     });
+    console.log(parent, result);
+    return result;
+}
+*/
 
    //Extend Highcharts.setOptions to allow update of all charts
     nsHC.setOptions = function (setOptions) {
@@ -27,8 +44,13 @@
             var result = setOptions.call(this, options);
             if (redraw)
                 $.each(nsHC.charts, function(index, chart){
-                    if (chart)
+                    if (chart){
+                        chart.options.lang = nsHC.getOptions().lang;
+
                         chart.redraw(false);
+                        translateChart(chart);
+
+                    }
                 });
             return result;
 		};
@@ -37,19 +59,170 @@
 
     /***************************************************************
     LANGUAGE
-    Extend Highcharts.SVGRenderer.prototype.buildText to allow text as {da:"...", en:"..."}
     ***************************************************************/
-    nsHC.SVGRenderer.prototype.buildText = function (buildText) {
+    //global_lang = Translation of global names/sentences. Is updated in
+    var global_lang = {
+
+            //contextButtonTitle is removed because it is not (for now) possible to translate the title
+            contextButtonTitle: '',//{da:'Genvejsmenu ???', en:'Chart context menu'},
+
+            downloadCSV : {da:'Hent som CSV',   en:'Download as CSV'},
+            downloadJPEG: {da:'Hent som JPEG',  en:'Download as JPEG'},
+            downloadPDF : {da:'Hent som PDF',   en:'Download as PDF'},
+            downloadPNG : {da:'Hent som PNG',   en:'Download as PNG'},
+            downloadSVG : {da:'Hent som SVG',   en:'Download as SVG'},
+            downloadXLS : {da:'Hent som XLS',   en:'Download as XLS'},
+
+viewFullscreen  : {da:'Vis i fuld skærm ???',         en:'View in full screen'},
+exitFullscreen  : {da:'Forlad fuld skærm?????',       en:'Exit full screen'/*Exit from full screen'},*/},
+            drillUpText     : {da:'◁ Tilbage til {series.name}',   en:'◁ Back to {series.name}'},
+
+            hideData        : {da:'Skjul data-tabel',   en: 'Hide data table'},
+            viewData        : {da:'Vis data-tabel',     en: 'View data table'},
+
+            //Hvad bruges denne her til? invalidDate     : {da:'Ugyldig dato',   en: 'Invalid date'},
+            noData          : {da:'Ingen data',     en: 'No data to display'},
+
+            printChart      : {da:'Udskriv graf',   en: 'Print chart'},
+
+            resetZoom       : {da:'Reset zoom',             en: 'Reset zoom'},
+            resetZoomTitle  : {da:'Reset zoom niveau 1:1',  en: 'Reset zoom level 1:1'},
+
+            loading         : {da:'Indlæser...',    en: 'Loading...'},
+
+        };
+
+
+    //checkPath(obj, path) Check if obj contains a nested object descriped in path
+    //Eq. checkPath(obj, "level1.level2.level3") return true if obj.level1.level2.level3 exists
+    function checkPath(obj, path){
+        path = path.split('.');
+
+        for (var i=0; i < path.length; i++) {
+            if (!obj || !obj.hasOwnProperty(path[i]))
+                return false;
+            obj = obj[path[i]];
+        }
+        return obj;//true;
+    }
+
+    function isObject(obj){
+        return $.type(obj) == "object";
+    }
+
+    function translate(obj){
+        //Assume if obj is Object: obj is a {da:"dansk", en:"english",...}-object
+        return isObject(obj) ? obj[i18next.language] : obj;
+    }
+
+
+    /*
+    translateElement(element, options, id)
+    Add i18next to element if it exists else save
+    translation and set to current language
+    */
+    function translateElement(element, options, id){
+        if (!id || !options[id])
+            return;
+        var id_i18next = id+'i18next';
+
+        //Save {da,en} until next update and use sentence for now
+        if ( isObject(options[id]) )
+            options[id_i18next] = $.extend(true, {}, options[id]);
+
+        options[id] = options[id_i18next] ? translate(options[id_i18next]) : options[id];
+
+        if (element && options[id_i18next])
+            $(element).i18n( options[id_i18next] );
+    }
+
+
+    /****************************************************
+    translateChart(chartOrEvent)
+    Translate the different parts of a chart that is not
+    re-created on reset
+    *****************************************************/
+    function translateChart(chartOrEvent){
+        var chart = chartOrEvent.target ? chartOrEvent.target : chartOrEvent;
+
+        //Translate menu-items in the export-menu
+        var menuItems = checkPath(chart, 'options.exporting.buttons.contextButton.menuItems');
+        $.each(menuItems, function(index, id){
+            var elem = chart.exportDivElements ? chart.exportDivElements[index] : null;
+            translateElement(elem, chart.options.lang, id);
+        });
+
+        //Translate range-selector buttons and drop-down
+        if (chart.rangeSelector){
+            $.each(chart.rangeSelector.buttonOptions, function(index, buttonOpt){
+                //Translate button
+                translateElement(null, buttonOpt, 'text');
+                translateElement(null, buttonOpt, 'title');
+
+                //Translate options in select
+                chart.rangeSelector.dropdown[index+1].innerHTML = buttonOpt.title || buttonOpt.text;
+            });
+            //Align elemnets (buttons and select) to update select
+            chart.rangeSelector.alignElements();
+        }
+    }
+
+
+    nsHC.addEvent(nsHC.Chart, 'render', translateChart);
+
+    /****************************************************
+    Extend Highcharts.SVGRenderer.prototype.text and
+           Highcharts.Point.prototype.tooltipFormatter
+    to allow text as {da:"...", en:"..."}
+    *****************************************************/
+    nsHC.SVGRenderer.prototype.buildText = function(SVGRenderer_buildText) {
 		return function (wrapper) {
-            if ($.type( wrapper.textStr ) == "object"){
+            if (isObject(wrapper.textStr)){
                 //Assume textStr is a {da:"dansk", en:"english",...}-object
                 $(wrapper.element).i18n(wrapper.textStr);
                 wrapper.textStr = wrapper.element.innerHTML;
                 wrapper.useHTML = true;
             }
-            return buildText.call(this, wrapper);
+            return SVGRenderer_buildText.call(this, wrapper);
 		};
 	} (nsHC.SVGRenderer.prototype.buildText);
+
+
+/*
+    nsHC.SVGRenderer.prototype.button = function (SVGRenderer_button) {
+		return function () {
+            arguments[0] = translate(arguments[0]);
+            return SVGRenderer_button.apply(this, arguments);
+		};
+	} (nsHC.SVGRenderer.prototype.button);
+
+
+    nsHC.SVGRenderer.prototype.text = function(SVGRenderer_text) {
+		return function() {
+            arguments[0] = translate(arguments[0]);
+            return SVGRenderer_text.apply(this, arguments);
+		};
+	} (nsHC.SVGRenderer.prototype.text);
+*/
+
+    nsHC.Point.prototype.tooltipFormatter = function (tooltipFormatter) {
+       return function(){
+           var objList = [this, this.options, this.series];
+
+            $.each(objList, function(index, obj){
+                var hasName = !!(obj && obj.name),
+                    name    = hasName ? obj.name : '',
+                    translateName = hasName && isObject(name);
+
+                if (translateName)
+                    obj.i18nextName = name;
+
+                obj.name = obj.i18nextName ? i18next.sentence(obj.i18nextName) : obj.name;
+            });
+
+            return tooltipFormatter.apply(this, arguments);
+        };
+    }(nsHC.Point.prototype.tooltipFormatter);
 
 
     /***************************************************************
@@ -85,14 +258,23 @@
     ***************************************************************/
 
     /**************************************************************
-    1: onLanguageChanged - Called when i18next changes language: Change names of month and weekdays
+    1: onLanguageChanged - Called when i18next changes language:
+    Updates global_lang and
+    Change names of month and weekdays
     ***************************************************************/
-    function onLanguageChanged(lang){
-        lang = lang || i18next.language || 'en';
+    function onLanguageChanged(language){
+        language = language || i18next.language || 'en';
+
+        //Translate global language
+        var lang = $.extend(true, {}, global_lang);
+        $.each(lang, function(id){
+            translateElement(null, lang, id);
+        });
+        nsHC.setOptions({lang: lang}, false);
 
         //Check if moment has the same language
-        if ((moment.locale() != lang) && (moment.locales().indexOf(lang) > -1))
-            moment.locale(lang);
+        if ((moment.locale() != language) && (moment.locales().indexOf(language) > -1))
+            moment.locale(language);
 
         //Set name of month, weekday etc.
         nsHC.setOptions({
@@ -100,9 +282,12 @@
                 months       : moment.months(),
                 shortMonths  : moment.monthsShort(),
                 shortWeekdays: moment.weekdaysShort(),
-                weekdays     : moment.weekdays() //= 3 char. Alt: moment.weekdaysMin() = 2 char
+                weekdays     : moment.weekdays(), //= 3 char. Alt: moment.weekdaysMin() = 2 char
             }
         }, true);
+
+
+        $('body').localize();
     }
 
     i18next.on('initialized',     function(options){ onLanguageChanged(options.language); });
@@ -116,6 +301,27 @@
             month  : 'Full'/'Short'/'Digital'/'None'
             year   : 'Full'/'Short'/'Digital'/'None'
         }
+        Highcharts uses the following keys in dateFormats
+        `%a`: Short weekday, like 'Mon'
+        `%A`: Long weekday, like 'Monday'
+        `%d`: Two digit day of the month, 01 to 31
+        `%e`: Day of the month, 1 through 31
+        `%w`: Day of the week, 0 through 6
+        `%b`: Short month, like 'Jan'
+        `%B`: Long month, like 'January'
+        `%m`: Two digit month number, 01 through 12
+        `%y`: Two digits year, like 09 for 2009
+        `%Y`: Four digits year, like 2009
+        `%H`: Two digits hours in 24h format, 00 through 23
+        `%k`: Hours in 24h format, 0 through 23
+        `%I`: Two digits hours in 12h format, 00 through 11
+        `%l`: Hours in 12h format, 1 through 12
+        `%M`: Two digits minutes, 00 through 59
+        `%p`: Upper case AM or PM
+        `%P`: Lower case AM or PM
+        `%S`: Two digits seconds, 00 through 59
+        `%L`: Milliseconds (naming from Ruby)
+
     **************************************************************/
 
     function timestampToMoment(timestamp){
@@ -198,7 +404,15 @@
         tooltipDay         : tooltipDateFormatFunc,             //Mon,  30. Jan 19          '%A, %b %e, %Y'           = Sunday, Jan 30, 2019
         tooltipWeek        : tooltipDateFormatFunc,             //Mon,  30. Jan 19          'Week from %A, %b %e, %Y' = Week from Sunday, Jan 30, 2019
         tooltipMonth       : fullMonthFullYearDateFormatFunc,   //Januar 2019'              '%B %Y',                  = January 2019
-        tooltipYear        : createDateFormat('YYYY')           //2019                      '%Y'                      = 2019
+        tooltipYear        : createDateFormat('YYYY'),          //2019                      '%Y'                      = 2019
+
+
+
+test: function(timestamp){
+    var m = moment(timestamp);
+    return i18next.s({da:'Uge', en:'Week'}) + ' ' + m.week() + ' ' + m.year();
+}
+
     });
 
     /*
@@ -268,6 +482,5 @@
         nsHC.setOptions({}, true);
         timezone = options.timezone;
     });
-
 
 }(jQuery, this.Highcharts,  this.moment, this.i18next, this.numeral, this, document));

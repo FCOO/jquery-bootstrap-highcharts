@@ -1,9 +1,12 @@
 # jquery-bootstrap-highcharts
->
+
 
 
 ## Description
-This package is used for...
+This packages adjust [Highcharts](https://www.highcharts.com/) to [jquery-bootstrap](https://github.com/FCOO/jquery-bootstrap) regarding StyleSheet and settings (language, date format, timezone, numerical format etc.).
+
+It also adjust default options for [Highcharts](https://www.highcharts.com/)  
+
 
 ## Installation
 ### bower
@@ -12,20 +15,15 @@ This package is used for...
 ## Demo
 http://FCOO.github.io/jquery-bootstrap-highcharts/demo/ 
 
-## Usage
-```var myBsHighchart = new BsHighchart( options );```
+## ToDo
+
+The following (known) issues need to be fixed:
 
 
-### options
-| Id | Type | Default | Description |
-| :--: | :--: | :-----: | --- |
-| options1 | boolean | true | If <code>true</code> the ... |
-| options2 | string | null | Contain the ... |
 
-### Methods
+1. `tooltips.pointFormat` do not work with `{da:"...", en:"..."}`
+2. Axis labels in Waterfall do not work with `{da:"...", en:"..."}`  
 
-    .methods1( arg1, arg2,...): Do something
-    .methods2( arg1, arg2,...): Do something else
 
 
 
@@ -37,6 +35,3 @@ Copyright (c) 2019 [FCOO](https://github.com/FCOO)
 ## Contact information
 
 Niels Holt nho@fcoo.dk
-
-
-## Credits and acknowledgements

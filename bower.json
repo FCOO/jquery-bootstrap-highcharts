@@ -1,6 +1,6 @@
 {
   "name": "jquery-bootstrap-highcharts",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "homepage": "https://github.com/FCOO/jquery-bootstrap-highcharts",
   "authors": [
     "Niels Holt"
@@ -26,7 +26,8 @@
         "jquery-bootstrap": "latest"
       },
       "main": [
-        "highstock.src.js"
+        "highstock.src.js",
+        "highcharts-more.src.js"
       ]
     }
   },

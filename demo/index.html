@@ -15,7 +15,7 @@
 
 
     <style>
-/*
+
         .highcharts-tooltip-box,
         .highcharts-tooltip-box .highcharts-label-box {
 	        fill: black;
@@ -24,26 +24,18 @@
             display: block;
         }
 
-        .highcharts-tooltip text {
-	        fill: white;
-	        text-shadow: 0 0 3px black;
 
-        }
-        .highcharts-tooltip:first-child text {
-	        fill: yellow;
-            text-transform: capitalize;
-        }
-*/
     </style>
 </head>
 
 <body>
 	<script src="bower_components.js"></script>
-    <script src="../src/jquery-bootstrap-highcharts.js"></script>
 
-    <!-- <script src="../bower_components/highcharts/highcharts.src.js"></script> -->
-    <script src="../bower_components/highcharts/highcharts-more.src.js"></script>
-    <!-- <script src="../bower_components/highcharts/highmaps.src.js"></script> -->
+    <script src="../bower_components/highcharts/modules/exporting.src.js"></script>
+    <script src="../bower_components/highcharts/modules/offline-exporting.src.js"></script>
+
+
+    <script src="../src/jquery-bootstrap-highcharts.js"></script>
 
     <script src="da.js"></script>
 
@@ -56,7 +48,7 @@
 <div id="container5" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 <div id="container6" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 <div id="container7" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-<div id="container8" style="min-width: 310px; max-width: 800px; height: 800px; margin: 0 auto"></div>
+<div id="container8" style="min-width: 310px; max-width: 400px; height: 400px; margin: 0 auto"></div>
 <div id="container9"></div>
 <div id="container10"></div>
 <script>
@@ -145,6 +137,7 @@ addButton('DA <-> EN', function(){
 addButton('YTD');
 
 
+
 //**********************************************************************
 $.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/large-dataset.json', function (data) {
 
@@ -152,10 +145,10 @@ $.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data
     var start = +new Date();
 
     // Create the chart
-    Highcharts.stockChart('container', {
+    var c = Highcharts.stockChart('container', {
         chart: {
             events: {
-                load: function () {
+                load: function () { 
                     if (!window.TestController) {
                         this.setTitle(null, {
                             text: 'Built chart in ' + (new Date() - start) + 'ms'
@@ -166,30 +159,45 @@ $.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data
             zoomType: 'x'
         },
 
+        XXtooltip: {
+            formatter: function (tooltip) {
+
+                console.log(tooltip);
+                // If not null, use the default formatter
+                return tooltip.defaultFormatter.call(this, tooltip);
+            }
+        },
+
         rangeSelector: {
             //dropdown: 'always',
             inputDateFormat: "%e. %b %Y.",
+            buttonPosition: {
+                align: 'middle'
+            },
+            //inputEditDateFormat: '%d-%m-%Y', //%Y-%m-%d
+            inputEditDateFormat: '%Y/%m/%d',
             buttons: [{
                 type: 'day',
                 count: 3,
-                text: '<span>3d</span>',
-                title: 'Titel til 3 dage'
+                text: {da: '3 dage', en:'3 days'}, 
+                //title: {da: 'Vis 3 dage', en:'Show 3 days'}
             }, {
                 type: 'week',
                 count: 1,
-                text: {da:'1u', en:'1w'}
+                text: {da:'1 uge', en:'1 week'},
+                //title: {da:'Vis 1 uge', en:'Show 1 week'}
             }, {
                 type: 'month',
                 count: 1,
-                text: '1m'
+                text: {da:'1 mdr', en:'1 mth'}
             }, {
                 type: 'month',
                 count: 6,
-                text: '6m'
+                text: {da:'6 mdr', en:'6 mths'}
             }, {
                 type: 'year',
                 count: 1,
-                text: {da:'1å', en:'1y'}
+                text: {da:'1 år', en:'1 year'}
             }, {
                 type: 'all',
                 text: {da:'Alt', en:'All'}
@@ -198,7 +206,7 @@ $.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data
         },
 
         exporting: {
-            enabled: true,    
+            enabled: false,    
             menuItemDefinitions: {
                 // Custom definition
                 label: {
@@ -232,7 +240,7 @@ $.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data
         yAxis: {
             min: -20, max: 30,
             title: {
-                text: 'Temperature (°C)'
+                text: {da:'Temperatur (°C)', en:'Temperature (°C)'}
             }
         },
 
@@ -245,6 +253,7 @@ $.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data
         },
 
         series: [{
+            events: { redraw: function(){ console.log('REDRAW SERIE', arguments); }},
             title: 'TEST',
             name: {da:'Temperatur', en:'Temperature'},
             data: data.data,
@@ -253,8 +262,77 @@ $.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data
 dataGrouping: {
     //enabled:false,
     //approximation: 'high',
+    _approximation: function () {
+        var start = this.cropStart + this.dataGroupInfo.start;
+
+        console.log(
+            'dataGroupInfo:',
+            this.dataGroupInfo,
+            'Raw data:',
+            this.options.data.slice(
+                start,
+                start + this.dataGroupInfo.length
+            )
+        );
+
+        // Individual point options can be applied to the grouped points
+        if (this.dataGroupInfo.length < 5) {
+            this.dataGroupInfo.options = {
+                color: '#FF0000'
+            };
+        }
+this.dataGroupInfo.options = {
+    color: this.options.data[start] > 0 ? 'red' : 'blue'
+};
+
+        // We want the number of points to represent the value
+        return this.options.data[start];//this.dataGroupInfo.length;
+    },
+    //forced: true,
+
     dateTimeLabelFormats: {
-    }
+                    millisecond: [
+                        '%A, %b %e, %H:%M:%S.%L',
+                        '%A, %b %e, %H:%M:%S.%L',
+                        '-%H:%M:%S.%L'
+                    ],
+                    second: [
+                        '%A, %b %e, %H:%M:%S',
+                        '%A, %b %e, %H:%M:%S',
+                        '-%H:%M:%S'
+                    ],
+                    minute: [
+                        '%A, %b %e, %H:%M',
+                        '%A, %b %e, %H:%M',
+                        '-%H:%M'
+                    ],
+                    hour: [
+                        '%A, %b %e, %H:%M',
+                        '%A, %b %e, %H:%M',
+                        '-%H:%M'
+                    ],
+                    day: [
+                        '%A, %b %e, %Y',
+                        '%A, %b %e',
+                        '-%A, %b %e, %Y'
+                    ],
+                    week: [
+                        '%test', //'w1: Week from %A, %b %e, %Y',
+                        'w2: %A, %b %e',
+                        'w3: -%A, %b %e, %Y'
+                    ],
+                    month: [
+                        '%B %Y',
+                        '%B',
+                        '-%B %Y'
+                    ],
+                    year: [
+                        '%Y',
+                        '%Y',
+                        '-%Y'
+                    ]
+                }
+
 },
             tooltip: {
                 valueDecimals: 1,
@@ -265,6 +343,7 @@ dataGrouping: {
     });
 });
 
+//*/
 
 //**********************************************************************
 $.getJSON(
@@ -276,7 +355,7 @@ $.getJSON(
                 zoomType: 'x'
             },
             title: {
-                text: 'USD to EUR exchange rate over time'
+                text: {da:'USD/EUR Dansk titel', en:'USD to EUR exchange rate over time'}
             },
             subtitle: {
                 text: document.ontouchstart === undefined ?
@@ -287,7 +366,7 @@ $.getJSON(
             },
             yAxis: {
                 title: {
-                    text: 'Exchange rate'
+                    text: {da:'Valutakurs', en:'Exchange rate'}
                 }
             },
             legend: {
@@ -322,13 +401,13 @@ $.getJSON(
 
             series: [{
                 type: 'area',
-                name: 'USD to EUR',
+                name: {da:'USD ift. EUR', en:'USD to EUR'},
                 data: data
             }]
         });
     }
 );
-
+//*/
 //**********************************************************************
 //var tzChart = Highcharts.stockChart('container2', {
 var tzChart = Highcharts.chart('container2', {
@@ -363,7 +442,7 @@ var tzChart = Highcharts.chart('container2', {
         },
 //HER        pointStart: Date.UTC(2016, 9, 29),
 //HER        pointInterval: 1 * 60*60*1000,
-        name: 'UTC Midnight',
+        name: {da:'UTC Midnat', en:'UTC Midnight'},
         tooltip: {
             crosshairs: [true,true],
             pointFormat: 'point.y = {point.y}. {point.x:%tooltipDay}',
@@ -373,7 +452,7 @@ var tzChart = Highcharts.chart('container2', {
     }
     ]
 });
-
+//*/
 
 //****************************************************************************************
 $.getJSON(
@@ -409,11 +488,11 @@ $.getJSON(
                     enabled: false
                 },
                 title: {
-                    text: 'Historical USD to EUR Exchange Rate',
+                    text: {da:'Dansk', en:'Historical USD to EUR Exchange Rate'},
                     align: 'left'
                 },
                 subtitle: {
-                    text: 'Select an area by dragging across the lower chart',
+                    text: {da:'Dansk', en:'Select an area by dragging across the lower chart'},
                     align: 'left'
                 },
                 xAxis: {
@@ -619,72 +698,81 @@ $.getJSON(
         createMaster();
     }
 );
+//*/
+
 //****************************************************************************************
 Highcharts.chart('container4', {
+  title: {
+    text: {da:'Dansk', en:'en:Solar Employment Growth by Sector, 2010-2016'}
+  },
 
+  subtitle: {
+    text: {da:'Kilde: thesolarfoundation.com', en:'Source: thesolarfoundation.com'}
+  },
+
+  yAxis: {
     title: {
-        text: 'Solar Employment Growth by Sector, 2010-2016'
-    },
-
-    subtitle: {
-        text: {da:'Kilde: thesolarfoundation.com', en:'Source: thesolarfoundation.com'}
-    },
-
-    yAxis: {
-        title: {
-            text: 'Number of Employees'
-        }
-    },
-    legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'middle'
-    },
-
-    plotOptions: {
-        series: {
-            label: {
-                connectorAllowed: false
-            },
-            pointStart: 2010
-        }
-    },
-
-    series: [{
-        name: 'Installation',
-        data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
-    }, {
-        name: 'Manufacturing',
-        data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
-    }, {
-        name: 'Sales & Distribution',
-        data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
-    }, {
-        name: 'Project Development',
-        data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
-    }, {
-        name: 'Other',
-        data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
-    }],
-
-    responsive: {
-        rules: [{
-            condition: {
-                maxWidth: 500
-            },
-            chartOptions: {
-                legend: {
-                    layout: 'horizontal',
-                    align: 'center',
-                    verticalAlign: 'bottom'
-                }
-            }
-        }]
+      text: {da:'Antal ansatte', en:'Number of Employees'}
     }
+  },
 
-})
+  xAxis: {
+    accessibility: {
+      rangeDescription: 'Range: 2010 to 2017'
+    }
+  },
+
+  legend: {
+    layout: 'vertical',
+    align: 'right',
+    verticalAlign: 'middle'
+  },
+
+  plotOptions: {
+    series: {
+      label: {
+        connectorAllowed: false
+      },
+      pointStart: 2010
+    }
+  },
+
+  series: [{
+    name: 'Installation',
+    data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
+  }, {
+    name: {da:'Fremstilling', en:'Manufacturing'},
+    data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
+  }, {
+    name: {da:'Salg og Distribution', en:'Sales & Distribution'},
+    data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
+  }, {
+    name: {da:'Projektudvikling', en:'Project Development'},
+    data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
+  }, {
+    name: {da:'Andre', en:'Other'},
+    data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
+  }],
+
+  responsive: {
+    rules: [{
+      condition: {
+        maxWidth: 500
+      },
+      chartOptions: {
+        legend: {
+          layout: 'horizontal',
+          align: 'center',
+          verticalAlign: 'bottom'
+        }
+      }
+    }]
+  }
+
+});
+//*/
+
 //****************************************************************************************
-console.log(Highcharts.getOptions());
 Highcharts.chart('container5', {
     chart: {
         zoomType: 'xy'
@@ -693,7 +781,8 @@ Highcharts.chart('container5', {
         text: {da:'Temperatur vs Nedbør', en:'Temperature vs Rainfall'}
     },
     xAxis: [{
-        categories: Highcharts.getOptions().lang.shortMonths//['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        //categories: Highcharts.getOptions().lang.shortMonths
     }],
     yAxis: [{ // Primary yAxis
         labels: {
@@ -737,22 +826,23 @@ Highcharts.chart('container5', {
             pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.1f} mm</b> '
         }
     }, {
-        name: 'Rainfall error',
+        name: {da:'Nedbør fejl', en:'Rainfall error'},
         type: 'errorbar',
         yAxis: 1,
         data: [[48, 51], [68, 73], [92, 110], [128, 136], [140, 150], [171, 179], [135, 143], [142, 149], [204, 220], [189, 199], [95, 110], [52, 56]],
         tooltip: {
+            _pointFormat: {da:'HER', en:'(error range: {point.low}-{point.high} mm)<br/>'},
             pointFormat: '(error range: {point.low}-{point.high} mm)<br/>'
         }
     }, {
-        name: {da:'HER Temp', en:'Temperature'},
+        name: {da:'Temperatur', en:'Temperature'},
         type: 'spline',
         data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6],
         tooltip: {
             pointFormat: '<span style="font-weight: bold; color: {series.color}">{series.name}</span>: <b>{point.y:.1f}°C</b> '
         }
     }, {
-        name: 'Temperature error',
+        name: {da:'Temperatur fejl', en:'Temperature error'},
         type: 'errorbar',
         data: [[6, 8], [5.9, 7.6], [9.4, 10.4], [14.1, 15.9], [18.0, 20.1], [21.0, 24.0], [23.2, 25.3], [26.1, 27.8], [23.2, 23.9], [18.0, 21.1], [12.9, 14.0], [7.6, 10.0]],
         tooltip: {
@@ -760,12 +850,15 @@ Highcharts.chart('container5', {
         }
     }]
 });
-
+//*/
 //****************************************************************************************
 $.getJSON('data/aapl-ohlc.json', function (data) {
 
     // create the chart
     Highcharts.stockChart('container6', {
+        credits   : {
+            enabled: false
+        },
 
 
         rangeSelector: {
@@ -794,10 +887,13 @@ $.getJSON('data/aapl-ohlc.json', function (data) {
         }]
     });
 });
+//*/
+
 //****************************************************************************************
 Highcharts.chart('container7', {
     chart: {
-        type: 'waterfall'
+        type: 'waterfall',
+        events: {redraw: function(){ console.log(this); } }
     },
 
     title: {
@@ -839,7 +935,7 @@ Highcharts.chart('container7', {
             isIntermediateSum: true,
             color: Highcharts.getOptions().colors[1]
         }, {
-            name: 'Fixed Costs',
+            name: {da:'Faste omkostninger', en:'Fixed Costs'},
             y: -342000
         }, {
             name: 'Variable Costs',
@@ -862,8 +958,9 @@ Highcharts.chart('container7', {
     }]
 
 });
+//*/
 
-//****************************************************************************************
+/****************************************************************************************
 Highcharts.chart('container8', {
 
     chart: {
@@ -950,7 +1047,7 @@ Highcharts.chart('container8', {
     },
 
     series: [{
-        name: 'Speed',
+        name: {da:'Hastighed', en:'Speed'},
         data: [80],
         tooltip: {
             valueSuffix: ' km/h'
@@ -976,9 +1073,10 @@ function (chart) {
         }, 3000);
     }
 });
-              
-/*
-//****************************************************************************************
+//*/
+            
+
+/****************************************************************************************
 // Prepare random data
 var data = [
     ['DE.SH', 728],
@@ -1039,14 +1137,133 @@ $.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data
         }]
     });
 });
-*/
+//*/
+
 //****************************************************************************************
 //container10
 //****************************************************************************************
+var ranges = [
+        [1246406400000, 14.3, 27.7],
+        [1246492800000, 14.5, 27.8],
+        [1246579200000, 15.5, 29.6],
+        [1246665600000, 16.7, 30.7],
+        [1246752000000, 16.5, 25.0],
+        [1246838400000, 17.8, 25.7],
+        [1246924800000, 13.5, 24.8],
+        [1247011200000, 10.5, 21.4],
+        [1247097600000, 9.2, 23.8],
+        [1247184000000, 11.6, 21.8],
+        [1247270400000, 10.7, 23.7],
+        [1247356800000, 11.0, 23.3],
+        [1247443200000, 11.6, 23.7],
+        [1247529600000, 11.8, 20.7],
+        [1247616000000, 12.6, 22.4],
+        [1247702400000, 13.6, 19.6],
+        [1247788800000, 11.4, 22.6],
+        [1247875200000, 13.2, 25.0],
+        [1247961600000, 14.2, 21.6],
+        [1248048000000, 13.1, 17.1],
+        [1248134400000, 12.2, 15.5],
+        [1248220800000, 12.0, 20.8],
+        [1248307200000, 12.0, 17.1],
+        [1248393600000, 12.7, 18.3],
+        [1248480000000, 12.4, 19.4],
+        [1248566400000, 12.6, 19.9],
+        [1248652800000, 11.9, 20.2],
+        [1248739200000, 11.0, 19.3],
+        [1248825600000, 10.8, 17.8],
+        [1248912000000, 11.8, 18.5],
+        [1248998400000, 10.8, 16.1]
+    ],
+    averages = [
+        [1246406400000, 21.5],
+        [1246492800000, 22.1],
+        [1246579200000, 23],
+        [1246665600000, 23.8],
+        [1246752000000, 21.4],
+        [1246838400000, 21.3],
+        [1246924800000, 18.3],
+        [1247011200000, 15.4],
+        [1247097600000, 16.4],
+        [1247184000000, 17.7],
+        [1247270400000, 17.5],
+        [1247356800000, 17.6],
+        [1247443200000, 17.7],
+        [1247529600000, 16.8],
+        [1247616000000, 17.7],
+        [1247702400000, 16.3],
+        [1247788800000, 17.8],
+        [1247875200000, 18.1],
+        [1247961600000, 17.2],
+        [1248048000000, 14.4],
+        [1248134400000, 13.7],
+        [1248220800000, 15.7],
+        [1248307200000, 14.6],
+        [1248393600000, 15.3],
+        [1248480000000, 15.3],
+        [1248566400000, 15.8],
+        [1248652800000, 15.2],
+        [1248739200000, 14.8],
+        [1248825600000, 14.4],
+        [1248912000000, 15],
+        [1248998400000, 13.6]
+    ];
+
+
+Highcharts.chart('container10', {
+    styledMode: false,
+    credits: {
+        enabled: false
+    },
+    title: {
+        text: {da:'Juli temperaturer', en:'July temperatures'}
+    },
+
+    xAxis: {
+        type: 'datetime',
+        accessibility: {
+            rangeDescription: 'Range: Jul 1st 2009 to Jul 31st 2009.'
+        }
+    },
+
+    yAxis: {
+        title: {
+            text: {da:'Temperatur [°C]', en:'Temperature [°C]'},
+        }
+    },
+
+    tooltip: {
+        crosshairs: true,
+        shared: true,
+        valueSuffix: '°C'
+    },
+
+    series: [{
+        name: {da:'Temperatur', en:'Temperature'},
+        data: averages,
+        zIndex: 1,
+        marker: {
+            fillColor: 'white',
+            lineWidth: 2,
+            lineColor: Highcharts.getOptions().colors[0]
+        }
+    }, {
+        name: {da:'Spænd',en:'Range'},
+        data: ranges,
+        type: 'arearange',
+        lineWidth: 0,
+        linkedTo: ':previous', 
+        color: Highcharts.getOptions().colors[0],
+        fillOpacity: 0.3,
+        zIndex: 0,
+        marker: {
+            enabled: false
+        }
+    }]
+});
 
 </script>
 
 
 </body>
 </html>
-                                                                                                              
