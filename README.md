@@ -22,6 +22,7 @@ The following (known) issues need to be fixed:
 
 
 1. Axis labels in Waterfall do not work with `{da:"...", en:"..."}`
+2. `Title` for buttons in range-selector do not work with `{da:"...", en:"..."}`
 
 
 

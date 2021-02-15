@@ -149,14 +149,6 @@
         }
     }
 
-//HERnsHC.Fullscreen.prototype.open = function (open){
-//HER    return function(){
-//HER        var result = open.apply(this, arguments);
-//HER        console.log('HER>>>>',result);
-//HER        return result;
-//HER    };
-//HER}(nsHC.Fullscreen.prototype.open);
-
 
     nsHC.addEvent(nsHC.Chart, 'render', translateChart);
 

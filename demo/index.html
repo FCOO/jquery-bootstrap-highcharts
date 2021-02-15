@@ -166,6 +166,9 @@ $.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data
         rangeSelector: {
             //dropdown: 'always',
             inputDateFormat: "%e. %b %Y.",
+            buttonTheme: {
+                width: 44
+            },
             buttonPosition: {
                 align: 'middle'
             },
@@ -184,11 +187,13 @@ $.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data
             }, {
                 type: 'month',
                 count: 1,
-                text: {da:'1 mdr', en:'1 mth'}
+                text: {da:'1 mdr', en:'1 mth'},
+                //title: {da:'1 måned', en:'1 mount'}
             }, {
                 type: 'month',
                 count: 6,
-                text: {da:'6 mdr', en:'6 mths'}
+                text: {da:'6 mdr', en:'6 mths'},
+                //title: {da:'6 måneder', en:'6 mounts'}
             }, {
                 type: 'year',
                 count: 1,
