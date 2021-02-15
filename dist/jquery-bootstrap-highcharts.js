@@ -11,32 +11,7 @@
 (function ($, Highcharts, moment, i18next, numeral, window, document, undefined) {
 	"use strict";
 
-	var //ns   = window,
-        nsHC = Highcharts;
-
-
-
-
-/*
-function test(name, options, parent = ''){
-    var result = null;
-
-    if (!isObject(options))
-        return null;
-
-    $.each(options, function(id, child){
-        var childName = (parent ? parent+'.' : '') + id;
-        if (childName == name)
-            result = child;
-        else
-            result = test(name, child, childName);
-        if (result)
-            return false;
-    });
-    console.log(parent, result);
-    return result;
-}
-*/
+	var nsHC = Highcharts;
 
    //Extend Highcharts.setOptions to allow update of all charts
     nsHC.setOptions = function (setOptions) {
@@ -116,13 +91,12 @@ function test(name, options, parent = ''){
         return isObject(obj) ? obj[i18next.language] : obj;
     }
 
-
     /*
     translateElement(element, options, id)
     Add i18next to element if it exists else save
     translation and set to current language
     */
-    function translateElement(element, options, id){
+    function translateElement(element, options, id, simple){
         if (!id || !options[id])
             return;
         var id_i18next = id+'i18next';
@@ -133,8 +107,13 @@ function test(name, options, parent = ''){
 
         options[id] = options[id_i18next] ? translate(options[id_i18next]) : options[id];
 
-        if (element && options[id_i18next])
-            $(element).i18n( options[id_i18next] );
+        if (element && options[id_i18next]){
+            if (simple){
+                $(element).text( translate(options[id_i18next]) );
+            }
+            else
+                $(element).i18n( options[id_i18next] );
+        }
     }
 
 
@@ -146,12 +125,14 @@ function test(name, options, parent = ''){
     function translateChart(chartOrEvent){
         var chart = chartOrEvent.target ? chartOrEvent.target : chartOrEvent;
 
-        //Translate menu-items in the export-menu
-        var menuItems = checkPath(chart, 'options.exporting.buttons.contextButton.menuItems');
-        $.each(menuItems, function(index, id){
-            var elem = chart.exportDivElements ? chart.exportDivElements[index] : null;
-            translateElement(elem, chart.options.lang, id);
-        });
+        //Translate menu-items in the export-menu but only when the fullscreen is not open
+        if (chart.fullscreen && !chart.fullscreen.isOpen){
+            var menuItems = checkPath(chart, 'options.exporting.buttons.contextButton.menuItems');
+            $.each(menuItems, function(index, id){
+                var elem = chart.exportDivElements ? chart.exportDivElements[index] : null;
+                translateElement(elem, chart.options.lang, id);
+            });
+        }
 
         //Translate range-selector buttons and drop-down
         if (chart.rangeSelector){
@@ -168,8 +149,17 @@ function test(name, options, parent = ''){
         }
     }
 
+//HERnsHC.Fullscreen.prototype.open = function (open){
+//HER    return function(){
+//HER        var result = open.apply(this, arguments);
+//HER        console.log('HER>>>>',result);
+//HER        return result;
+//HER    };
+//HER}(nsHC.Fullscreen.prototype.open);
+
 
     nsHC.addEvent(nsHC.Chart, 'render', translateChart);
+
 
     /****************************************************
     Extend Highcharts.SVGRenderer.prototype.text and
@@ -205,6 +195,7 @@ function test(name, options, parent = ''){
 		};
 	} (nsHC.SVGRenderer.prototype.text);
 */
+
 
     nsHC.Point.prototype.tooltipFormatter = function (tooltipFormatter) {
        return function(){

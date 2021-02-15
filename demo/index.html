@@ -884,7 +884,7 @@ $.getJSON('data/aapl-ohlc.json', function (data) {
 });
 //*/
 
-//****************************************************************************************
+/****************************************************************************************
 Highcharts.chart('container7', {
     chart: {
         type: 'waterfall',
@@ -919,6 +919,7 @@ Highcharts.chart('container7', {
             name: 'Start',
             y: 120000
         }, {
+            _name: {da:'Produkt fortjeneste', en:'Product Revenue'},
             name: 'Product Revenue',
             y: 569000
         }, {
@@ -1051,6 +1052,7 @@ Highcharts.chart('container8', {
 },
 // Add some life
 function (chart) {
+return;
     if (!chart.renderer.forExport) {
         setInterval(function () {
             var point = chart.series[0].points[0],
