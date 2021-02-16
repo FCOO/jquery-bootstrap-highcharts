@@ -54,7 +54,13 @@ window.bsIsTouch = false;
 window.bsIsTouch = (window.location.search =='?touch');
 
 i18next.init();
+
+i18next.on('initialized',     function(options){ Highcharts.onLanguageChanged(options.language); });
+i18next.on('languageChanged', Highcharts.onLanguageChanged );
+
 i18next.changeLanguage('da');
+
+
 
 var decimatPointIsHash = false;
 

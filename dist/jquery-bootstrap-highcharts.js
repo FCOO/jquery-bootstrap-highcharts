@@ -149,7 +149,7 @@
         }
     }
 
-
+    //Translate all chartts when they load or reset
     nsHC.addEvent(nsHC.Chart, 'render', translateChart);
 
 
@@ -246,7 +246,7 @@
     Updates global_lang and
     Change names of month and weekdays
     ***************************************************************/
-    function onLanguageChanged(language){
+    nsHC.onLanguageChanged = function(language, callLocalize = true){
         language = language || i18next.language || 'en';
 
         //Translate global language
@@ -270,13 +270,9 @@
             }
         }, true);
 
-
-        $('body').localize();
+        if (callLocalize)
+            $('body').localize();
     }
-
-    i18next.on('initialized',     function(options){ onLanguageChanged(options.language); });
-    i18next.on('languageChanged', onLanguageChanged );
-
 
     /**************************************************************
     2: Create new dateFormats as functions using moment-simple-format
