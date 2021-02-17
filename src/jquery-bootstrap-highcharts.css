@@ -220,6 +220,9 @@ $font-size-base: 1rem       16px
 $font-size-sm  : .8125rem   13px
 $font-size-xs  : .75rem     12px
 */
+.highcharts-subtitle {
+  font-size: 1em !important; }
+
 .highcharts-axis-title {
   font-size: 1rem !important; }
 
@@ -1024,7 +1027,7 @@ html.no-mouse .highcharts-container {
   margin: 0.3125rem 0;
   padding: 0; }
 
-.highcharts-label-box, .highcharts-button-box {
+.highcharts-range-input .highcharts-label-box {
   stroke: inherit  !important; }
 
 .highcharts-contextbutton .highcharts-button-symbol {

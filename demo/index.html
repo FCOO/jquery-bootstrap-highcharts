@@ -13,19 +13,6 @@
     <link  href="../src/jquery-bootstrap-highcharts.css" rel="stylesheet">
     <!-- <link  href="../bower_components/highcharts/css/highcharts.css" rel="stylesheet"> -->
 
-
-    <style>
-
-        .highcharts-tooltip-box,
-        .highcharts-tooltip-box .highcharts-label-box {
-	        fill: black;
-	        fill-opacity: 0.6;
-	        stroke-width: 0;
-            display: block;
-        }
-
-
-    </style>
 </head>
 
 <body>
@@ -265,36 +252,36 @@ $.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data
             data: data.data,
             pointStart: data.pointStart,
             pointInterval: data.pointInterval,
-dataGrouping: {
-    //enabled:false,
-    //approximation: 'high',
-    _approximation: function () {
-        var start = this.cropStart + this.dataGroupInfo.start;
+            dataGrouping: {
+                //enabled:false,
+                //approximation: 'high',
+                _approximation: function () {
+                    var start = this.cropStart + this.dataGroupInfo.start;
 
-        console.log(
-            'dataGroupInfo:',
-            this.dataGroupInfo,
-            'Raw data:',
-            this.options.data.slice(
-                start,
-                start + this.dataGroupInfo.length
-            )
-        );
+                    console.log(
+                        'dataGroupInfo:',
+                        this.dataGroupInfo,
+                        'Raw data:',
+                        this.options.data.slice(
+                            start,
+                            start + this.dataGroupInfo.length
+                        )
+                    );
 
-        // Individual point options can be applied to the grouped points
-        if (this.dataGroupInfo.length < 5) {
-            this.dataGroupInfo.options = {
-                color: '#FF0000'
-            };
-        }
-this.dataGroupInfo.options = {
-    color: this.options.data[start] > 0 ? 'red' : 'blue'
-};
+                    // Individual point options can be applied to the grouped points
+                    if (this.dataGroupInfo.length < 5) {
+                        this.dataGroupInfo.options = {
+                            color: '#FF0000'
+                        };
+                    }
+                    this.dataGroupInfo.options = {
+                        color: this.options.data[start] > 0 ? 'red' : 'blue'
+                    };
 
-        // We want the number of points to represent the value
-        return this.options.data[start];//this.dataGroupInfo.length;
-    },
-    //forced: true,
+                    // We want the number of points to represent the value
+                    return this.options.data[start];//this.dataGroupInfo.length;
+                },
+                //forced: true,
 
     dateTimeLabelFormats: {
                     millisecond: [
@@ -323,7 +310,7 @@ this.dataGroupInfo.options = {
                         '-%A, %b %e, %Y'
                     ],
                     week: [
-                        '%test', //'w1: Week from %A, %b %e, %Y',
+                        'w1: Week from %A, %b %e, %Y',
                         'w2: %A, %b %e',
                         'w3: -%A, %b %e, %Y'
                     ],

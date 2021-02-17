@@ -272,7 +272,7 @@
 
         if (callLocalize)
             $('body').localize();
-    }
+    };
 
     /**************************************************************
     2: Create new dateFormats as functions using moment-simple-format
@@ -385,14 +385,6 @@
         tooltipWeek        : tooltipDateFormatFunc,             //Mon,  30. Jan 19          'Week from %A, %b %e, %Y' = Week from Sunday, Jan 30, 2019
         tooltipMonth       : fullMonthFullYearDateFormatFunc,   //Januar 2019'              '%B %Y',                  = January 2019
         tooltipYear        : createDateFormat('YYYY'),          //2019                      '%Y'                      = 2019
-
-
-
-test: function(timestamp){
-    var m = moment(timestamp);
-    return i18next.s({da:'Uge', en:'Week'}) + ' ' + m.week() + ' ' + m.year();
-}
-
     });
 
     /*
