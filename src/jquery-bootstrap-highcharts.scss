@@ -96,22 +96,18 @@ $highlight-color-10: #e6ebf5 !default; // Pressed button, color axis min color.
 // Fonts
 $font-family: $font-family-base !important; //"Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif !default;
 
-//MANGLER
 /*
-$title-font-size        : 1.5em !important;
-$subtitle-font-size     : 1.0em !important;
-$legend-font-size       : 1.0em !important;
-$axis-labels-font-size  : 0.9em !important;
-
-/*
-$font-size-lg  : 1.25rem    20px
-$font-size-base: 1rem       16px
-$font-size-sm  : .8125rem   13px
-$font-size-xs  : .75rem     12px
+Font-size - using default but with !important to force the class to control size
+Standard font-size from jquery-bootstrap
+    $font-size-lg  : 1.25rem    20px
+    $font-size-base: 1rem       16px
+    $font-size-sm  : .8125rem   13px
+    $font-size-xs  : .75rem     12px
 */
-
-
-//MANGLER SLUT
+$title-font-size        : 1.5em         !important; //1.5em !default;
+$subtitle-font-size     : 1.0em         !important; //1.0em !default;
+$legend-font-size       : 1.0em         !important; //1.0em !default;
+$axis-labels-font-size  : (11em / 12)   !important; //0.9em !default; Rounded up from 10.8 to 11
 
 
 // Range-selector
@@ -168,6 +164,14 @@ html.no-mouse .highcharts-container {
 //Axis title
 .highcharts-axis-title {
     font-size: $font-size-base !important;
+}
+
+//Axis labels
+.highcharts-axis-labels /*text*/ {
+    font-size: $axis-labels-font-size;
+    text {
+        font-size: inherit !important;
+    }
 }
 
 //Tooltip and tracker

@@ -215,16 +215,12 @@ $highlight-color-20: #ccd6eb !default; // Ticks and axis line.
 $highlight-color-10: #e6ebf5 !default; // Pressed button, color axis min color.
 //*/
 /*
-$title-font-size        : 1.5em !important;
-$subtitle-font-size     : 1.0em !important;
-$legend-font-size       : 1.0em !important;
-$axis-labels-font-size  : 0.9em !important;
-
-/*
-$font-size-lg  : 1.25rem    20px
-$font-size-base: 1rem       16px
-$font-size-sm  : .8125rem   13px
-$font-size-xs  : .75rem     12px
+Font-size - using default but with !important to force the class to control size
+Standard font-size from jquery-bootstrap
+    $font-size-lg  : 1.25rem    20px
+    $font-size-base: 1rem       16px
+    $font-size-sm  : .8125rem   13px
+    $font-size-xs  : .75rem     12px
 */
 /* OR darken($control-bg-color, $darken-active-percent);*/
 /*OR $primary;                                          */
@@ -292,7 +288,7 @@ HIGHCHART
 /* Titles */
 .highcharts-title {
   fill: #333333;
-  font-size: 1.5em; }
+  font-size: 1.5em !important; }
 
 .highcharts-subtitle {
   fill: #666666; }
@@ -311,7 +307,7 @@ HIGHCHART
 .highcharts-axis-labels {
   fill: #666666;
   cursor: default;
-  font-size: 0.9em; }
+  font-size: 0.9166666667em !important; }
 
 .highcharts-grid-line {
   fill: none;
@@ -601,7 +597,7 @@ g.highcharts-series,
 .highcharts-legend-item > text {
   fill: #333333;
   font-weight: bold;
-  font-size: 1em;
+  font-size: 1em !important;
   cursor: pointer;
   stroke-width: 0; }
 
@@ -1016,10 +1012,15 @@ html.no-mouse .highcharts-container {
   fill: #495057 !important; }
 
 .highcharts-subtitle {
-  font-size: 1em; }
+  font-size: 1em !important; }
 
 .highcharts-axis-title {
   font-size: 1rem !important; }
+
+.highcharts-axis-labels {
+  font-size: 0.9166666667em !important; }
+  .highcharts-axis-labels text {
+    font-size: inherit !important; }
 
 .highcharts-tooltip text:first-letter {
   text-transform: capitalize; }
