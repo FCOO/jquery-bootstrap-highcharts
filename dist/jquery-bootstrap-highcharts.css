@@ -215,20 +215,17 @@ $highlight-color-20: #ccd6eb !default; // Ticks and axis line.
 $highlight-color-10: #e6ebf5 !default; // Pressed button, color axis min color.
 //*/
 /*
+$title-font-size        : 1.5em !important;
+$subtitle-font-size     : 1.0em !important;
+$legend-font-size       : 1.0em !important;
+$axis-labels-font-size  : 0.9em !important;
+
+/*
 $font-size-lg  : 1.25rem    20px
 $font-size-base: 1rem       16px
 $font-size-sm  : .8125rem   13px
 $font-size-xs  : .75rem     12px
 */
-.highcharts-subtitle {
-  font-size: 1em !important; }
-
-.highcharts-axis-title {
-  font-size: 1rem !important; }
-
-.highcharts-tooltip text:first-letter {
-  text-transform: capitalize; }
-
 /* OR darken($control-bg-color, $darken-active-percent);*/
 /*OR $primary;                                          */
 /***********************************************
@@ -295,7 +292,7 @@ HIGHCHART
 /* Titles */
 .highcharts-title {
   fill: #333333;
-  font-size: 1.5em !important; }
+  font-size: 1.5em; }
 
 .highcharts-subtitle {
   fill: #666666; }
@@ -314,7 +311,7 @@ HIGHCHART
 .highcharts-axis-labels {
   fill: #666666;
   cursor: default;
-  font-size: 0.9em !important; }
+  font-size: 0.9em; }
 
 .highcharts-grid-line {
   fill: none;
@@ -366,11 +363,11 @@ HIGHCHART
 
 .highcharts-tooltip-box {
   stroke-width: 1px;
-  fill: #fff !important;
+  fill: #f7f7f7;
   fill-opacity: 0.85; }
 
 .highcharts-tooltip-box .highcharts-label-box {
-  fill: #fff !important;
+  fill: #f7f7f7;
   fill-opacity: 0.85; }
 
 div.highcharts-tooltip {
@@ -604,7 +601,7 @@ g.highcharts-series,
 .highcharts-legend-item > text {
   fill: #333333;
   font-weight: bold;
-  font-size: 1em !important;
+  font-size: 1em;
   cursor: pointer;
   stroke-width: 0; }
 
@@ -1017,6 +1014,15 @@ html.no-mouse .highcharts-container {
 
 .highcharts-title {
   fill: #495057 !important; }
+
+.highcharts-subtitle {
+  font-size: 1em; }
+
+.highcharts-axis-title {
+  font-size: 1rem !important; }
+
+.highcharts-tooltip text:first-letter {
+  text-transform: capitalize; }
 
 .highcharts-button-hover text, g.highcharts-contextbutton:hover text,
 .highcharts-button-pressed text {

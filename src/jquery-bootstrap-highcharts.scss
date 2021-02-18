@@ -97,10 +97,11 @@ $highlight-color-10: #e6ebf5 !default; // Pressed button, color axis min color.
 $font-family: $font-family-base !important; //"Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif !default;
 
 //MANGLER
+/*
 $title-font-size        : 1.5em !important;
 $subtitle-font-size     : 1.0em !important;
-$legend-font-size       : 1.0em !important;;
-$axis-labels-font-size  : 0.9em !important;;
+$legend-font-size       : 1.0em !important;
+$axis-labels-font-size  : 0.9em !important;
 
 /*
 $font-size-lg  : 1.25rem    20px
@@ -112,21 +113,6 @@ $font-size-xs  : .75rem     12px
 
 //MANGLER SLUT
 
-//Sub title (bug fix)
-.highcharts-subtitle {
-    font-size: $subtitle-font-size;
-}
-
-//Axis title
-.highcharts-axis-title {
-    font-size: $font-size-base !important;
-}
-
-// Tooltip
-$tooltip-background: $popover-bg !important; //$neutral-color-3 !default;
-.highcharts-tooltip text:first-letter {
-    text-transform: capitalize;
-}
 
 // Range-selector
 $range-selector-button-border: 1px                   !important;    //0px !default;
@@ -171,6 +157,23 @@ html.no-mouse .highcharts-container {
 //Chart title
 .highcharts-title {
     fill: $header-color !important;
+}
+
+
+//Sub title (bug fix)
+.highcharts-subtitle {
+    font-size: $subtitle-font-size;
+}
+
+//Axis title
+.highcharts-axis-title {
+    font-size: $font-size-base !important;
+}
+
+//Tooltip and tracker
+$tooltip-background: $popover-bg !important; //$neutral-color-3 !default;
+.highcharts-tooltip text:first-letter {
+    text-transform: capitalize;
 }
 
 //Chart buttons
