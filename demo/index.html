@@ -329,7 +329,7 @@ $.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data
 },
             tooltip: {
                 valueDecimals: 1,
-                valueSuffix: '°C'
+                valueSuffix: {da:'°C DK', en:'°C EN'},
             }
         }]
 
@@ -401,6 +401,7 @@ $.getJSON(
     }
 );
 //*/
+
 //**********************************************************************
 //var tzChart = Highcharts.stockChart('container2', {
 var tzChart = Highcharts.chart('container2', {
@@ -844,6 +845,7 @@ Highcharts.chart('container5', {
     }]
 });
 //*/
+
 //****************************************************************************************
 $.getJSON('data/aapl-ohlc.json', function (data) {
 
@@ -1069,7 +1071,6 @@ return;
 });
 //*/
             
-
 //****************************************************************************************
 // Prepare random data
 var data = [
@@ -1133,8 +1134,6 @@ $.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data
 });
 //*/
 
-//****************************************************************************************
-//container10
 //****************************************************************************************
 var ranges = [
         [1246406400000, 14.3, 27.7],
@@ -1256,6 +1255,7 @@ Highcharts.chart('container10', {
     }]
 });
 
+//*/
 </script>
 
 

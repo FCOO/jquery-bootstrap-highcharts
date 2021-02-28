@@ -134,6 +134,19 @@
             });
         }
 
+        $.each(chart.series, function(index, serie){
+            //Translate valuePrefix amd valueSuffix of tooltips - both in original optiona and in shortcut version
+            if ( checkPath(serie, 'tooltipOptions.valuePrefix') )
+                translateElement(null, serie.tooltipOptions, 'valuePrefix');
+            if ( checkPath(serie, 'options.tooltip.valuePrefix') )
+                translateElement(null, serie.options.tooltip, 'valuePrefix');
+
+            if ( checkPath(serie, 'tooltipOptions.valueSuffix') )
+                translateElement(null, serie.tooltipOptions, 'valueSuffix');
+            if ( checkPath(serie, 'options.tooltip.valueSuffix') )
+                translateElement(null, serie.options.tooltip, 'valueSuffix');
+        });
+
         //Translate range-selector buttons and drop-down
         if (chart.rangeSelector){
             $.each(chart.rangeSelector.buttonOptions, function(index, buttonOpt){
