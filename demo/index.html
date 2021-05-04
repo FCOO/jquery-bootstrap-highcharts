@@ -344,7 +344,12 @@ $.getJSON(
     function (data) {
 
         Highcharts.chart('container1', {
-            chart: {
+            chart: {                            
+                scrollablePlotArea: {
+                    minWidth       : 1000,
+                    scrollPositionX: 1
+                },
+
                 zoomType: 'x'
             },
             title: {
@@ -1256,6 +1261,87 @@ Highcharts.chart('container10', {
 });
 
 //*/
+
+//****************************************************************************************
+function openModal(){
+    $.bsModal({
+        header: {text:'Chart in modal'},
+        flexWidth: true,
+        extraWidth: true,
+        content: function($body){
+            $.getJSON(
+                'https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/usdeur.json',
+                function (data) {
+                    Highcharts.chart($body[0], {
+                        chart: {
+                            scrollablePlotArea: {
+                                minWidth       : 1000,
+                                scrollPositionX: 1
+                            },
+
+                            zoomType: 'x'
+                        },
+                        title: {
+                            text: {da:'USD/EUR Dansk titel', en:'USD to EUR exchange rate over time'}
+                        },
+                        subtitle: {
+                            text: document.ontouchstart === undefined ?
+                                'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+                        },
+                        xAxis: {
+                            type: 'datetime'
+                        },
+                        yAxis: {
+                            title: {
+                                text: {da:'Valutakurs', en:'Exchange rate'}
+                            }
+                        },
+                        tooltip: {
+                            useHTML: true
+                        },
+                        legend: {
+                            enabled: false
+                        },
+                        plotOptions: {
+                            area: {
+                                fillColor: {
+                                    linearGradient: {
+                                        x1: 0,
+                                        y1: 0,
+                                        x2: 0,
+                                        y2: 1
+                                    },
+                                    stops: [
+                                        [0, Highcharts.getOptions().colors[0]],
+                                        [1, Highcharts.color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                                    ]
+                                },
+                                marker: {
+                                    radius: 2
+                                },
+                                lineWidth: 1,
+                                states: {
+                                    hover: {
+                                        lineWidth: 1
+                                    }
+                                },
+                                threshold: null
+                            }
+                        },
+            
+                        series: [{
+                            type: 'area',
+                            name: {da:'USD ift. EUR', en:'USD to EUR'},
+                            data: data
+                        }]
+                    })
+                }
+            );
+        }
+    });
+}
+
+openModal();
 </script>
 
 

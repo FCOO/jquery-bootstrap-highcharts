@@ -254,3 +254,7 @@ html.no-mouse .highcharts-scrollbar-thumb,
     fill: $scrollbar-thumb-hover;
 }
 
+//Adjust z-index for tooltips in a chart with scrolling to avoid the tooltip to disappear if the container is inside a modal-window
+.highcharts-tooltip-container {
+    z-index: $zindex-tooltip + 1 !important;
+}

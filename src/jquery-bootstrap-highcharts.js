@@ -79,7 +79,7 @@
                 return false;
             obj = obj[path[i]];
         }
-        return obj;//true;
+        return obj;
     }
 
     function isObject(obj){

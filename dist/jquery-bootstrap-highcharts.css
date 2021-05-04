@@ -1076,3 +1076,6 @@ li.highcharts-menu-item:hover {
 html.no-mouse .highcharts-scrollbar-thumb,
 .highcharts-scrollbar:hover .highcharts-scrollbar-thumb {
   fill: #a6a6a6; }
+
+.highcharts-tooltip-container {
+  z-index: 1071 !important; }
