@@ -10,7 +10,9 @@
 	<meta name='owner' content='FCOO'>
 
     <link  href="bower_components.css" rel="stylesheet">
+    
     <link  href="../src/jquery-bootstrap-highcharts.css" rel="stylesheet">
+
     <!-- <link  href="../bower_components/highcharts/css/highcharts.css" rel="stylesheet"> -->
 
 </head>
@@ -701,6 +703,10 @@ $.getJSON(
 
 //****************************************************************************************
 Highcharts.chart('container4', {
+    chart: {
+        styledMode: false,
+    },
+
   title: {
     text: {da:'Dansk', en:'en:Solar Employment Growth by Sector, 2010-2016'}
   },
@@ -728,7 +734,7 @@ Highcharts.chart('container4', {
   },
 
   plotOptions: {
-    series: {
+    series: { lineWidth: 20,
       label: {
         connectorAllowed: false
       },
@@ -737,6 +743,7 @@ Highcharts.chart('container4', {
   },
 
   series: [{
+lineWidth: 10,
     name: 'Installation',
     data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
   }, {
@@ -1341,7 +1348,7 @@ function openModal(){
     });
 }
 
-openModal();
+//openModal();
 </script>
 
 
