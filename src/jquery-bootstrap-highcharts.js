@@ -201,7 +201,6 @@
 	} (nsHC.SVGRenderer.prototype.text);
 */
 
-
     nsHC.Point.prototype.tooltipFormatter = function (tooltipFormatter) {
        return function(){
            var objList = [this, this.options, this.series];

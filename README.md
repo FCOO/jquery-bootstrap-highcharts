@@ -23,7 +23,11 @@ The following (known) issues need to be fixed:
 
 1. Axis labels in Waterfall do not work with `{da:"...", en:"..."}`
 2. `Title` for buttons in range-selector do not work with `{da:"...", en:"..."}`
+3. Using `Highcharts.scss` prevent the option `series.lineWidth` to be used.
+4. Using `highstock.src.js` prevents the options in `chart.scrollablePlotArea` to work properly. It using `highcharts.src.js` the scrolling works fine.
 
+# ITEM 3 AND 4 NEED TO BE FIXED ASAP
+ 
 
 
 
