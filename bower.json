@@ -1,6 +1,6 @@
 {
   "name": "jquery-bootstrap-highcharts",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "homepage": "https://github.com/FCOO/jquery-bootstrap-highcharts",
   "authors": [
     "Niels Holt"
@@ -26,7 +26,7 @@
         "jquery-bootstrap": "latest"
       },
       "main": [
-        "highcharts.src.js",
+        "highstock.src.js",
         "highcharts-more.src.js",
         "modules/map.src.js",
         "modules/exporting.src.js",

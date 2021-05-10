@@ -1334,7 +1334,8 @@ function openModal(){
                         series: [{
                             type: 'area',
                             name: {da:'USD ift. EUR', en:'USD to EUR'},
-                            data: data
+                            data: data,
+                            clip: false
                         }]
                     })
                 }
@@ -1343,7 +1344,7 @@ function openModal(){
     });
 }
 
-//openModal();
+openModal();
 </script>
 
 
