@@ -397,7 +397,8 @@ $.getJSON(
             series: [{
                 type: 'area',
                 name: {da:'USD ift. EUR', en:'USD to EUR'},
-                data: data
+                data: data, 
+                //clip: false
             }]
         });
     }
@@ -739,10 +740,11 @@ Highcharts.chart('container4', {
 
   series: [{
 lineWidth: 10,
-    name: 'Installation',
+    name: {da:'Installation og Fremstilling', en:'Installation and Manufacturing'},
     data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
   }, {
     name: {da:'Fremstilling', en:'Manufacturing'},
+    linkedTo: ':previous',
     data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
   }, {
     name: {da:'Salg og Distribution', en:'Sales & Distribution'},
@@ -1335,7 +1337,7 @@ function openModal(){
                             type: 'area',
                             name: {da:'USD ift. EUR', en:'USD to EUR'},
                             data: data,
-                            clip: false
+                            //clip: false
                         }]
                     })
                 }

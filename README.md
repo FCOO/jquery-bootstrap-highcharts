@@ -15,6 +15,20 @@ It also adjust default options for [Highcharts](https://www.highcharts.com/)
 ## Demo
 http://FCOO.github.io/jquery-bootstrap-highcharts/demo/
 
+
+## Note
+When using options `chart.scrollablePlotArea` to have a scrollable chart it is necessary to set `clip: false` for all `series`
+
+    series: [{
+        ...
+        clip: false
+    },....,{
+        ...
+        clip: false
+    }]
+    
+ 
+
 ## ToDo
 
 The following (known) issues need to be fixed:
@@ -24,9 +38,8 @@ The following (known) issues need to be fixed:
 1. Axis labels in Waterfall do not work with `{da:"...", en:"..."}`
 2. `Title` for buttons in range-selector do not work with `{da:"...", en:"..."}`
 3. Using `Highcharts.scss` prevent the option `series.lineWidth` to be used.
-4. Using `highstock.src.js` prevents the options in `chart.scrollablePlotArea` to work properly. It using `highcharts.src.js` the scrolling works fine.
 
-# ITEM 3 AND 4 NEED TO BE FIXED ASAP
+# ITEM 3 NEED TO BE FIXED ASAP
  
 
 
