@@ -1,21 +1,21 @@
 /****************************************************************************
-	jquery-bootstrap-highcharts.js,
+    jquery-bootstrap-highcharts.js,
 
-	(c) 2019, FCOO
+    (c) 2019, FCOO
 
-	https://github.com/FCOO/jquery-bootstrap-highcharts
-	https://github.com/FCOO
+    https://github.com/FCOO/jquery-bootstrap-highcharts
+    https://github.com/FCOO
 
 ****************************************************************************/
 
 (function ($, Highcharts, moment, i18next, numeral, window, document, undefined) {
-	"use strict";
+    "use strict";
 
-	var nsHC = Highcharts;
+    var nsHC = Highcharts;
 
    //Extend Highcharts.setOptions to allow update of all charts
     nsHC.setOptions = function (setOptions) {
-		return function (options, redraw) {
+        return function (options, redraw) {
             var result = setOptions.call(this, options);
             if (redraw)
                 $.each(nsHC.charts, function(index, chart){
@@ -28,8 +28,85 @@
                     }
                 });
             return result;
-		};
-	} (nsHC.setOptions);
+        };
+    } (nsHC.setOptions);
+
+
+    /***************************************************************
+    LEGEND
+    When two or more series are linked together via series.linkedTo:..
+    there are is a 'bug': Hover over the legend for the multi series only highlight
+    the first series.
+    Highcharts provided a solutions/fix that is implemented below
+    See https://www.highcharts.com/forum/viewtopic.php?t=39679, and
+        https://jsfiddle.net/daniel_s/1hL6saxn/
+    ****************************************************************************/
+    Highcharts.Legend.prototype.setItemEvents = function(item, legendItem, useHTML){
+        var legend = this,
+            boxWrapper = legend.chart.renderer.boxWrapper,
+            activeClass = 'highcharts-legend-' + (item.series ? 'point' : 'series') + '-active',
+            hasLinkedSeries = function(item) {
+                return ((item.linkedSeries && item.linkedSeries.length) ? true : false);
+            },
+            setLinkedSeriesState = function(item, state) {
+                item.linkedSeries.forEach(function(elem) {
+                    elem.setState(state);
+                });
+            };
+
+        // Set the events on the item group, or in case of useHTML, the item itself (#1249)
+        (useHTML ? legendItem : item.legendGroup)
+            .on('mouseover', function () {
+                if (item.visible) {
+                    item.setState('hover');
+
+                    // Add hover state to linked series
+                    if (hasLinkedSeries(item))
+                        setLinkedSeriesState(item, 'hover');
+
+                    // A CSS class to dim or hide other than the hovered series
+                    boxWrapper.addClass(activeClass);
+
+                    /*= if (build.classic) { =*/
+                    legendItem.css(legend.options.itemHoverStyle);
+                    /*= } =*/
+                }
+            })
+
+            .on('mouseout', function () {
+                /*= if (build.classic) { =*/
+                legendItem.css(Highcharts.merge(item.visible ? legend.itemStyle : legend.itemHiddenStyle));
+                /*= } =*/
+
+                // A CSS class to dim or hide other than the hovered series
+                boxWrapper.removeClass(activeClass);
+
+                   // Remove hover state from linked series
+                if(hasLinkedSeries(item))
+                    setLinkedSeriesState(item);
+
+                item.setState();
+            })
+
+            .on('click', function (event) {
+                var strLegendItemClick = 'legendItemClick',
+                    fnLegendItemClick = function () {
+                        if (item.setVisible)
+                            item.setVisible();
+                    };
+
+                // Pass over the click/touch event. #4.
+                event = {
+                    browserEvent: event
+                };
+
+                // click the name or symbol
+                if (item.firePointEvent) // point
+                    item.firePointEvent(strLegendItemClick, event, fnLegendItemClick);
+                else
+                    Highcharts.fireEvent(item, strLegendItemClick, event, fnLegendItemClick);
+            });
+    };  //End of Highcharts.Legend.prototype.setItemEvents
 
 
     /***************************************************************
@@ -172,7 +249,7 @@
     to allow text as {da:"...", en:"..."}
     *****************************************************/
     nsHC.SVGRenderer.prototype.buildText = function(SVGRenderer_buildText) {
-		return function (wrapper) {
+        return function (wrapper) {
             if (isObject(wrapper.textStr)){
                 //Assume textStr is a {da:"dansk", en:"english",...}-object
                 $(wrapper.element).i18n(wrapper.textStr);
@@ -180,25 +257,25 @@
                 wrapper.useHTML = true;
             }
             return SVGRenderer_buildText.call(this, wrapper);
-		};
-	} (nsHC.SVGRenderer.prototype.buildText);
+        };
+    } (nsHC.SVGRenderer.prototype.buildText);
 
 
 /*
     nsHC.SVGRenderer.prototype.button = function (SVGRenderer_button) {
-		return function () {
+        return function () {
             arguments[0] = translate(arguments[0]);
             return SVGRenderer_button.apply(this, arguments);
-		};
-	} (nsHC.SVGRenderer.prototype.button);
+        };
+    } (nsHC.SVGRenderer.prototype.button);
 
 
     nsHC.SVGRenderer.prototype.text = function(SVGRenderer_text) {
-		return function() {
+        return function() {
             arguments[0] = translate(arguments[0]);
             return SVGRenderer_text.apply(this, arguments);
-		};
-	} (nsHC.SVGRenderer.prototype.text);
+        };
+    } (nsHC.SVGRenderer.prototype.text);
 */
 
     nsHC.Point.prototype.tooltipFormatter = function (tooltipFormatter) {
