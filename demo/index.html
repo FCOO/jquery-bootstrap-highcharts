@@ -231,7 +231,13 @@ $.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data
             min: -20, max: 30,
             title: {
                 text: {da:'Temperatur (°C)', en:'Temperature (°C)'}
-            }
+            },
+            plotLines: [{
+                color: '#FF0000',
+                width: 4, 
+                value: 8
+            }]
+
         },
 
         title: {
@@ -357,7 +363,19 @@ $.getJSON(
                     'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
             },
             xAxis: {
-                type: 'datetime'
+                type: 'datetime',
+    	        plotLines: [{
+	    		    value: Date.UTC(2011,3,1),
+	    		    width: 1,
+	    		    color: 'green',
+	    		    dashStyle: 'dash',
+	    		    label: {
+	    			    text: 'Latest value',
+	    			    align: 'right',
+	    			    y: 12,
+	    			    x: 0
+	    		    }
+	    	    }]
             },
             yAxis: {
                 title: {
@@ -520,13 +538,14 @@ $.getJSON(
                             states: {
                                 hover: {
                                     enabled: true,
-                                    radius: 3
+                                    radius: 13
                                 }
                             }
                         }
                     }
                 },
                 series: [{
+lineWidth: 10,
                     name: 'USD to EUR',
                     pointStart: detailStart,
                     pointInterval: 24 * 3600 * 1000,
@@ -1346,7 +1365,7 @@ function openModal(){
     });
 }
 
-openModal();
+//openModal();
 </script>
 
 

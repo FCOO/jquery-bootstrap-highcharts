@@ -133,7 +133,11 @@ $highcharts-button-hover-text           : darken($control-color, $darken-hover-p
 /***********************************************
 HIGHCHART
 ************************************************/
-@import "../bower_components/highcharts/css/highcharts.scss";
+/*
+src/_highcharts.scss is a local and adjusted copy of ../bower_components/highcharts/css/highcharts.scss
+See README.md for details
+*/
+@import "highcharts.scss";
 
 /***********************************************
 BOOTSTRAP -> HIGHCHART
