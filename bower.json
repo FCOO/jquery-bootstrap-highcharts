@@ -1,6 +1,6 @@
 {
   "name": "jquery-bootstrap-highcharts",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "homepage": "https://github.com/FCOO/jquery-bootstrap-highcharts",
   "authors": [
     "Niels Holt"
@@ -17,7 +17,7 @@
   "dependencies": {
     "jquery-bootstrap": "fcoo/jquery-bootstrap#^2.2.0",
     "moment-simple-format": "https://github.com/FCOO/moment-simple-format.git#^1.6.0",
-    "highcharts": "^9.3.0",
+    "highcharts": "^10.0.0",
     "numeral": "^2.0.6"
   },
   "overrides": {

@@ -250,7 +250,7 @@ li.highcharts-menu-item:hover {
 $scrollbar-track-background: $scrollbar-background;
 .highcharts-scrollbar-thumb {
     fill      : $scrollbar-thumb;
-    transition: fill $scrollbar-transition-time linear;
+    transition: fill .2s linear;
 }
 
 html.no-mouse .highcharts-scrollbar-thumb,

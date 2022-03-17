@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /***********************************************
 	jquery-bootstrap-highcharts.scss,
 
@@ -49,16 +48,28 @@ in integer px from rem
 /*Not used. No lg-buttons
 $input-btn-padding-y-lg: .75rem;
 $input-btn-padding-x-lg: $input-btn-padding-y-lg;
-*/
-/* VERSION 1.x
-//$font-size-sm = .875rem; // = 14px
-$font-size-sm: rem(13px); //<= TODO MANGLER. Skal muligvis sættes til 14px og så skal padding for buttons rettes tilsvarrende
 
-$input-btn-padding-y-sm: rem(4px);
-$input-btn-padding-x-sm: $input-btn-padding-y-sm;
+Syntax and relations:
+In Bootstrap
+    $input-btn-padding(-x|-y)[-sm|-lg] = A Value
+    $btn-padding(-x|-y)[-sm|-lg] = $input-btn-padding(-x|-y)[-sm|-lg]
+
+
+
+In jquery-bootstrap
+    $input-btn-padding-x-sm = 3px
+    $input-btn-padding-y-sm = 4px
+
+    xs-versions added
+    $input-btn-padding-x-xs = 2px
+    $input-btn-padding-y-xs = 3px
+
 */
 /************************************************************
-Including "size" xs as in Bootstrap 3
+Including "size" xs as in Bootstrap 4
+************************************************************/
+/************************************************************
+Add line-heights for xs
 ************************************************************/
 /************************************************************
 Border-colors
@@ -71,6 +82,9 @@ releative to container (rem -> em)
 $font-size-base         : 1rem !default;
 $spacer                 : 1rem !default;
 */
+/************************************************************
+Set margin for buttons in block
+************************************************************/
 /************************************************************
 Adjust dropdown-menu
 ************************************************************/
@@ -122,12 +136,13 @@ Dimentions for square buttons with only icons
 ************************************************************/
 /************************************************************
 LABEL
-Font-sizes for labels are same siae as header but incl a xxs-size
+Font-sizes for labels are same size as header but incl a xxs-size
 ************************************************************/
 /************************************************************
 CONTENT
 Unifies padding and font-size for content of modal, accordion, popup etc.
 Using same font-size and vertical/horizontal padding as buttons
+NOTE: For sm and xs y-padding = x-padding
 ************************************************************/
 /************************************************************
 MARGIN-BOTTOM
@@ -203,7 +218,9 @@ All elements in modal-windows get same margin-bottom
 JQUERY-SCROLL-CONTAINER: Scroll-bar
 ************************************************/
 /***********************************************
-    _jquery-scroll-container-variables.scss,
+
+jquery-scroll-container-variables.scss
+
 ************************************************/
 /***********************************************
 BOOTSTRAP -> HIGHCHART
@@ -995,7 +1012,7 @@ html.no-mouse .highcharts-container {
 
 .highcharts-menu hr {
   width: 100%;
-  margin: 0.3125rem 0;
+  margin: 0.25rem 0;
   padding: 0; }
 
 .highcharts-range-input .highcharts-label-box {
@@ -1035,7 +1052,7 @@ li.highcharts-menu-item:hover {
 
 .highcharts-scrollbar-thumb {
   fill: #cdcdcd;
-  transition: fill 0.2s linear; }
+  transition: fill .2s linear; }
 
 html.no-mouse .highcharts-scrollbar-thumb,
 .highcharts-scrollbar:hover .highcharts-scrollbar-thumb {
