@@ -27,63 +27,143 @@ There are two ways force the use of class-style when styleMode = false:
 the "impossible" i solution (2) the solution (3) is implemented
 
 ************************************************/
-/***********************************************
-JQUERY-BOOTSTRAP: Set and adjust bootstrap default values
-************************************************/
 /************************************************************
-BOOTSTRAP-VARIABLES
+INCLUDE-JQUERY-BOOTSTRAP-VARIABLES
+USED IN FOR OTHER PACKAGES TO INCLUDE ALL SCSS-FILES NEEDED
+TO HAVE ACCESS TO ALL BOOTSTRAP AND FCOO/JQUERY-BOOTSTRAP SCSS-VARIABLES
+************************************************************/
+/************************************************************
+FUNCTIONS
 ************************************************************/
 /***********************************************
 FUNCTIONS TO CONVETRT FROM PX TO REM
 To make it easier to design and calculate dimensions
 the function rem defined
 ************************************************/
+/************************************************************
+HEADER, TITLE, AND FOOTER PADDING AND FONT-SIZE
+Padding are set to button y-padding (moving text to the left)
+************************************************************/
+/************************************************************
+BOOTSTRAP_COLORSTEXT
+
+A copy of the colorws defined in bootstrap/scss_variables.scss
+************************************************************/
+/************************************************************
+VARIABLES-BOOTSTRAP
+Adjust Bootstrap 5 variables default values
+
+Variables should follow the `$component-state-property-size` formula for
+consistent naming. Ex: $nav-link-disabled-color and $modal-content-box-shadow-xs.
+
+All non-Bootstrap variables are prefixed with $jb-
+
+
+************************************************************/
 /***********************************************
-ADJUST BOOTSTRAP DEFAULT VALUES
+Customize Bootstrap
+See https://getbootstrap.com/docs/5.2/customize/options/ for description
+/star star/ = Differnet from default
 ************************************************/
+/**/
+/**/
+/***********************************************
+OPACITY
+************************************************/
+/***********************************************
+TEXT-COLOR
+************************************************/
+/***********************************************
+BACKGROUND-COLOR
+************************************************/
+/***********************************************
+BORDER-COLOR
+************************************************/
+/***********************************************
+CHECKBOX, RADIO, AND SELECT
+text-color and bg-color for selected item in <select> varies for different browsers.
+text-color = rgb(255, 255, 255)   for all
+    Browser     bg-color
+    Chrome      rgb( 30, 144, 255)
+    Firefox     rgb(  0, 120, 215)
+    Safari      rgb( 30, 144, 255)
+    Edge        rgb(195, 195, 195)  = gray
+
+For checkbox and radio default Bootstrap uses:
+text-color  = $form-check-input-checked-color    = $component-active-color = $white   = rgb(255, 25, 255);
+bg-color    = $form-check-input-checked-bg-color = $component-active-bg    = $primary = rgb(13, 110, 253);
+
+** BUT JQUERY-BOOTSTRAP USES SAME COLORS AS <SELECT> IN CHROME AND SAFARI **
+************************************************/
+/*
+indeterminate colors = checkbox or checkbox-button with semi-selected state
+Use $orange as bg-color and same bg-image as selected and standard border-color
+*/
+/***********************************************
+PADDING AND FONT-SIZE
+Padding and font-size for different sizes of
+    buttons,
+    accordion-, modal-, popup-, and tooltip-header/footer
+************************************************/
+/************************************************************
+Modal and popover header and content
+Bootstrap default = normal size
+************************************************************/
+/***********************************************
+Accordion
+***********************************************/
+/***********************************************
+Card
+***********************************************/
+/***********************************************
+Toast
+***********************************************/
+/***********************************************
+Tables
+For some (unknown) reason the padding of table cells
+are done by scss-variables instead of var(...) ???
+***********************************************/
+/***********************************************
+Nav, Pills and Tabs
+***********************************************/
+/***********************************************
+BUTTONS
+************************************************
+SYNTAX AND RELATIONS IN BOOTSTRAP
+    $input-btn-padding-x[-sm|-lg] = A Value
+    $input-btn-padding-y[-sm|-lg] = A Value
+    $input-btn-font-size[-sm|-lg] = A Value
+    $border-radius[-sm|-lg]       = A Value
+
+Used for button:
+    $btn-padding-y[-sm|-lg]      : $input-btn-padding-y[-sm|-lg] !default;
+    $btn-padding-x[-sm|-lg]      : $input-btn-padding-x[-sm|-lg] !default;
+    $btn-font-size[-sm|-lg]      : $input-btn-font-size[-sm|-lg] !default;
+    $btn-border-radius[-sm|-lg]  : $border-radius[-sm|-lg]       !default;
+
+Used for input
+    $input-padding-y[-sm|-lg]    : $input-btn-padding-y[-sm|-lg] !default;
+    $input-padding-x[-sm|-lg]    : $input-btn-padding-x[-sm|-lg] !default;
+    $input-font-size[-sm|-lg]    : $input-btn-font-size[-sm|-lg] !default;
+    $input-border-radius[-sm|-lg]: $border-radius[-sm|-lg]       !default;
+
+BOOTSTRAP 5 DEFAULT
+    $input-btn-line-height  : 1.5
+*/
+/************************************************************
+Including "size" xs as in Bootstrap 5
+************************************************************/
 /***********************************************
 Adjust bootstrap-variables to only have dimensions
 in integer px from rem
 ************************************************/
-/*Not used. No lg-buttons
-$input-btn-padding-y-lg: .75rem;
-$input-btn-padding-x-lg: $input-btn-padding-y-lg;
-
-Syntax and relations:
-In Bootstrap
-    $input-btn-padding(-x|-y)[-sm|-lg] = A Value
-    $btn-padding(-x|-y)[-sm|-lg] = $input-btn-padding(-x|-y)[-sm|-lg]
-
-
-
-In jquery-bootstrap
-    $input-btn-padding-x-sm = 3px
-    $input-btn-padding-y-sm = 4px
-
-    xs-versions added
-    $input-btn-padding-x-xs = 2px
-    $input-btn-padding-y-xs = 3px
-
-*/
 /************************************************************
-Including "size" xs as in Bootstrap 4
-************************************************************/
-/************************************************************
-Add line-heights for xs
-************************************************************/
-/************************************************************
-Border-colors
+Other adjustments
 ************************************************************/
 /************************************************************
 Make all font-size and margin for header (<h1>, <h2>,...<h6>)
 releative to container (rem -> em)
-************************************************************/
-/* Defalut not changed:
-$font-size-base         : 1rem !default;
-$spacer                 : 1rem !default;
-*/
-/************************************************************
-Set margin for buttons in block
+Default (not changed): $font-size-base = $spacer = 1rem
 ************************************************************/
 /************************************************************
 Adjust dropdown-menu
@@ -92,136 +172,40 @@ Adjust dropdown-menu
 Adjust modal
 ************************************************************/
 /***********************************************
-BOOTSTRAP: scss variables
-************************************************/
-/***********************************************
-JQUERY-BOOTSTRAP: Background-color and text color and Variables
-************************************************/
-/************************************************************
-COLOR
-
-background-color and text-color for
-headers modal, popover, tables, buttons, list-items etc.
-
-"$header-" is used for header to modal-windows and popover
-"$title-" is used for headers on content - table, accordion etc.
-"$control-" is used for buttons, list-items etc.
-************************************************************/
-/************************************************************
-VARIABLES
-************************************************************/
-/***********************************************
-DEFINE BOOTSTRAP BUTTON STYLE
-$btn-style-name MUST correspond with ns.bsButtonClass
-in src/jquery-bootstrap-button.js
-************************************************/
-/************************************************************
-Variables bassed on bootstrop variables
-************************************************************/
-/************************************************************
-HEADER
-Font-sizes for headers are one 'size' smaller than normal font
-$font-size-lg  : 1.25rem    20px
-$font-size-base: 1rem       16px
-$font-size-sm  : .875rem;   14px
-$font-size-xs  : .75rem     12px
-************************************************************/
-/************************************************************
-BUTTON AND MODAL
-Opacity for semi-transparent and transparent content
-************************************************************/
-/************************************************************
-SQUARE BUTTONS
-Dimentions for square buttons with only icons
-************************************************************/
-/************************************************************
-LABEL
-Font-sizes for labels are same size as header but incl a xxs-size
-************************************************************/
-/************************************************************
-CONTENT
-Unifies padding and font-size for content of modal, accordion, popup etc.
-Using same font-size and vertical/horizontal padding as buttons
-NOTE: For sm and xs y-padding = x-padding
-************************************************************/
-/************************************************************
-MARGIN-BOTTOM
-All elements in modal-windows get same margin-bottom
-************************************************************/
-/************************************************************
-MIXIN
-************************************************************/
-/************************************************************
-RIGHT-SIDE-ICON
-Add style to <i> to place it to the right and vertical center
-NOTE: Parent element MUST have @include vertical-align-center();
-************************************************************/
-/************************************************************
-FOCUS
-All elements get same outline when they have focus:
-No outline
-border-color = light blue
-************************************************************/
-/************************************************************
-CONTENT
-Unifies padding for modal, accordion, popup etc.
-************************************************************/
-/************************************************************
-CONTROL-CONTAINER
-Style for div with controls inside modal.
-Must have tabindex:"-1" to work with focus
-************************************************************/
-/************************************************************
-CONTROL BORDER-COLOR
-All control elements get same border-color when normal, hover, active and error
-************************************************************/
-/************************************************************
-CONTROL-COLORS
-Sets all color for text, background, border for normal, :hover, :focus,  :active and .active
-************************************************************/
-/************************************************************
-TYPE-COLOR
-Bg-color and color for different 'type' (warning, alert, info, error, success)
-Used in Noty and Modal
-************************************************************/
-/************************************************************
-HEADER AND TITLE BACKGROUND-COLOR AND COLOR
-Headers for modal, popover, popup etc.
-************************************************************/
-/************************************************************
-color-hover - Background-color and text-color for 'normal' and hover
-************************************************************/
-/************************************************************
-header-colors - Colors for headers
-************************************************************/
-/************************************************************
-title-color - create colors for headers for table and accordion etc.
-************************************************************/
-/************************************************************
-HEADER, TITLE, AND FOOTER PADDING AND FONT-SIZE
-Padding are set to button y-padding (moving text to the left)
-************************************************************/
-/************************************************************
-header-variant
-************************************************************/
-/************************************************************
-title-variant - as header but with same font-size as siblings
-************************************************************/
-/************************************************************
-footer-variant
-************************************************************/
-/************************************************************
-MARGIN-BOTTOM FOR ELEMENTS IN MODAL
-All elements in modal-windows get same margin-bottom
-************************************************************/
-/***********************************************
-JQUERY-SCROLL-CONTAINER: Scroll-bar
-************************************************/
-/***********************************************
 
 jquery-scroll-container-variables.scss
 
 ************************************************/
+/************************************************************
+VARIABLES
+
+Defines scss-variables used in jquery-bootstrap
+Some of these variables are based on Bootstrap variables
+************************************************************/
+/***********************************************
+Checkbox
+************************************************/
+/***********************************************
+Button
+************************************************/
+/***********************************************
+Modal
+************************************************/
+/***********************************************
+Button And Modal
+Opacity for semi-transparent and transparent content
+************************************************/
+/************************************************************
+MIXIN
+************************************************************/
+/************************************************************
+PROPERTY-VARIANT
+Varients of different properties
+************************************************************/
+/************************************************************
+HEADER and FOOTER-VARIANT
+Adjust padding and font-size for header and footer
+************************************************************/
 /***********************************************
 BOOTSTRAP -> HIGHCHART
 Set Highcharts variable to fit Bootstrap-variable
@@ -251,23 +235,37 @@ $highlight-color-10: #e6ebf5 !default; // Pressed button, color axis min color.
 /*
 Font-size - using default but with !important to force the class to control size
 Standard font-size from jquery-bootstrap
-    $font-size-lg  : 1.25rem    20px
-    $font-size-base: 1rem       16px
-    $font-size-sm  : .8125rem   13px
-    $font-size-xs  : .75rem     12px
+    $jb-font-size-lg    : 1.25rem   20px
+    $jb-font-size       : 1rem      16px
+    $jb-font-size-sm    : .875rem   14px
+    $jb-font-size-xs    : .75rem    12px
+    $jb-font-size-xxs   : .6875rem  11px
 */
-/* OR darken($control-bg-color, $darken-active-percent);*/
-/*OR $primary;                                          */
+:root {
+  --jbh-button-background-color: #f8f9fa;
+  --jbh-button-border-color: #adb5bd;
+  --jbh-button-color: #212529; }
+
+.highcharts-button-hover, g.highcharts-contextbutton:hover {
+  --jbh-button-background-color: #dee2e6;
+  --jbh-button-border-color: #b5bcc4;
+  --jbh-button-color: #373b3e; }
+
+.highcharts-button-pressed {
+  --jbh-button-background-color: dodgerblue;
+  --jbh-button-border-color: #b5bcc4;
+  --jbh-button-color: white; }
+
 /***********************************************
 HIGHCHART
 ************************************************/
 /*
-src/_highcharts.scss is a local and adjusted copy of ../bower_components/highcharts/css/highcharts.scss
+src/_highcharts_VERSION.scss is a local and adjusted copy of ../bower_components/highcharts/css/highcharts.scss
 See README.md for details
 */
 /*********************************************************
 NOTE
-This is a copy of highcharts.scss version 9.1.
+This is a copy of highcharts.scss version 10.2.1.
 Some of the styles have been removed to allow styling
 directly via the options of the charts.
 This are marked by /*JBH or //JBH
@@ -291,7 +289,7 @@ See description in README.md
   z-index: 0;
   /* #1072 */
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+  font-family: var(--bs-font-sans-serif) !important;
   font-size: 12px;
   user-select: none;
   touch-action: manipulation;
@@ -760,34 +758,34 @@ circle.highcharts-legend-nav-active, circle.highcharts-legend-nav-inactive {
   stroke-width: 1px; }
 
 .highcharts-button, g.highcharts-contextbutton {
-  fill: #f8f9fa !important;
-  stroke: #ced4da !important;
+  fill: var(--jbh-button-background-color) !important;
+  stroke: var(--jbh-button-border-color) !important;
   cursor: default;
   stroke-width: 1px;
   transition: fill 250ms; }
 
 .highcharts-button text, g.highcharts-contextbutton text {
-  fill: #515961 !important; }
+  fill: var(--jbh-button-color) !important; }
 
 .highcharts-button-hover, g.highcharts-contextbutton:hover {
   transition: fill 0ms;
-  fill: #e9ecef !important;
-  stroke: #8C959D !important; }
+  fill: var(--jbh-button-background-color) !important;
+  stroke: var(--jbh-button-border-color) !important; }
 
 .highcharts-button-hover text, g.highcharts-contextbutton:hover text {
-  fill: #454c53 !important; }
+  fill: var(--jbh-button-color) !important; }
 
 .highcharts-button-pressed {
   font-weight: bold;
-  fill: #f8f9fa !important;
-  stroke: #ced4da !important; }
+  fill: var(--jbh-button-background-color) !important;
+  stroke: var(--jbh-button-border-color) !important; }
 
 .highcharts-button-pressed text {
-  fill: #007bff !important;
+  fill: var(--jbh-button-color) !important;
   font-weight: bold; }
 
 .highcharts-button-disabled text {
-  fill: #515961 !important; }
+  fill: var(--jbh-button-color) !important; }
 
 .highcharts-range-selector-buttons .highcharts-button, .highcharts-range-selector-buttons g.highcharts-contextbutton {
   stroke-width: 1px !important; }
@@ -802,11 +800,11 @@ circle.highcharts-legend-nav-active, circle.highcharts-legend-nav-inactive {
   fill: none; }
 
 .highcharts-range-input text {
-  fill: #495057 !important; }
+  fill: #212529 !important; }
 
 .highcharts-range-input {
   stroke-width: 1px;
-  stroke: #ced4da !important; }
+  stroke: var(--jb-structure-border-color) !important; }
 
 input.highcharts-range-selector {
   position: absolute;
@@ -833,6 +831,18 @@ input.highcharts-range-selector {
 .highcharts-candlestick-series .highcharts-point-up {
   fill: #ffffff; }
 
+.highcharts-hollowcandlestick-series .highcharts-point-down {
+  fill: #f21313;
+  stroke: #f21313; }
+
+.highcharts-hollowcandlestick-series .highcharts-point-down-bearish-up {
+  fill: #06b535;
+  stroke: #06b535; }
+
+.highcharts-hollowcandlestick-series .highcharts-point-up {
+  fill: transparent;
+  stroke: #06b535; }
+
 .highcharts-ohlc-series .highcharts-point-hover {
   stroke-width: 3px; }
 
@@ -850,15 +860,15 @@ input.highcharts-range-selector {
   font-size: 0.9em;
   font-weight: bold; }
 
-/* Highmaps */
+/* Highcharts Maps */
 .highcharts-map-series .highcharts-point {
   transition: fill 500ms, fill-opacity 500ms, stroke-width 250ms;
-  stroke: #cccccc; }
+  stroke: #cccccc;
+  stroke-width: inherit; }
 
 .highcharts-map-series .highcharts-point-hover {
   transition: fill 0ms, fill-opacity 0ms;
-  fill-opacity: 0.5;
-  stroke-width: 2px; }
+  fill-opacity: 0.5; }
 
 .highcharts-mapline-series .highcharts-point {
   fill: none; }
@@ -870,6 +880,11 @@ input.highcharts-range-selector {
   font-size: 1.3em;
   font-weight: bold;
   text-align: center; }
+
+.highcharts-mapview-inset-border {
+  stroke: #cccccc;
+  stroke-width: 1px;
+  fill: none; }
 
 .highcharts-coloraxis {
   stroke-width: 0; }
@@ -886,7 +901,7 @@ input.highcharts-range-selector {
 
 /* Exporting module */
 .highcharts-contextbutton {
-  fill: #f8f9fa !important;
+  fill: var(--jbh-button-background-color) !important;
   /* needed to capture hover */
   stroke: none;
   stroke-linecap: round; }
@@ -915,6 +930,15 @@ input.highcharts-range-selector {
 .highcharts-menu-item:hover {
   background: #335cad;
   color: #ffffff; }
+
+/* Breadcrumbs */
+.highcharts-breadcrumbs-button {
+  fill: none;
+  stroke-width: 0;
+  cursor: pointer; }
+
+.highcharts-breadcrumbs-separator {
+  fill: #666666; }
 
 /* Drilldown module */
 .highcharts-drilldown-point {
@@ -963,6 +987,45 @@ text.highcharts-drilldown-data-label,
 .highcharts-annotation-label text {
   fill: #e6e6e6; }
 
+/* A11y module */
+.highcharts-a11y-proxy-button {
+  border-width: 0;
+  background-color: transparent;
+  cursor: pointer;
+  outline: none;
+  opacity: 0.001;
+  z-index: 999;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  display: block;
+  position: absolute; }
+
+.highcharts-a11y-proxy-group li {
+  list-style: none; }
+
+.highcharts-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  white-space: nowrap;
+  clip: rect(1px, 1px, 1px, 1px);
+  margin-top: -3px;
+  opacity: 0.01; }
+
+.highcharts-a11y-invisible {
+  visibility: hidden; }
+
+.highcharts-a11y-proxy-container,
+.highcharts-a11y-proxy-container-before,
+.highcharts-a11y-proxy-container-after {
+  position: absolute;
+  white-space: nowrap; }
+
+g.highcharts-series, .highcharts-markers, .highcharts-point {
+  outline: none; }
+
 /* Gantt */
 .highcharts-treegrid-node-collapsed, .highcharts-treegrid-node-expanded {
   cursor: pointer; }
@@ -981,7 +1044,7 @@ BOOTSTRAP -> HIGHCHART
 Adjust classes directly
 ************************************************/
 svg.highcharts-root {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important; }
+  font-family: var(--bs-font-sans-serif) !important; }
 
 .highcharts-container {
   font-size: 0.875rem !important; }
@@ -990,10 +1053,11 @@ html.no-mouse .highcharts-container {
   font-size: 1rem !important; }
 
 .highcharts-title {
-  fill: #495057 !important; }
+  fill: var(--jbh-button-color) !important; }
 
 .highcharts-subtitle {
-  font-size: 1em !important; }
+  font-size: 1em !important;
+  fill: var(--jbh-button-color) !important; }
 
 .highcharts-axis-title {
   font-size: 1rem !important; }
@@ -1012,43 +1076,42 @@ html.no-mouse .highcharts-container {
 
 .highcharts-menu hr {
   width: 100%;
-  margin: 0.25rem 0;
+  margin: 0.375rem 0;
   padding: 0; }
 
 .highcharts-range-input .highcharts-label-box {
   stroke: inherit  !important; }
 
 .highcharts-contextbutton .highcharts-button-symbol {
-  stroke: #515961;
+  stroke: #212529;
   stroke-width: 2px; }
 
 select, option {
   font-size: 0.875rem; }
 
 .highcharts-menu {
-  border-radius: 0.3125rem !important;
-  border: 1px solid #868e96 !important;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2) !important;
+  border-radius: 0.375rem !important;
+  border: 1px solid var(--jb-container-border-color) !important;
   padding: 1px !important; }
 
 .highcharts-menu-item {
-  padding: 0.1875rem 0.25rem !important;
-  border: 1px solid #ced4da !important;
+  padding: 0.25rem 0.5rem !important;
+  border: 1px solid #adb5bd !important;
   background: #f8f9fa !important;
-  color: #515961 !important;
+  color: #212529 !important;
   transition: background 0ms, color 0ms                         !important; }
   .highcharts-menu-item:first-child {
-    border-top-left-radius: calc(0.25rem - 1px);
-    border-top-right-radius: calc(0.25rem - 1px); }
+    border-top-left-radius: calc(0.375rem - 1px);
+    border-top-right-radius: calc(0.375rem - 1px); }
   .highcharts-menu-item:last-child {
-    border-bottom-right-radius: calc(0.25rem - 1px);
-    border-bottom-left-radius: calc(0.25rem - 1px); }
+    border-bottom-right-radius: calc(0.375rem - 1px);
+    border-bottom-left-radius: calc(0.375rem - 1px); }
 
 li.highcharts-menu-item:hover {
-  border: 1px solid #8C959D !important;
-  color: #16181b !important;
-  text-decoration: none                                   !important;
-  background: #e9ecef !important; }
+  border: 1px solid #b5bcc4 !important;
+  color: #373b3e !important;
+  text-decoration: none                                       !important;
+  background: #dee2e6 !important; }
 
 .highcharts-scrollbar-thumb {
   fill: #cdcdcd;
@@ -1059,4 +1122,4 @@ html.no-mouse .highcharts-scrollbar-thumb,
   fill: #a6a6a6; }
 
 .highcharts-tooltip-container {
-  z-index: 1071 !important; }
+  z-index: 1081 !important; }

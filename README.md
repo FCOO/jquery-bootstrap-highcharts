@@ -38,6 +38,7 @@ http://FCOO.github.io/jquery-bootstrap-highcharts/demo/
 ## Note
 Not all chart types has been checked to see if some css-style is overwriting the options style. But simple line charts should work correctly.  
 
+<!-- 
 
 [Due to a bug](https://github.com/highcharts/highcharts/issues/15676) it is necessary to set `clip: false` for all `series` when using options `chart.scrollablePlotArea` to have a scrollable chart 
 
@@ -48,7 +49,7 @@ Not all chart types has been checked to see if some css-style is overwriting the
         ...
         clip: false
     }]
-    
+-->    
  
 
 ## ToDo
