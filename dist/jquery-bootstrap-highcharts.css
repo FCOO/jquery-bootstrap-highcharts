@@ -116,6 +116,9 @@ Accordion
 Card
 ***********************************************/
 /***********************************************
+Form
+***********************************************/
+/***********************************************
 Toast
 ***********************************************/
 /***********************************************
@@ -176,6 +179,11 @@ Adjust modal
 jquery-scroll-container-variables.scss
 
 ************************************************/
+:root {
+  --jsc-scroll-size: 10px;
+  --jsc-scroll-padding: 10px;
+  --jsc-scroll-auto-padding: 10px; }
+
 /************************************************************
 VARIABLES
 
@@ -205,6 +213,13 @@ Varients of different properties
 /************************************************************
 HEADER and FOOTER-VARIANT
 Adjust padding and font-size for header and footer
+************************************************************/
+/************************************************************
+BUTTON-VARIANT
+button-text-color-variant
+button-border-color-variant
+button-background-color-variant
+Adjust text-, border-, and background-color for a button
 ************************************************************/
 /***********************************************
 BOOTSTRAP -> HIGHCHART

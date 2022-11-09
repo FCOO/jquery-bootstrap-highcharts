@@ -41,8 +41,9 @@
     See https://www.highcharts.com/forum/viewtopic.php?t=39679, and
         https://jsfiddle.net/daniel_s/1hL6saxn/
     ****************************************************************************/
-    Highcharts.Legend.prototype.setItemEvents = function(item, legendItem, useHTML){
+    Highcharts.Legend.prototype.NOT_setItemEvents = function(item, label, useHTML){
         var legend = this,
+            legendItem = label,
             boxWrapper = legend.chart.renderer.boxWrapper,
             activeClass = 'highcharts-legend-' + (item.series ? 'point' : 'series') + '-active',
             hasLinkedSeries = function(item) {

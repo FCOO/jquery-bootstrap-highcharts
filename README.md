@@ -23,8 +23,8 @@ To allow charts options for marker and lines the scss-file used (`src/_highchart
 
 #### That means that any changes in in [Highcharts] regarding css require this packages to be rebuild.
 
-The current copy of the [Highcharts] css-file (`src/_highcharts.scss`) is from version 9.1
-          
+The current copy of the [Highcharts] css-file (`src/_highcharts_VERSION.scss`) is from version 10.2
+
 
 
 ## Installation
@@ -36,21 +36,7 @@ http://FCOO.github.io/jquery-bootstrap-highcharts/demo/
 
 
 ## Note
-Not all chart types has been checked to see if some css-style is overwriting the options style. But simple line charts should work correctly.  
-
-<!-- 
-
-[Due to a bug](https://github.com/highcharts/highcharts/issues/15676) it is necessary to set `clip: false` for all `series` when using options `chart.scrollablePlotArea` to have a scrollable chart 
-
-    series: [{
-        ...
-        clip: false
-    },....,{
-        ...
-        clip: false
-    }]
--->    
- 
+Not all chart types has been checked to see if some css-style is overwriting the options style. But simple line charts should work correctly.
 
 ## ToDo
 

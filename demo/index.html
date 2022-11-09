@@ -15,8 +15,10 @@
 
 <body>
 	<script src="bower_components.js"></script>
-
     <script src="../src/jquery-bootstrap-highcharts.js"></script> 
+
+
+
     <script src="da.js"></script>
 
 <div id="container" style="height: 400px; min-width: 310px"></div>
@@ -89,6 +91,9 @@ addButton('TZ: Local', function(){
 
 addButton('TZ: Nuuk', function(){
     moment.sfSetFormat({ timezone: 'America/Godthab'});
+
+console.log(tzChart);
+
     tzChart.title.update({ text: 'Nuuk'});
 });
 
