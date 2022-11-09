@@ -37,77 +37,122 @@
     When two or more series are linked together via series.linkedTo:..
     there are is a 'bug': Hover over the legend for the multi series only highlight
     the first series.
-    Highcharts provided a solutions/fix that is implemented below
+    Based on a solution/fix provided by Highcharts the Legend.setItemEvents is altered below
+    The method is from version 10.3.1
+    The added code is left-side-aligned
     See https://www.highcharts.com/forum/viewtopic.php?t=39679, and
-        https://jsfiddle.net/daniel_s/1hL6saxn/
+        https://jsfiddle.net/daniel_s/1hL6saxn/, and
+        https://github.com/highcharts/highcharts/issues/17961
     ****************************************************************************/
-    Highcharts.Legend.prototype.NOT_setItemEvents = function(item, label, useHTML){
+    /**
+     * @private
+     * @function Highcharts.Legend#setItemEvents
+     * @param {Highcharts.BubbleLegendItem|Point|Highcharts.Series} item
+     * @param {Highcharts.SVGElement} legendLabel
+     * @param {boolean} [useHTML=false]
+     * @emits Highcharts.Point#event:legendItemClick
+     * @emits Highcharts.Series#event:legendItemClick
+     */
+    var merge = Highcharts.merge;
+    var fireEvent = Highcharts.fireEvent;
+
+    Highcharts.Legend.prototype.setItemEvents = function (item, legendLabel, useHTML) {
         var legend = this,
-            legendItem = label,
+            legendItem = item.legendItem || {},
             boxWrapper = legend.chart.renderer.boxWrapper,
-            activeClass = 'highcharts-legend-' + (item.series ? 'point' : 'series') + '-active',
-            hasLinkedSeries = function(item) {
-                return ((item.linkedSeries && item.linkedSeries.length) ? true : false);
-            },
-            setLinkedSeriesState = function(item, state) {
-                item.linkedSeries.forEach(function(elem) {
-                    elem.setState(state);
-                });
-            };
-
-        // Set the events on the item group, or in case of useHTML, the item itself (#1249)
-        (useHTML ? legendItem : item.legendGroup)
-            .on('mouseover', function () {
-                if (item.visible) {
-                    item.setState('hover');
-
-                    // Add hover state to linked series
-                    if (hasLinkedSeries(item))
-                        setLinkedSeriesState(item, 'hover');
-
-                    // A CSS class to dim or hide other than the hovered series
-                    boxWrapper.addClass(activeClass);
-
-                    /*= if (build.classic) { =*/
-                    legendItem.css(legend.options.itemHoverStyle);
-                    /*= } =*/
+            isPoint = item instanceof Highcharts.Point,
+            activeClass = 'highcharts-legend-' +
+                (isPoint ? 'point' : 'series') + '-active',
+            styledMode = legend.chart.styledMode,
+            // When `useHTML`, the symbol is rendered in other group, so
+            // we need to apply events listeners to both places
+            legendElements = useHTML ?
+                [legendLabel,
+            legendItem.symbol] :
+                [legendItem.group];
+        var setOtherItemsState = function (state) {
+                legend.allItems.forEach(function (otherItem) {
+                    if (item !== otherItem) {
+                        [otherItem]
+                            .concat(otherItem.linkedSeries || [])
+                            .forEach(function (otherItem) {
+                            otherItem.setState(state, !isPoint);
+                    });
                 }
-            })
-
-            .on('mouseout', function () {
-                /*= if (build.classic) { =*/
-                legendItem.css(Highcharts.merge(item.visible ? legend.itemStyle : legend.itemHiddenStyle));
-                /*= } =*/
-
-                // A CSS class to dim or hide other than the hovered series
-                boxWrapper.removeClass(activeClass);
-
-                   // Remove hover state from linked series
-                if(hasLinkedSeries(item))
-                    setLinkedSeriesState(item);
-
-                item.setState();
-            })
-
-            .on('click', function (event) {
-                var strLegendItemClick = 'legendItemClick',
-                    fnLegendItemClick = function () {
-                        if (item.setVisible)
-                            item.setVisible();
-                    };
-
-                // Pass over the click/touch event. #4.
-                event = {
-                    browserEvent: event
-                };
-
-                // click the name or symbol
-                if (item.firePointEvent) // point
-                    item.firePointEvent(strLegendItemClick, event, fnLegendItemClick);
-                else
-                    Highcharts.fireEvent(item, strLegendItemClick, event, fnLegendItemClick);
             });
-    };  //End of Highcharts.Legend.prototype.setItemEvents
+        };
+
+var setLinkedSeriesState = function ( state ){
+    if (item.linkedSeries && item.linkedSeries.length){
+        item.linkedSeries.forEach(function(linkedItem){
+            linkedItem.setState(state);
+        });
+    }
+};
+
+        // Set the events on the item group, or in case of useHTML, the item
+        // itself (#1249)
+        for (var _i = 0, legendElements_1 = legendElements; _i < legendElements_1.length; _i++) {
+            var element = legendElements_1[_i];
+            if (element) {
+                element
+                    .on('mouseover', function () {
+                    if (item.visible) {
+                        setOtherItemsState('inactive');
+                    }
+                    item.setState('hover');
+setLinkedSeriesState('hover');
+                    // A CSS class to dim or hide other than the hovered
+                    // series.
+                    // Works only if hovered series is visible (#10071).
+                    if (item.visible) {
+                        boxWrapper.addClass(activeClass);
+                    }
+                    if (!styledMode) {
+                        legendLabel.css(legend.options.itemHoverStyle);
+                    }
+                })
+                    .on('mouseout', function () {
+                    if (!legend.chart.styledMode) {
+                        legendLabel.css(merge(item.visible ?
+                            legend.itemStyle :
+                            legend.itemHiddenStyle));
+                    }
+                    setOtherItemsState('');
+                    // A CSS class to dim or hide other than the hovered
+                    // series.
+                    boxWrapper.removeClass(activeClass);
+                    item.setState();
+setLinkedSeriesState();
+                })
+                    .on('click', function (event) {
+                    var strLegendItemClick = 'legendItemClick',
+                        fnLegendItemClick = function () {
+                            if (item.setVisible) {
+                                item.setVisible();
+                        }
+                        // Reset inactive state
+                        setOtherItemsState(item.visible ? 'inactive' : '');
+                    };
+                    // A CSS class to dim or hide other than the hovered
+                    // series. Event handling in iOS causes the activeClass
+                    // to be added prior to click in some cases (#7418).
+                    boxWrapper.removeClass(activeClass);
+                    // Pass over the click/touch event. #4.
+                    event = {
+                        browserEvent: event
+                    };
+                    // click the name or symbol
+                    if (item.firePointEvent) { // point
+                        item.firePointEvent(strLegendItemClick, event, fnLegendItemClick);
+                    }
+                    else {
+                        fireEvent(item, strLegendItemClick, event, fnLegendItemClick);
+                    }
+                });
+            }
+        }
+    };
 
 
     /***************************************************************
