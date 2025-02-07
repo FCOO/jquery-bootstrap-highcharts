@@ -39,6 +39,11 @@
 window.bsIsTouch = false;
 window.bsIsTouch = (window.location.search =='?touch');
 
+window.Highcharts.USE_JB_STYLE = true;
+
+$('html').modernizrToggle('touchevents', !!window.bsIsTouch);
+
+
 i18next.init();
 
 i18next.on('initialized',     function(options){ Highcharts.onLanguageChanged(options.language); });
@@ -66,7 +71,7 @@ moment.sfSetFormat({ timezone: 'utc' });
 //** Add Buttons ***
 var $body = $('body');
 function addButton(text, onClick){
-    $.bsButton({text: text, onClick:onClick}).prependTo($body);
+    $.bsButton({small: true, text: text, onClick:onClick}).prependTo($body);
 }
 
 addButton('24 <-> 12am/pm', function(){
@@ -124,7 +129,7 @@ addButton('DA <-> EN', function(){
     $('body').localize();
 });
 
-addButton('YTD');
+addButton('Reset zoom', () => console.log('Just a width-tester'));
 
 
 
@@ -138,17 +143,22 @@ $.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data
     var c = Highcharts.stockChart('container', {
         chart: {
             events: {
-                load: function () { 
-                    if (!window.TestController) {
-                        this.setTitle(null, {
-                            text: 'Built chart in ' + (new Date() - start) + 'ms'
-                        });
-                    }
-                }
+                load: [
+                    function () { 
+                        if (!window.TestController) {
+                            this.setTitle(null, {
+                                text: 'Built chart in ' + (new Date() - start) + 'ms'
+                            });
+                        }
+                    },
+                    function(){ console.log('Load', this); }
+                ]                    
             },
             zoomType: 'x'
         },
 
+
+        
         XXtooltip: {
             formatter: function (tooltip) {
 
@@ -352,13 +362,13 @@ $.getJSON(
     function (data) {
 
         Highcharts.chart('container1', {
-            chart: {                            
+niels: true,
+            chart: {                 
                 scrollablePlotArea: {
                     minWidth       : 1000,
                     scrollPositionX: 1
                 },
-
-                zoomType: 'x'
+                zoomType: 'x',
             },
             title: {
                 text: {da:'USD/EUR Dansk titel', en:'USD to EUR exchange rate over time'}
@@ -426,6 +436,7 @@ $.getJSON(
         });
     }
 );
+
 //*/
 
 //**********************************************************************
@@ -752,9 +763,13 @@ Highcharts.chart('container4', {
     align: 'right',
     verticalAlign: 'middle'
   },
-
+  tooltip: {
+    crosshairs: true,
+    shared: true,
+  },
+  
   plotOptions: {
-    series: { lineWidth: 20,
+    series: { lineWidth: 2,
       label: {
         connectorAllowed: false
       },
@@ -763,13 +778,13 @@ Highcharts.chart('container4', {
   },
 
   series: [{
-lineWidth: 10,
+lineWidth: 1,
     name: {da:'Installation og Fremstilling', en:'Installation and Manufacturing'},
-    data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
+    data: [null, null, 43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
   }, {
     name: {da:'Fremstilling', en:'Manufacturing'},
     linkedTo: ':previous',
-    data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
+    data: [24916, 24064, 29742, 29851, 32490, 30282]//, 38121, 40434]
   }, {
     name: {da:'Salg og Distribution', en:'Sales & Distribution'},
     data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
@@ -917,7 +932,7 @@ $.getJSON('data/aapl-ohlc.json', function (data) {
 });
 //*/
 
-/****************************************************************************************
+//****************************************************************************************
 Highcharts.chart('container7', {
     chart: {
         type: 'waterfall',

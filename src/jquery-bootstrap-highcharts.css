@@ -6,25 +6,7 @@
 	https://github.com/FCOO/jquery-bootstrap-highcharts
 	https://github.com/FCOO
 
-Adjust Highcharts style to match the sytle used in jquery-bootstrap
-In Highcharts the options styleMode controls how the different group of elements are styled
-
-If styleMode = true all elements are styled using css-class
-That requere that a lot of classes are defined to style eq. plot-area and lines
-
-If styleMode = false the elements are styled using some css-class and some style set in options
-Eq. chart title get class="highcharts-subtitle" AND style set directly from options.title.style.
-options.style.title has default value =  { "color": "#333333", "fontSize": "18px" }
-
-There are two ways force the use of class-style when styleMode = false:
-1) Set options.title.style = { "color": null, "fontSize": null }
-2) Adjust/remove all defalut styles
-3) Set all styles in css-classes as name: style !important; to overwrite style set directly on the element
-
-"1" is the "correct" way, but every chart needs to have options for alle the different default styles
-"2" would be the easies way but it was not possible to alter the default options
-"3" is using !important witch normally is not recommended, but with extra efford in solution (1) and
-the "impossible" i solution (2) the solution (3) is implemented
+Adjust Highcharts style to match the style used in jquery-bootstrap
 
 ************************************************/
 /************************************************************
@@ -203,7 +185,7 @@ Modal
 ************************************************/
 /***********************************************
 Button And Modal
-Opacity for semi-transparent and transparent content
+Opacity for semi-transparent and transparent content using color-mix
 ************************************************/
 /************************************************************
 MIXIN
@@ -223,1115 +205,148 @@ button-border-color-variant
 button-background-color-variant
 Adjust text-, border-, and background-color for a button
 ************************************************************/
+/************************************************************
+TABLE COLORS
+************************************************************/
+/*****************************************************************
+create-table-variant($postfix, $background, $default, $color)
+Adjusted copy of Bootstrap table-variant($state, $background) to
+create css-var to set colors in tables
+*****************************************************************/
+/*****************************************************************
+incl-table-variant($postfix)
+Include special version of Bootstrap table-var
+The var must have been created by create-table-variant first
+*****************************************************************/
+/*****************************************************************
+table-no-hover()
+Prevent any hover effect
+*****************************************************************/
 /***********************************************
-BOOTSTRAP -> HIGHCHART
-Set Highcharts variable to fit Bootstrap-variable
+Font-size
 ************************************************/
-/* Default Highcharts colors
-// Chart background, point stroke for markers and columns etc
-$background-color: #ffffff !default;
+/***********************************************
+Color
+************************************************/
+.use-jquery-bootstrap-style {
+  /* @todo
+      --highcharts-color-0: #2caffe;
+      --highcharts-color-1: #544fc5;
+      --highcharts-color-2: #00e272;
+      --highcharts-color-3: #fe6a35;
+      --highcharts-color-4: #6b8abc;
+      --highcharts-color-5: #d568fb;
+      --highcharts-color-6: #2ee0ca;
+      --highcharts-color-7: #fa4b42;
+      --highcharts-color-8: #feb56a;
+      --highcharts-color-9: #91e8e1;
+  */
+}
 
-// Neutral colors, grayscale by default. The default colors are defined by mixing the
-// background-color with neutral, with a weight corresponding to the number in the name.
-$neutral-color-100: #000000 !default; // Strong text.
-$neutral-color-80: #333333 !default; // Main text and some strokes.
-$neutral-color-60: #666666 !default; // Axis labels, axis title, connector fallback.
-$neutral-color-40: #999999 !default; // Credits text, export menu stroke.
-$neutral-color-20: #cccccc !default; // Disabled texts, button strokes, crosshair etc.
-$neutral-color-10: #e6e6e6 !default; // Grid lines etc.
-$neutral-color-5: #f2f2f2 !default; // Minor grid lines etc.
-$neutral-color-3: #f7f7f7 !default; // Tooltip backgroud, button fills, map null points.
-
-// Colored, shades of blue by default
-$highlight-color-100: #003399 !default; // Drilldown clickable labels, color axis max color.
-$highlight-color-80: #335cad !default; // Selection marker, menu hover, button hover, chart border, navigator series.
-$highlight-color-60: #6685c2 !default; // Navigator mask fill.
-$highlight-color-20: #ccd6eb !default; // Ticks and axis line.
-$highlight-color-10: #e6ebf5 !default; // Pressed button, color axis min color.
-//*/
-/*
-Font-size - using default but with !important to force the class to control size
-Standard font-size from jquery-bootstrap
-    $jb-font-size-lg    : 1.25rem   20px
-    $jb-font-size       : 1rem      16px
-    $jb-font-size-sm    : .875rem   14px
-    $jb-font-size-xs    : .75rem    12px
-    $jb-font-size-xxs   : .6875rem  11px
-*/
 :root {
   --jbh-button-background-color: #f8f9fa;
   --jbh-button-border-color: #adb5bd;
   --jbh-button-color: #212529;
 }
 
-.highcharts-button-hover, g.highcharts-contextbutton:hover {
-  --jbh-button-background-color: #dee2e6;
-  --jbh-button-border-color: #b5bcc4;
-  --jbh-button-color: #373b3e;
+.use-jquery-bootstrap-style {
+  font-family: var(--bs-body-font-family) !important;
+  font-size: var(--bs-body-font-size) !important;
+  font-weight: var(--bs-body-font-weight) !important;
+  line-height: var(--bs-body-line-height) !important;
+  color: var(--bs-body-color) !important;
+  text-align: var(--bs-body-text-align) !important;
+  background-color: var(--bs-body-bg) !important;
+  -webkit-text-size-adjust: 100% !important;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+  /***********************************************
+  Buttons
+  ************************************************/
+  /***********************************************
+  Context-menu / dropdown-menu
+  Set look like jquery-bootstrap menu
+  ************************************************/
 }
-
-.highcharts-button-pressed {
-  --jbh-button-background-color: rgb(30, 144, 255);
-  --jbh-button-border-color: #b5bcc4;
-  --jbh-button-color: white;
-}
-
-/***********************************************
-HIGHCHART
-************************************************/
-/*
-src/_highcharts_VERSION.scss is a local and adjusted copy of ../bower_components/highcharts/css/highcharts.scss
-See README.md for details
-*/
-/*********************************************************
-NOTE
-This is a copy of highcharts.scss version 10.2.1.
-Some of the styles have been removed to allow styling
-directly via the options of the charts.
-This are marked by /*JBH or //JBH
-
-See description in README.md
-**********************************************************/
-/**
- * @license Highcharts
- *
- * (c) 2009-2016 Torstein Honsi
- *
- * License: www.highcharts.com/license
- */
-.highcharts-container {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  text-align: left;
-  line-height: normal;
-  z-index: 0; /* #1072 */
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  font-family: var(--bs-font-sans-serif) !important;
-  font-size: 12px;
-  user-select: none;
-  touch-action: manipulation;
-  outline: none;
-}
-
-.highcharts-root {
-  display: block;
-}
-
-.highcharts-root text {
-  stroke-width: 0;
-}
-
-.highcharts-strong {
-  font-weight: bold;
-}
-
-.highcharts-emphasized {
-  font-style: italic;
-}
-
-.highcharts-anchor {
+.use-jquery-bootstrap-style .any-highcharts-buttons, .use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item, .use-jquery-bootstrap-style .highcharts-button {
+  fill: var(--jbh-button-background-color);
+  stroke: var(--jbh-button-border-color);
   cursor: pointer;
-}
-
-.highcharts-background {
-  fill: #ffffff;
-}
-
-.highcharts-plot-border, .highcharts-plot-background {
-  fill: none;
-}
-
-.highcharts-label-box {
-  fill: none;
-}
-
-.highcharts-button-box {
-  fill: inherit;
-}
-
-.highcharts-tracker-line {
-  stroke-linejoin: round;
-  stroke: rgba(192, 192, 192, 0.0001);
-  stroke-width: 22;
-  fill: none;
-}
-
-.highcharts-tracker-area {
-  fill: rgba(192, 192, 192, 0.0001);
-  stroke-width: 0;
-}
-
-/* Titles */
-.highcharts-title {
-  fill: #333333;
-  font-size: 1.5em !important;
-}
-
-.highcharts-subtitle {
-  fill: #666666;
-  font-size: 1em !important;
-}
-
-/* Axes */
-.highcharts-axis-line {
-  fill: none;
-  stroke: #ccd6eb;
-}
-
-.highcharts-yaxis .highcharts-axis-line {
-  stroke-width: 0;
-}
-
-.highcharts-axis-title {
-  fill: #666666;
-}
-
-.highcharts-axis-labels {
-  fill: #666666;
-  cursor: default;
-  font-size: 0.9166666667em !important;
-}
-
-.highcharts-grid-line {
-  fill: none;
-  stroke: #e6e6e6;
-}
-
-.highcharts-xaxis-grid .highcharts-grid-line {
-  stroke-width: 0px;
-}
-
-.highcharts-tick {
-  stroke: #ccd6eb;
-}
-
-.highcharts-yaxis .highcharts-tick {
-  stroke-width: 0;
-}
-
-.highcharts-minor-grid-line {
-  stroke: #f2f2f2;
-}
-
-.highcharts-crosshair-thin {
-  stroke-width: 1px;
-  stroke: #cccccc;
-}
-
-.highcharts-crosshair-category {
-  stroke: #ccd6eb;
-  stroke-opacity: 0.25;
-}
-
-/* Credits */
-.highcharts-credits {
-  cursor: pointer;
-  fill: #999999;
-  font-size: 0.7em;
-  transition: fill 250ms, font-size 250ms;
-}
-
-.highcharts-credits:hover {
-  fill: black;
-  font-size: 1em;
-}
-
-/* Tooltip */
-.highcharts-tooltip {
-  cursor: default;
-  pointer-events: none;
-  white-space: nowrap;
-  transition: stroke 150ms;
-}
-
-.highcharts-tooltip text {
-  fill: #333333;
-}
-
-.highcharts-tooltip .highcharts-header {
-  font-size: 0.85em;
-}
-
-.highcharts-tooltip-box {
-  stroke-width: 1px;
-  fill: #f7f7f7;
-  fill-opacity: 0.85;
-}
-
-.highcharts-tooltip-box .highcharts-label-box {
-  fill: #f7f7f7;
-  fill-opacity: 0.85;
-}
-
-div.highcharts-tooltip {
-  filter: none;
-}
-
-.highcharts-selection-marker {
-  fill: #335cad;
-  fill-opacity: 0.25;
-}
-
-.highcharts-empty-series {
-  stroke-width: 1px;
-  fill: none;
-  stroke: #cccccc;
-}
-
-.highcharts-point-inactive {
-  opacity: 0.2;
-  transition: opacity 50ms; /* quick in */
-}
-
-.highcharts-series-inactive {
-  opacity: 0.2;
-  transition: opacity 50ms; /* quick in */
-}
-
-.highcharts-state-hover path {
-  transition: stroke-width 50ms; /* quick in */
-}
-
-.highcharts-state-normal path {
-  transition: stroke-width 250ms; /* slow out */
-}
-
-/* Legend hover affects points and series */
-g.highcharts-series,
-.highcharts-point,
-.highcharts-markers,
-.highcharts-data-labels {
-  transition: opacity 250ms;
-}
-
-.highcharts-legend-series-active g.highcharts-series:not(.highcharts-series-hover),
-.highcharts-legend-point-active .highcharts-point:not(.highcharts-point-hover),
-.highcharts-legend-series-active .highcharts-markers:not(.highcharts-series-hover),
-.highcharts-legend-series-active .highcharts-data-labels:not(.highcharts-series-hover) {
-  opacity: 0.2;
-}
-
-/*********************************************************************************************/
-/* Series options */
-.highcharts-area {
-  fill-opacity: 0.75;
-  stroke-width: 0;
-}
-
-.highcharts-markers {
-  stroke-width: 1px;
-  stroke: #ffffff;
-}
-
-.highcharts-a11y-markers-hidden .highcharts-point:not(.highcharts-point-hover):not(.highcharts-a11y-marker-visible),
-.highcharts-a11y-marker-hidden {
-  opacity: 0;
-}
-
-.highcharts-point {
-  stroke-width: 1px;
-}
-
-.highcharts-dense-data .highcharts-point {
-  stroke-width: 0;
-}
-
-.highcharts-data-label {
-  font-size: 0.9em;
-  font-weight: bold;
-}
-
-.highcharts-data-label-box {
-  fill: none;
-  stroke-width: 0;
-}
-
-.highcharts-data-label text, text.highcharts-data-label {
-  fill: #333333;
-}
-
-.highcharts-data-label-connector {
-  fill: none;
-}
-
-.highcharts-data-label-hidden {
-  pointer-events: none;
-}
-
-.highcharts-halo {
-  fill-opacity: 0.25;
-  stroke-width: 0;
-}
-
-.highcharts-series:not(.highcharts-pie-series) .highcharts-point-select,
-.highcharts-markers .highcharts-point-select {
-  fill: #cccccc;
-  stroke: #000000;
-}
-
-.highcharts-column-series rect.highcharts-point {
-  stroke: #ffffff;
-}
-
-.highcharts-column-series .highcharts-point {
-  transition: fill-opacity 250ms;
-}
-
-.highcharts-column-series .highcharts-point-hover {
-  fill-opacity: 0.75;
-  transition: fill-opacity 50ms;
-}
-
-.highcharts-pie-series .highcharts-point {
-  stroke-linejoin: round;
-  stroke: #ffffff;
-}
-
-.highcharts-pie-series .highcharts-point-hover {
-  fill-opacity: 0.75;
-  transition: fill-opacity 50ms;
-}
-
-.highcharts-funnel-series .highcharts-point {
-  stroke-linejoin: round;
-  stroke: #ffffff;
-}
-
-.highcharts-funnel-series .highcharts-point-hover {
-  fill-opacity: 0.75;
-  transition: fill-opacity 50ms;
-}
-
-.highcharts-funnel-series .highcharts-point-select {
-  fill: inherit;
-  stroke: inherit;
-}
-
-.highcharts-pyramid-series .highcharts-point {
-  stroke-linejoin: round;
-  stroke: #ffffff;
-}
-
-.highcharts-pyramid-series .highcharts-point-hover {
-  fill-opacity: 0.75;
-  transition: fill-opacity 50ms;
-}
-
-.highcharts-pyramid-series .highcharts-point-select {
-  fill: inherit;
-  stroke: inherit;
-}
-
-.highcharts-solidgauge-series .highcharts-point {
-  stroke-width: 0;
-}
-
-.highcharts-treemap-series .highcharts-point {
-  stroke-width: 1px;
-  stroke: #e6e6e6;
-  transition: stroke 250ms, fill 250ms, fill-opacity 250ms;
-}
-
-.highcharts-treemap-series .highcharts-point-hover {
-  stroke: #999999;
-  transition: stroke 25ms, fill 25ms, fill-opacity 25ms;
-}
-
-.highcharts-treemap-series .highcharts-above-level {
-  display: none;
-}
-
-.highcharts-treemap-series .highcharts-internal-node {
-  fill: none;
-}
-
-.highcharts-treemap-series .highcharts-internal-node-interactive {
-  fill-opacity: 0.15;
-  cursor: pointer;
-}
-
-.highcharts-treemap-series .highcharts-internal-node-interactive:hover {
-  fill-opacity: 0.75;
-}
-
-.highcharts-vector-series .highcharts-point {
-  fill: none;
-  stroke-width: 2px;
-}
-
-.highcharts-windbarb-series .highcharts-point {
-  fill: none;
-  stroke-width: 2px;
-}
-
-.highcharts-lollipop-stem {
-  stroke: #000000;
-}
-
-.highcharts-focus-border {
-  fill: none;
-  stroke-width: 2px;
-}
-
-.highcharts-legend-item-hidden .highcharts-focus-border {
-  fill: none !important;
-}
-
-/*********************************************************************************************/
-/* Legend */
-.highcharts-legend-box {
-  fill: none;
-  stroke-width: 0;
-}
-
-.highcharts-legend-item > text {
-  fill: #333333;
-  font-weight: bold;
-  font-size: 1em !important;
-  cursor: pointer;
-  stroke-width: 0;
-}
-
-.highcharts-legend-item:hover text {
-  fill: #000000;
-}
-
-.highcharts-legend-item-hidden * {
-  fill: #cccccc !important;
-  stroke: #cccccc !important;
-  transition: fill 250ms;
-}
-
-.highcharts-legend-nav-active {
-  fill: #003399;
-  cursor: pointer;
-}
-
-.highcharts-legend-nav-inactive {
-  fill: #cccccc;
-}
-
-circle.highcharts-legend-nav-active, circle.highcharts-legend-nav-inactive { /* tracker */
-  fill: rgba(192, 192, 192, 0.0001);
-}
-
-.highcharts-legend-title-box {
-  fill: none;
-  stroke-width: 0;
-}
-
-/* Bubble legend */
-.highcharts-bubble-legend-symbol {
-  stroke-width: 2;
-  fill-opacity: 0.5;
-}
-
-.highcharts-bubble-legend-connectors {
-  stroke-width: 1;
-}
-
-.highcharts-bubble-legend-labels {
-  fill: #333333;
-}
-
-/* Loading */
-.highcharts-loading {
-  position: absolute;
-  background-color: #ffffff;
-  opacity: 0.5;
-  text-align: center;
-  z-index: 10;
-  transition: opacity 250ms;
-}
-
-.highcharts-loading-hidden {
-  height: 0 !important;
-  opacity: 0;
-  overflow: hidden;
-  transition: opacity 250ms, height 250ms step-end;
-}
-
-.highcharts-loading-inner {
-  font-weight: bold;
-  position: relative;
-  top: 45%;
-}
-
-/* Highcharts More and modules */
-.highcharts-boxplot-box {
-  fill: #ffffff;
-}
-
-.highcharts-boxplot-median {
-  stroke-width: 2px;
-}
-
-.highcharts-bubble-series .highcharts-point {
-  fill-opacity: 0.5;
-}
-
-.highcharts-errorbar-series .highcharts-point {
-  stroke: #000000;
-}
-
-.highcharts-gauge-series .highcharts-data-label-box {
-  stroke: #cccccc;
-  stroke-width: 1px;
-}
-
-.highcharts-gauge-series .highcharts-dial {
-  fill: #000000;
-  stroke-width: 0;
-}
-
-.highcharts-sankey-series .highcharts-point {
-  stroke-width: 0;
-}
-
-.highcharts-sankey-series .highcharts-link {
-  transition: fill 250ms, fill-opacity 250ms;
-  fill-opacity: 0.5;
-}
-
-.highcharts-sankey-series .highcharts-point-hover.highcharts-link {
-  transition: fill 50ms, fill-opacity 50ms;
-  fill-opacity: 1;
-}
-
-.highcharts-venn-series .highcharts-point {
-  fill-opacity: 0.75;
-  stroke: #cccccc;
-  transition: stroke 250ms, fill-opacity 250ms;
-}
-
-.highcharts-venn-series .highcharts-point-hover {
-  fill-opacity: 1;
-  stroke: #cccccc;
-}
-
-/* Highstock */
-.highcharts-navigator-mask-outside {
-  fill-opacity: 0;
-}
-
-.highcharts-navigator-mask-inside {
-  fill: #6685c2; /* navigator.maskFill option */
-  fill-opacity: 0.25;
-  cursor: ew-resize;
-}
-
-.highcharts-navigator-outline {
-  stroke: #cccccc;
-  fill: none;
-}
-
-.highcharts-navigator-handle {
-  stroke: #cccccc;
-  fill: #f2f2f2;
-  cursor: ew-resize;
-}
-
-.highcharts-navigator-series {
-  fill: #335cad;
-  stroke: #335cad;
-}
-
-.highcharts-navigator-series .highcharts-area {
-  fill-opacity: 0.05;
-}
-
-.highcharts-navigator-xaxis .highcharts-axis-line {
-  stroke-width: 0;
-}
-
-.highcharts-navigator-xaxis .highcharts-grid-line {
-  stroke-width: 1px;
-  stroke: #e6e6e6;
-}
-
-.highcharts-navigator-xaxis.highcharts-axis-labels {
-  fill: #999999;
-}
-
-.highcharts-navigator-yaxis .highcharts-grid-line {
-  stroke-width: 0;
-}
-
-.highcharts-scrollbar-thumb {
-  fill: #cccccc;
-  stroke: #cccccc;
-  stroke-width: 1px;
-}
-
-.highcharts-scrollbar-button {
-  fill: #e6e6e6;
-  stroke: #cccccc;
-  stroke-width: 1px;
-}
-
-.highcharts-scrollbar-arrow {
-  fill: #666666;
-}
-
-.highcharts-scrollbar-rifles {
-  stroke: #666666;
-  stroke-width: 1px;
-}
-
-.highcharts-scrollbar-track {
-  fill: #f2f2f2;
-  stroke: #f2f2f2;
-  stroke-width: 1px;
-}
-
-.highcharts-button, g.highcharts-contextbutton {
-  fill: var(--jbh-button-background-color) !important;
-  stroke: var(--jbh-button-border-color) !important;
-  cursor: default;
-  stroke-width: 1px;
-  transition: fill 250ms;
-}
-
-.highcharts-button text, g.highcharts-contextbutton text {
-  fill: var(--jbh-button-color) !important;
-}
-
-.highcharts-button-hover, g.highcharts-contextbutton:hover {
-  transition: fill 0ms;
-  fill: var(--jbh-button-background-color) !important;
-  stroke: var(--jbh-button-border-color) !important;
-}
-
-.highcharts-button-hover text, g.highcharts-contextbutton:hover text {
-  fill: var(--jbh-button-color) !important;
-}
-
-.highcharts-button-pressed {
-  font-weight: bold;
-  fill: var(--jbh-button-background-color) !important;
-  stroke: var(--jbh-button-border-color) !important;
-}
-
-.highcharts-button-pressed text {
-  fill: var(--jbh-button-color) !important;
-  font-weight: bold;
-}
-
-.highcharts-button-disabled text {
-  fill: var(--jbh-button-color) !important;
-}
-
-.highcharts-range-selector-buttons .highcharts-button, .highcharts-range-selector-buttons g.highcharts-contextbutton {
   stroke-width: 1px !important;
-}
-
-.highcharts-range-label rect {
-  fill: none;
-}
-
-.highcharts-range-label text {
-  fill: #666666;
-}
-
-.highcharts-range-input rect {
-  fill: none;
-}
-
-.highcharts-range-input text {
-  fill: var(--bs-body-color) !important;
-}
-
-.highcharts-range-input {
-  stroke-width: 1px;
-  stroke: var(--jb-structure-border-color) !important;
-}
-
-input.highcharts-range-selector {
-  position: absolute;
-  border: 0;
-  width: 1px; /* Chrome needs a pixel to see it */
-  height: 1px;
-  padding: 0;
-  text-align: center;
-  left: -9em; /* #4798 */
-}
-
-.highcharts-crosshair-label text {
-  fill: #ffffff;
-  font-size: 1.1em;
-}
-
-.highcharts-crosshair-label .highcharts-label-box {
-  fill: inherit;
-}
-
-.highcharts-candlestick-series .highcharts-point {
-  stroke: #000000;
-  stroke-width: 1px;
-}
-
-.highcharts-candlestick-series .highcharts-point-up {
-  fill: #ffffff;
-}
-
-.highcharts-hollowcandlestick-series .highcharts-point-down {
-  fill: #f21313;
-  stroke: #f21313;
-}
-
-.highcharts-hollowcandlestick-series .highcharts-point-down-bearish-up {
-  fill: #06b535;
-  stroke: #06b535;
-}
-
-.highcharts-hollowcandlestick-series .highcharts-point-up {
-  fill: transparent;
-  stroke: #06b535;
-}
-
-.highcharts-ohlc-series .highcharts-point-hover {
-  stroke-width: 3px;
-}
-
-.highcharts-flags-series .highcharts-point .highcharts-label-box {
-  stroke: #999999;
-  fill: #ffffff;
-  transition: fill 250ms;
-}
-
-.highcharts-flags-series .highcharts-point-hover .highcharts-label-box {
-  stroke: #000000;
-  fill: #ccd6eb;
-}
-
-.highcharts-flags-series .highcharts-point text {
-  fill: #000000;
-  font-size: 0.9em;
-  font-weight: bold;
-}
-
-/* Highcharts Maps */
-.highcharts-map-series .highcharts-point {
-  transition: fill 500ms, fill-opacity 500ms, stroke-width 250ms;
-  stroke: #cccccc;
-  stroke-width: inherit;
-}
-
-.highcharts-map-series .highcharts-point-hover {
-  transition: fill 0ms, fill-opacity 0ms;
-  fill-opacity: 0.5;
-}
-
-.highcharts-mapline-series .highcharts-point {
-  fill: none;
-}
-
-.highcharts-heatmap-series .highcharts-point {
-  stroke-width: 0;
-}
-
-.highcharts-map-navigation {
-  font-size: 1.3em;
-  font-weight: bold;
-  text-align: center;
-}
-
-.highcharts-mapview-inset-border {
-  stroke: #cccccc;
-  stroke-width: 1px;
-  fill: none;
-}
-
-.highcharts-coloraxis {
-  stroke-width: 0;
-}
-
-.highcharts-coloraxis-marker {
-  fill: #999999;
-}
-
-.highcharts-null-point {
-  fill: #f7f7f7;
-}
-
-/* 3d charts */
-.highcharts-3d-frame {
-  fill: transparent;
-}
-
-/* Exporting module */
-.highcharts-contextbutton {
-  fill: var(--jbh-button-background-color) !important; /* needed to capture hover */
-  stroke: none;
-  stroke-linecap: round;
-}
-
-.highcharts-contextbutton:hover {
-  fill: #e6e6e6;
-  stroke: #e6e6e6;
-}
-
-.highcharts-button-symbol {
-  stroke: #666666;
-  stroke-width: 3px;
-}
-
-.highcharts-menu {
-  border: 1px solid #999999;
-  background: #ffffff;
-  padding: 5px 0;
-  box-shadow: 3px 3px 10px #888;
-}
-
-.highcharts-menu-item {
-  padding: 0.5em 1em;
-  background: none;
-  color: #333333;
-  cursor: pointer;
-  transition: background 250ms, color 250ms;
-}
-
-.highcharts-menu-item:hover {
-  background: #335cad;
-  color: #ffffff;
-}
-
-/* Breadcrumbs */
-.highcharts-breadcrumbs-button {
-  fill: none;
-  stroke-width: 0;
-  cursor: pointer;
-}
-
-.highcharts-breadcrumbs-separator {
-  fill: #666666;
-}
-
-/* Drilldown module */
-.highcharts-drilldown-point {
-  cursor: pointer;
-}
-
-.highcharts-drilldown-data-label text,
-text.highcharts-drilldown-data-label,
-.highcharts-drilldown-axis-label {
-  cursor: pointer;
-  fill: #003399;
-  font-weight: bold;
-  text-decoration: underline;
-}
-
-/* No-data module */
-.highcharts-no-data text {
-  font-weight: bold;
-  font-size: 12px;
-  fill: #666666;
-}
-
-/* Drag-panes module */
-.highcharts-axis-resizer {
-  cursor: ns-resize;
-  stroke: black;
-  stroke-width: 2px;
-}
-
-/* Bullet type series */
-.highcharts-bullet-target {
-  stroke-width: 0;
-}
-
-/* Lineargauge type series */
-.highcharts-lineargauge-target {
-  stroke-width: 1px;
-  stroke: #333333;
-}
-
-.highcharts-lineargauge-target-line {
-  stroke-width: 1px;
-  stroke: #333333;
-}
-
-/* Annotations module */
-.highcharts-annotation-label-box {
-  stroke-width: 1px;
-  stroke: #000000;
-  fill: #000000;
-  fill-opacity: 0.75;
-}
-
-.highcharts-annotation-label text {
-  fill: #e6e6e6;
-}
-
-/* A11y module */
-.highcharts-a11y-proxy-button {
-  border-width: 0;
-  background-color: transparent;
-  cursor: pointer;
-  outline: none;
-  opacity: 0.001;
-  z-index: 999;
-  overflow: hidden;
-  padding: 0;
-  margin: 0;
-  display: block;
-  position: absolute;
-}
-
-.highcharts-a11y-proxy-group li {
-  list-style: none;
-}
-
-.highcharts-visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  white-space: nowrap;
-  clip: rect(1px, 1px, 1px, 1px);
-  margin-top: -3px;
-  opacity: 0.01;
-}
-
-.highcharts-a11y-invisible {
-  visibility: hidden;
-}
-
-.highcharts-a11y-proxy-container,
-.highcharts-a11y-proxy-container-before,
-.highcharts-a11y-proxy-container-after {
-  position: absolute;
-  white-space: nowrap;
-}
-
-g.highcharts-series, .highcharts-markers, .highcharts-point {
-  outline: none;
-}
-
-/* Gantt */
-.highcharts-treegrid-node-collapsed, .highcharts-treegrid-node-expanded {
-  cursor: pointer;
-}
-
-.highcharts-point-connecting-path {
-  fill: none;
-}
-
-.highcharts-grid-axis .highcharts-tick {
-  stroke-width: 1px;
-}
-
-.highcharts-grid-axis .highcharts-axis-line {
-  stroke-width: 1px;
-}
-
-/***********************************************
-BOOTSTRAP -> HIGHCHART
-Adjust classes directly
-************************************************/
-svg.highcharts-root {
-  font-family: var(--bs-font-sans-serif) !important;
-}
-
-.highcharts-container {
-  font-size: 0.875rem !important;
-}
-
-html.no-mouse .highcharts-container {
-  font-size: 1rem !important;
-}
-
-.highcharts-title {
-  fill: var(--jbh-button-color) !important;
-}
-
-.highcharts-subtitle {
-  font-size: 1em !important;
-  fill: var(--jbh-button-color) !important;
-}
-
-.highcharts-axis-title {
-  font-size: 1rem !important;
-}
-
-.highcharts-axis-labels {
-  font-size: 0.9166666667em !important;
-}
-.highcharts-axis-labels text {
-  font-size: inherit !important;
-}
-
-.highcharts-tooltip text:first-letter {
-  text-transform: capitalize;
-}
-
-.highcharts-button-hover text, g.highcharts-contextbutton:hover text,
-.highcharts-button-pressed text {
-  font-weight: normal !important;
-}
-
-.highcharts-menu hr {
-  width: 100%;
-  margin: 0.375rem 0;
-  padding: 0;
-}
-
-.highcharts-range-input .highcharts-label-box {
-  stroke: inherit !important;
-}
-
-.highcharts-contextbutton .highcharts-button-symbol {
-  stroke: #212529;
-  stroke-width: 2px;
-}
-
-select, option {
+  line-height: var(--bs-body-line-height) !important;
+  padding: 0.125rem 0.125rem;
+  font-size: 0.75rem;
+}
+html.touchevents .use-jquery-bootstrap-style .any-highcharts-buttons, html.touchevents .use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item, html.touchevents .use-jquery-bootstrap-style .highcharts-button {
+  padding: 0.25rem 0.25rem;
   font-size: 0.875rem;
 }
-
-.highcharts-menu {
-  border-radius: 0.375rem !important;
-  border: var(--bs-border-width) solid var(--jb-container-border-color) !important;
-  padding: 1px !important;
+.use-jquery-bootstrap-style .any-highcharts-buttons text, .use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item text, .use-jquery-bootstrap-style .highcharts-button text {
+  fill: var(--jbh-button-color);
+  font-weight: normal !important;
+  font-size: inherit !important;
 }
-
-.highcharts-menu-item {
-  padding: 0.25rem 0.25rem !important;
-  border: 1px solid #adb5bd !important;
-  background: #f8f9fa !important;
-  color: #212529 !important;
-  transition: background 0ms, color 0ms !important;
+.use-jquery-bootstrap-style .highcharts-button-hover {
+  --jbh-button-background-color: #dee2e6;
+  --jbh-button-border-color: rgb(181.2, 188.4, 195.6);
+  --jbh-button-color: rgb(55.2, 58.8, 62.4);
 }
-.highcharts-menu-item:first-child {
-  border-top-left-radius: calc(var(--bs-border-radius) - var(--bs-border-width));
-  border-top-right-radius: calc(var(--bs-border-radius) - var(--bs-border-width));
+.use-jquery-bootstrap-style .highcharts-button-pressed {
+  /* As selected (blue):
+      --jbh-button-background-color: rgb(30, 144, 255);
+      --jbh-button-border-color    : rgb(181.2, 188.4, 195.6);
+      --jbh-button-color           : white;
+  */
+  --jbh-button-background-color: #ced4da;
+  --jbh-button-border-color: rgb(181.2, 188.4, 195.6);
+  --jbh-button-color: rgb(55.2, 58.8, 62.4);
 }
-.highcharts-menu-item:last-child {
-  border-bottom-right-radius: calc(var(--bs-border-radius) - var(--bs-border-width));
-  border-bottom-left-radius: calc(var(--bs-border-radius) - var(--bs-border-width));
+.use-jquery-bootstrap-style .highcharts-button-disabled {
+  pointer-events: none;
+  opacity: 0.65;
 }
-
-li.highcharts-menu-item:hover {
-  border: 1px solid #b5bcc4 !important;
-  color: #373b3e !important;
-  text-decoration: none !important;
-  background: #dee2e6 !important;
+.use-jquery-bootstrap-style .highcharts-menu {
+  padding: 0;
 }
-
-.highcharts-scrollbar-thumb {
-  fill: rgb(205, 205, 205);
-  transition: fill 0.2s linear;
+.use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item {
+  --bs-btn-color: #212529;
+  --bs-btn-bg: #f8f9fa;
+  --bs-btn-border-color: #adb5bd;
+  --bs-btn-hover-color: rgb(55.2, 58.8, 62.4);
+  --bs-btn-hover-bg: #dee2e6;
+  --bs-btn-hover-border-color: rgb(181.2, 188.4, 195.6);
+  --bs-btn-focus-shadow-rgb: 152, 159, 167;
+  --bs-btn-active-color: rgb(55.2, 58.8, 62.4);
+  --bs-btn-active-bg: #ced4da;
+  --bs-btn-active-border-color: rgb(181.2, 188.4, 195.6);
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #212529;
+  --bs-btn-disabled-bg: #f8f9fa;
+  --bs-btn-disabled-border-color: #adb5bd;
+  --hcmi-border-color: var(--bs-btn-border-color);
+  --hcmi-color: var(--bs-btn-color);
+  --hcmi-bg-color: var(--bs-btn-bg);
+  line-height: var(--bs-body-line-height) !important;
+  text-decoration: none;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid var(--hcmi-border-color) !important;
+  border-radius: 0 !important;
+  color: var(--hcmi-color) !important;
+  background-color: var(--hcmi-bg-color) !important;
 }
-
-html.no-mouse .highcharts-scrollbar-thumb,
-.highcharts-scrollbar:hover .highcharts-scrollbar-thumb {
-  fill: rgb(166, 166, 166);
+.use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item:hover {
+  --hcmi-border-color: var(--bs-btn-hover-border-color);
+  --hcmi-color: var(--bs-btn-hover-color);
+  --hcmi-bg-color: var(--bs-btn-hover-bg);
 }
-
-.highcharts-tooltip-container {
-  z-index: 1081 !important;
+.use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item:active {
+  --hcmi-border-color: var(--bs-btn-active-border-color);
+  --hcmi-color: var(--bs-btn-active-color);
+  --hcmi-bg-color: var(--bs-btn-active-bg);
 }
-
-/*# sourceMappingURL=jquery-bootstrap-highcharts.css.map */
+.use-jquery-bootstrap-style .highcharts-menu hr {
+  color: transparent;
+  margin: 0.25em;
+}

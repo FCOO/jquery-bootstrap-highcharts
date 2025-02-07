@@ -13,7 +13,130 @@
 
     var nsHC = Highcharts;
 
-   //Extend Highcharts.setOptions to allow update of all charts
+    /****************************************************************
+    Create global variable to set when jquery-bootstrap style is used:
+    window.Highcharts.USE_JB_STYLE:
+    true : Allways. Force chart.options.styledMode = true
+    false: Never.
+    STRING: Only if chart.styledMode = true in options
+
+    Extend all (known) constructor to include className "use-jquery-bootstrap-style"
+    and force chart.options.styledMode = true to use css-style given in
+    jquery-bootstrap if conditions in window.Highcharts.USE_JB_STYLE and options
+    are set
+    ****************************************************************/
+    if (Highcharts.USE_JB_STYLE === undefined)
+        Highcharts.USE_JB_STYLE = 'only if styledMode = true';
+
+    function get(obj, idList ){
+        idList = idList.split('.');
+        let result = obj;
+        idList.forEach(id => result = result[id] = result[id] || {} );
+        return result;
+    }
+
+    function getCssVar( id, ns = ':root' ){
+        let r = document.querySelector(ns);
+        let rs = getComputedStyle(r);
+        return parseFloat(rs.getPropertyValue('--' + id));
+    }
+
+    /*
+    function setCssVar( id, value, ns = ':root' ){
+        let r = document.querySelector(ns);
+        r.style.setProperty('--'+id, value);
+    }
+    */
+
+    //Adjust button size to fit with jquery-bootstrap
+    let buttonHeight = [], buttonPadding = [];
+    function setHeightAndPadding(obj, idList, index = 0, inclWidth){
+        let opt = get(obj, idList);
+        opt.height  = buttonHeight[index];
+        opt.padding = buttonPadding[index];
+        if (inclWidth)
+            opt.width = buttonHeight[index];
+    }
+
+
+    ['chart', 'stockChart', 'mapChart',  'ganttChart'].forEach( constructorId => {
+        if (nsHC[constructorId])
+            nsHC[constructorId] = function( originalConstructor ){
+                return function(){
+                    let options = arguments[1],
+                        chartOpt = options ? options.chart || {} : {};
+
+                    if ( (  Highcharts.USE_JB_STYLE === true) ||
+                         ( (Highcharts.USE_JB_STYLE !== false) && chartOpt.styledMode) ){
+                        chartOpt.styledMode = chartOpt.styledMode || true;
+
+
+                        //Get jquery-bootstrap padding, font-size and line-height from css to calc height of buttons.
+                        let $elem = $('<div/>')
+                            .hide()
+                            .appendTo( $('body') );
+
+                        ['btn-sm btn-xs', 'btn btn-sm'].forEach( (classSet, index) => {
+                            classSet = classSet.split(' ');
+                            let className = classSet[ $('html').hasClass('touchevents') ? 0 : 1];
+
+                            $elem.removeClass()
+                                .addClass(className)
+                                .addClass('this-is-a-temp-btn');
+
+                            const ns          = '.this-is-a-temp-btn' + '.'+className,
+                                  lineHeight  = getCssVar('bs-btn-line-height', '.btn'),
+                                  paddingX    = 16 * getCssVar('bs-btn-padding-x', ns),
+                                  paddingY    = 16 * getCssVar('bs-btn-padding-y', ns),
+                                  fontSize    = 16 * getCssVar('bs-btn-font-size', ns);
+
+                            //Calc new default button for Highcharts ("1" = border-width) adjusted for padding
+                            let hcButtonHeight = 1 + paddingY + lineHeight*fontSize + paddingY + 1 - 2*paddingX;
+                            buttonHeight[index] = hcButtonHeight;
+                            buttonPadding[index] = paddingX;
+                        });
+
+                        $elem.remove();
+
+
+                        //Set new height of rest-zoom-button
+                        setHeightAndPadding(chartOpt, 'zooming.resetButton.theme');
+
+                        //Set new height for buttons in range-selector
+                        setHeightAndPadding(options, 'rangeSelector.buttonTheme');
+
+                        //@todo Set new height and width for context-menu-button - need also to recalc size of menu-char etc.
+                        //setHeightAndPadding(options, 'exporting.buttons.contextButton', 1, true);
+
+                        //@todo Set new height and width for map-zoom-button - need also to recalc size of menu-char etc.
+                        //setHeightAndPadding(options, 'mapNavigation.buttonOptions', 1, true);
+
+
+                        //Save adjusted options
+                        arguments[1].chart = chartOpt;
+
+                    }
+                    let chart = originalConstructor.apply(this, arguments),
+                        container = chart.container;
+
+                    //Adding class "use-jquery-bootstrap-style" to container
+                    if (chart.scrollablePlotArea)
+                        container = chart.scrollablePlotArea.fixedDiv;
+
+                    //Set
+                    if (container)
+                        $(container).addClass('use-jquery-bootstrap-style');
+
+                    return chart;
+                };
+        }( nsHC[constructorId] );
+   });
+
+
+
+    /****************************************************************
+    Extend Highcharts.setOptions to allow update of all charts
+    ****************************************************************/
     nsHC.setOptions = function (setOptions) {
         return function (options, redraw) {
             var result = setOptions.call(this, options);
@@ -32,10 +155,10 @@
     } (nsHC.setOptions);
 
 
-    /***************************************************************
+    /****************************************************************
     LEGEND
     When two or more series are linked together via series.linkedTo:..
-    there are is a 'bug': Hover over the legend for the multi series only highlight
+    there was a 'bug': Hover over the legend for the multi series only highlight
     the first series.
     Based on a solution/fix provided by Highcharts the Legend.setItemEvents is altered below
     The method is from version 10.3.1
@@ -43,7 +166,9 @@
     See https://www.highcharts.com/forum/viewtopic.php?t=39679, and
         https://jsfiddle.net/daniel_s/1hL6saxn/, and
         https://github.com/highcharts/highcharts/issues/17961
-    ****************************************************************************/
+
+    @todo Check if this is fixed in version 12
+    ****************************************************************/
     /**
      * @private
      * @function Highcharts.Legend#setItemEvents
@@ -53,9 +178,23 @@
      * @emits Highcharts.Point#event:legendItemClick
      * @emits Highcharts.Series#event:legendItemClick
      */
-    var merge = Highcharts.merge;
-    var fireEvent = Highcharts.fireEvent;
+    //var merge = Highcharts.merge;
+    //var fireEvent = Highcharts.fireEvent;
 
+
+    //Ready to add actions for setItemEvents
+    Highcharts.Legend.prototype.setItemEvents = function (setItemEvents) {
+        return  function(/*item*/ /*, legendLabel, useHTML*/){
+                    let result = setItemEvents.apply(this, arguments);
+
+                    //Extra code added here
+
+                    return result;
+                };
+
+    }( Highcharts.Legend.prototype.setItemEvents );
+
+    /* From version 4
     Highcharts.Legend.prototype.setItemEvents = function (item, legendLabel, useHTML) {
         var legend = this,
             legendItem = item.legendItem || {},
@@ -83,6 +222,7 @@
         };
 
 var setLinkedSeriesState = function ( state ){
+    console.log('kommer vi her?', state, this);return;
     if (item.linkedSeries && item.linkedSeries.length){
         item.linkedSeries.forEach(function(linkedItem){
             linkedItem.setState(state);
@@ -153,7 +293,7 @@ setLinkedSeriesState();
             }
         }
     };
-
+    */
 
     /***************************************************************
     LANGUAGE
