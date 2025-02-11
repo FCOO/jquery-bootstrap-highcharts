@@ -121,7 +121,7 @@
 
                     //Adding class "use-jquery-bootstrap-style" to container
                     if (chart.scrollablePlotArea)
-                        container = chart.scrollablePlotArea.fixedDiv;
+                        container = chart.scrollablePlotArea.parentDiv;
 
                     //Set
                     if (container)
