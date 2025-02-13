@@ -304,9 +304,6 @@ html.touchevents .use-jquery-bootstrap-style .any-highcharts-buttons, html.touch
   pointer-events: none;
   opacity: 0.65;
 }
-.use-jquery-bootstrap-style select {
-  color: red;
-}
 .use-jquery-bootstrap-style select, .use-jquery-bootstrap-style .highcharts-menu {
   padding: 0;
 }
