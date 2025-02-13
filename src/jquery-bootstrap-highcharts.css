@@ -267,7 +267,7 @@ Color
   Set look like jquery-bootstrap menu
   ************************************************/
 }
-.use-jquery-bootstrap-style .any-highcharts-buttons, .use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item, .use-jquery-bootstrap-style .highcharts-button {
+.use-jquery-bootstrap-style .any-highcharts-buttons, .use-jquery-bootstrap-style select .highcharts-menu-item, .use-jquery-bootstrap-style select option, .use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item, .use-jquery-bootstrap-style .highcharts-menu option, .use-jquery-bootstrap-style .highcharts-button {
   fill: var(--jbh-button-background-color);
   stroke: var(--jbh-button-border-color);
   cursor: pointer;
@@ -276,11 +276,11 @@ Color
   padding: 0.125rem 0.125rem;
   font-size: 0.75rem;
 }
-html.touchevents .use-jquery-bootstrap-style .any-highcharts-buttons, html.touchevents .use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item, html.touchevents .use-jquery-bootstrap-style .highcharts-button {
+html.touchevents .use-jquery-bootstrap-style .any-highcharts-buttons, html.touchevents .use-jquery-bootstrap-style select .highcharts-menu-item, html.touchevents .use-jquery-bootstrap-style select option, html.touchevents .use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item, html.touchevents .use-jquery-bootstrap-style .highcharts-menu option, html.touchevents .use-jquery-bootstrap-style .highcharts-button {
   padding: 0.25rem 0.25rem;
   font-size: 0.875rem;
 }
-.use-jquery-bootstrap-style .any-highcharts-buttons text, .use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item text, .use-jquery-bootstrap-style .highcharts-button text {
+.use-jquery-bootstrap-style .any-highcharts-buttons text, .use-jquery-bootstrap-style select .highcharts-menu-item text, .use-jquery-bootstrap-style select option text, .use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item text, .use-jquery-bootstrap-style .highcharts-menu option text, .use-jquery-bootstrap-style .highcharts-button text {
   fill: var(--jbh-button-color);
   font-weight: normal !important;
   font-size: inherit !important;
@@ -304,10 +304,13 @@ html.touchevents .use-jquery-bootstrap-style .any-highcharts-buttons, html.touch
   pointer-events: none;
   opacity: 0.65;
 }
-.use-jquery-bootstrap-style .highcharts-menu {
+.use-jquery-bootstrap-style select {
+  color: red;
+}
+.use-jquery-bootstrap-style select, .use-jquery-bootstrap-style .highcharts-menu {
   padding: 0;
 }
-.use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item {
+.use-jquery-bootstrap-style select .highcharts-menu-item, .use-jquery-bootstrap-style select option, .use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item, .use-jquery-bootstrap-style .highcharts-menu option {
   --bs-btn-color: #212529;
   --bs-btn-bg: #f8f9fa;
   --bs-btn-border-color: #adb5bd;
@@ -336,17 +339,20 @@ html.touchevents .use-jquery-bootstrap-style .any-highcharts-buttons, html.touch
   color: var(--hcmi-color) !important;
   background-color: var(--hcmi-bg-color) !important;
 }
-.use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item:hover {
+.use-jquery-bootstrap-style select .highcharts-menu-item:hover, .use-jquery-bootstrap-style select option:hover, .use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item:hover, .use-jquery-bootstrap-style .highcharts-menu option:hover {
   --hcmi-border-color: var(--bs-btn-hover-border-color);
   --hcmi-color: var(--bs-btn-hover-color);
   --hcmi-bg-color: var(--bs-btn-hover-bg);
 }
-.use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item:active {
+.use-jquery-bootstrap-style select .highcharts-menu-item:active, .use-jquery-bootstrap-style select option:active, .use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item:active, .use-jquery-bootstrap-style .highcharts-menu option:active {
   --hcmi-border-color: var(--bs-btn-active-border-color);
   --hcmi-color: var(--bs-btn-active-color);
   --hcmi-bg-color: var(--bs-btn-active-bg);
 }
-.use-jquery-bootstrap-style .highcharts-menu hr {
+.use-jquery-bootstrap-style select option:disabled, .use-jquery-bootstrap-style .highcharts-menu option:disabled {
+  --hcmi-color: initial;
+}
+.use-jquery-bootstrap-style select hr, .use-jquery-bootstrap-style .highcharts-menu hr {
   color: transparent;
   margin: 0.25em;
 }

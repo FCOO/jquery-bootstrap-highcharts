@@ -63,13 +63,13 @@
         if (nsHC[constructorId])
             nsHC[constructorId] = function( originalConstructor ){
                 return function(){
-                    let options = arguments[1],
-                        chartOpt = options ? options.chart || {} : {};
+                    let options    = arguments[1],
+                        chartOpt   = options ? options.chart || {} : {};
 
                     if ( (  Highcharts.USE_JB_STYLE === true) ||
                          ( (Highcharts.USE_JB_STYLE !== false) && chartOpt.styledMode) ){
-                        chartOpt.styledMode = chartOpt.styledMode || true;
 
+                        chartOpt.styledMode = chartOpt.styledMode || true;
 
                         //Get jquery-bootstrap padding, font-size and line-height from css to calc height of buttons.
                         let $elem = $('<div/>')
@@ -116,16 +116,21 @@
                         arguments[1].chart = chartOpt;
 
                     }
-                    let chart = originalConstructor.apply(this, arguments),
-                        container = chart.container;
+                    let chart = originalConstructor.apply(this, arguments);
 
-                    //Adding class "use-jquery-bootstrap-style" to container
-                    if (chart.scrollablePlotArea)
-                        container = chart.scrollablePlotArea.parentDiv;
+                    if (chartOpt.styledMode){
 
-                    //Set
-                    if (container)
-                        $(container).addClass('use-jquery-bootstrap-style');
+                        //Add class "use-jquery-bootstrap-style" to div with <select> for range-selector (stockChart)
+                        if (chart.rangeSelector)
+                            chart.rangeSelector.div ? $(chart.rangeSelector.div).addClass('use-jquery-bootstrap-style') : null;
+
+                        //Adding class "use-jquery-bootstrap-style" to container
+                        let container = chart.container;
+                        if (chart.scrollablePlotArea)
+                            container = chart.scrollablePlotArea.parentDiv;
+                        if (container)
+                            $(container).addClass('use-jquery-bootstrap-style');
+                    }
 
                     return chart;
                 };
@@ -140,14 +145,12 @@
     nsHC.setOptions = function (setOptions) {
         return function (options, redraw) {
             var result = setOptions.call(this, options);
-            if (redraw)
-                $.each(nsHC.charts, function(index, chart){
+            if (redraw && nsHC.charts)
+                nsHC.charts.forEach( chart => {
                     if (chart){
                         chart.options.lang = nsHC.getOptions().lang;
-
                         chart.redraw(false);
                         translateChart(chart);
-
                     }
                 });
             return result;
@@ -388,16 +391,20 @@ setLinkedSeriesState();
     function translateChart(chartOrEvent){
         var chart = chartOrEvent.target ? chartOrEvent.target : chartOrEvent;
 
+//console.log('translateChart', chart);
+
         //Translate menu-items in the export-menu but only when the fullscreen is not open
         if (chart.fullscreen && !chart.fullscreen.isOpen){
             var menuItems = checkPath(chart, 'options.exporting.buttons.contextButton.menuItems');
-            $.each(menuItems, function(index, id){
+            if (menuItems)
+                menuItems.forEach( (id, index) => {
                 var elem = chart.exportDivElements ? chart.exportDivElements[index] : null;
                 translateElement(elem, chart.options.lang, id);
             });
         }
 
-        $.each(chart.series, function(index, serie){
+        if (chart.series)
+            chart.series.forEach( serie => {
             //Translate valuePrefix amd valueSuffix of tooltips - both in original optiona and in shortcut version
             if ( checkPath(serie, 'tooltipOptions.valuePrefix') )
                 translateElement(null, serie.tooltipOptions, 'valuePrefix');
@@ -411,17 +418,25 @@ setLinkedSeriesState();
         });
 
         //Translate range-selector buttons and drop-down
-        if (chart.rangeSelector){
-            $.each(chart.rangeSelector.buttonOptions, function(index, buttonOpt){
+        let crs = chart.rangeSelector,
+            crsbo = crs ? crs.buttonOptions : null;
+        if (crsbo){
+            crsbo.forEach( (buttonOpt, index) => {
                 //Translate button
                 translateElement(null, buttonOpt, 'text');
                 translateElement(null, buttonOpt, 'title');
 
                 //Translate options in select
-                chart.rangeSelector.dropdown[index+1].innerHTML = buttonOpt.title || buttonOpt.text;
+                crs.dropdown[index+1].innerHTML = buttonOpt.title || buttonOpt.text;
             });
-            //Align elemnets (buttons and select) to update select
-            chart.rangeSelector.alignElements();
+
+            //Align elements (buttons and select) to update select
+            crs.alignElements();
+
+            //Update label for dropbox in range-selector
+            let selectedText = (crs.selected > -1) && crsbo[crs.selected] ? crsbo[crs.selected].text : '';
+            selectedText = selectedText || Highcharts.defaultOptions.lang.rangeSelectorZoom || 'Zoom';
+            crs.dropdownLabel.attr({text: selectedText + ' ▾'});
         }
     }
 
@@ -466,10 +481,8 @@ setLinkedSeriesState();
 
     nsHC.Point.prototype.tooltipFormatter = function (tooltipFormatter) {
        return function(){
-           var objList = [this, this.options, this.series];
-
-            $.each(objList, function(index, obj){
-                var hasName = !!(obj && obj.name),
+           [this, this.options, this.series].forEach( obj => {
+                let hasName = !!(obj && obj.name),
                     name    = hasName ? obj.name : '',
                     translateName = hasName && isObject(name);
 
@@ -714,11 +727,11 @@ setLinkedSeriesState();
     var timezone = moment.simpleFormat.options.timezone;
     //Update charts when timezone or format for date/time is changed
     moment.sfOnSetFormat( function(options){
-        if (timezone != options.timezone)
+        if ((timezone != options.timezone) && nsHC.charts)
             //Mark all date-axes' labels to be rearranged
-            $.each(nsHC.charts, function(index, chart){
-                if (chart)
-                    $.each(chart.axes, function(index, axis){
+            nsHC.charts.forEach( chart => {
+                if (chart && chart.axes)
+                    chart.axes.forEach( axis => {
                         if (axis && axis.options && (axis.options.type == "datetime")){
                             axis.tickPositions = undefined; //Not the right way according to https://github.com/highcharts/highcharts/issues/10525 but it works!
                             axis.update({});

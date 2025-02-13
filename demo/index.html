@@ -170,13 +170,12 @@ $.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data
 
         rangeSelector: {
             //dropdown: 'always',
-            inputDateFormat: "%e. %b %Y.",
-            buttonTheme: {
-                width: 44
-            },
-            buttonPosition: {
-                align: 'middle'
-            },
+            
+verticalAlign: 'bottom',
+
+            //inputDateFormat: "%e. %b %Y.",
+            buttonTheme: { width: 44 },
+            //buttonPosition: { align: 'middle' },
             //inputEditDateFormat: '%d-%m-%Y', //%Y-%m-%d
             inputEditDateFormat: '%Y/%m/%d',
             buttons: [{
@@ -207,7 +206,7 @@ $.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data
                 type: 'all',
                 text: {da:'Alt', en:'All'}
             }],
-            selected: 3
+            selected: -1
         },
 
         exporting: {

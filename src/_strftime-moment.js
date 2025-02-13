@@ -51,9 +51,7 @@
         ];
 
     function convert2strftime( mask ){
-        $.each(momentSF2Highchart, function(index, fromTo ){
-            mask = mask.replace(new RegExp(fromTo.from, 'g'), '%'+fromTo.to);
-        });
+        momentSF2Highchart.forEach( fromTo => mask = mask.replace(new RegExp(fromTo.from, 'g'), '%'+fromTo.to) );
         return mask;
     }
 

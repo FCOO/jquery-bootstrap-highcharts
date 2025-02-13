@@ -15422,6 +15422,10 @@ fixed-first-column-selected : First column when it is fixed and selected
 .table.jb-table.table-not-full-width {
   width: inherit !important;
 }
+.table.jb-table.table-bordered td, .table.jb-table.table-bordered th {
+  border-width: 1px !important;
+  border-color: black !important;
+}
 .table.jb-table thead tr {
   position: sticky;
   top: 0px;

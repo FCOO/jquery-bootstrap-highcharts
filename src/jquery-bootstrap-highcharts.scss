@@ -127,9 +127,13 @@ Color
     Context-menu / dropdown-menu
     Set look like jquery-bootstrap menu
     ************************************************/
-    .highcharts-menu {
+    select {
+        color: red;
+    }
+
+    select, .highcharts-menu {
         padding: 0;
-        .highcharts-menu-item {
+        .highcharts-menu-item, option {
             @include button-variant(
                 $background         : $jb-btn-standard-background-color,
                 $hover-background   : $jb-btn-standard-hover-background-color,
@@ -172,6 +176,10 @@ Color
             }
 
             @extend .any-highcharts-buttons;
+        }
+
+        option:disabled {
+            --hcmi-color: initial;
         }
 
         hr {
