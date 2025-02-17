@@ -16,17 +16,17 @@
     /****************************************************************
     Create global variable to set when jquery-bootstrap style is used:
     window.Highcharts.USE_JB_STYLE:
-    true : Allways. Force chart.options.styledMode = true
+    true : Allways. Force chart.options.useJBStyle = true
     false: Never.
-    STRING: Only if chart.styledMode = true in options
+    STRING: Only if chart.useJBStyle = true in options
 
     Extend all (known) constructor to include className "use-jquery-bootstrap-style"
-    and force chart.options.styledMode = true to use css-style given in
+    and force chart.options.useJBStyle = true to use css-style given in
     jquery-bootstrap if conditions in window.Highcharts.USE_JB_STYLE and options
     are set
     ****************************************************************/
     if (Highcharts.USE_JB_STYLE === undefined)
-        Highcharts.USE_JB_STYLE = 'only if styledMode = true';
+        Highcharts.USE_JB_STYLE = 'only if useJBStyle = true';
 
     function get(obj, idList ){
         idList = idList.split('.');
@@ -49,13 +49,27 @@
     */
 
     //Adjust button size to fit with jquery-bootstrap
-    let buttonHeight = [], buttonPadding = [];
-    function setHeightAndPadding(obj, idList, index = 0, inclWidth){
-        let opt = get(obj, idList);
-        opt.height  = buttonHeight[index];
-        opt.padding = buttonPadding[index];
-        if (inclWidth)
-            opt.width = buttonHeight[index];
+    let buttonHeight = [], buttonPadding = [], fontSize = [];
+
+    let globalBorderWidth = 1;
+
+    function setHeightAndPadding(obj, idList, wh = 'h', index = 0){
+        let opt   = get(obj, idList),
+            style = get(opt, 'style');
+
+        if (wh.includes('h'))
+            opt['height'] = buttonHeight[index];
+
+        if (wh.includes('w'))
+            opt['width'] = buttonHeight[index];
+
+        opt['stroke-width'] = globalBorderWidth;
+        opt['stroke']       = 'var(--jbh-button-border-color)';
+
+        style['font-size']   = fontSize[index];
+        style['font-family'] = 'var(--bs-body-font-family)';
+
+        opt['padding'] = buttonPadding[index];
     }
 
 
@@ -67,9 +81,9 @@
                         chartOpt   = options ? options.chart || {} : {};
 
                     if ( (  Highcharts.USE_JB_STYLE === true) ||
-                         ( (Highcharts.USE_JB_STYLE !== false) && chartOpt.styledMode) ){
+                         ( (Highcharts.USE_JB_STYLE !== false) && chartOpt.useJBStyle) ){
 
-                        chartOpt.styledMode = chartOpt.styledMode || true;
+                        chartOpt.useJBStyle = true;
 
                         //Get jquery-bootstrap padding, font-size and line-height from css to calc height of buttons.
                         let $elem = $('<div/>')
@@ -88,12 +102,15 @@
                                   lineHeight  = getCssVar('bs-btn-line-height', '.btn'),
                                   paddingX    = 16 * getCssVar('bs-btn-padding-x', ns),
                                   paddingY    = 16 * getCssVar('bs-btn-padding-y', ns),
-                                  fontSize    = 16 * getCssVar('bs-btn-font-size', ns);
+                                  fSize       = 16 * getCssVar('bs-btn-font-size', ns);
 
-                            //Calc new default button for Highcharts ("1" = border-width) adjusted for padding
-                            let hcButtonHeight = 1 + paddingY + lineHeight*fontSize + paddingY + 1 - 2*paddingX;
+                            globalBorderWidth = getCssVar('bs-border-width', ns);
+
+                            //Calc new default button for Highcharts adjusted for padding
+                            let hcButtonHeight = globalBorderWidth + paddingY + lineHeight*fSize + paddingY + globalBorderWidth - 2*paddingX;
                             buttonHeight[index] = hcButtonHeight;
                             buttonPadding[index] = paddingX;
+                            fontSize[index] = fSize;
                         });
 
                         $elem.remove();
@@ -105,12 +122,11 @@
                         //Set new height for buttons in range-selector
                         setHeightAndPadding(options, 'rangeSelector.buttonTheme');
 
-                        //@todo Set new height and width for context-menu-button - need also to recalc size of menu-char etc.
-                        //setHeightAndPadding(options, 'exporting.buttons.contextButton', 1, true);
+                        //Set style for context-menu-button
+                        setHeightAndPadding(options, 'exporting.buttons.contextButton.theme', '');
 
-                        //@todo Set new height and width for map-zoom-button - need also to recalc size of menu-char etc.
-                        //setHeightAndPadding(options, 'mapNavigation.buttonOptions', 1, true);
-
+                        //Set style for map-zoom-button
+                        setHeightAndPadding(options, 'mapNavigation.buttonOptions.theme', '');
 
                         //Save adjusted options
                         arguments[1].chart = chartOpt;
@@ -118,7 +134,7 @@
                     }
                     let chart = originalConstructor.apply(this, arguments);
 
-                    if (chartOpt.styledMode){
+                    if (chartOpt.useJBStyle){
 
                         //Add class "use-jquery-bootstrap-style" to div with <select> for range-selector (stockChart)
                         if (chart.rangeSelector)
@@ -390,8 +406,6 @@ setLinkedSeriesState();
     *****************************************************/
     function translateChart(chartOrEvent){
         var chart = chartOrEvent.target ? chartOrEvent.target : chartOrEvent;
-
-//console.log('translateChart', chart);
 
         //Translate menu-items in the export-menu but only when the fullscreen is not open
         if (chart.fullscreen && !chart.fullscreen.isOpen){

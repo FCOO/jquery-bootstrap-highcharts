@@ -268,29 +268,33 @@ Color
   ************************************************/
 }
 .use-jquery-bootstrap-style .any-highcharts-buttons, .use-jquery-bootstrap-style select .highcharts-menu-item, .use-jquery-bootstrap-style select option, .use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item, .use-jquery-bootstrap-style .highcharts-menu option, .use-jquery-bootstrap-style .highcharts-button {
-  fill: var(--jbh-button-background-color);
-  stroke: var(--jbh-button-border-color);
   cursor: pointer;
-  stroke-width: 1px !important;
+  fill: var(--jbh-button-background-color);
+  background-color: var(--jbh-button-background-color);
+  background: var(--jbh-button-background-color) !important;
+  color: var(--jbh-button-color) !important;
+  stroke: var(--jbh-button-border-color) !important;
+  stroke-width: var(--bs-border-width) !important;
+  border: var(--bs-border-width) solid var(--jbh-button-border-color) !important;
   line-height: var(--bs-body-line-height) !important;
-  padding: 0.125rem 0.125rem;
-  font-size: 0.75rem;
+  padding: 0.125rem 0.125rem !important;
+  font-size: 0.75rem !important;
 }
 html.touchevents .use-jquery-bootstrap-style .any-highcharts-buttons, html.touchevents .use-jquery-bootstrap-style select .highcharts-menu-item, html.touchevents .use-jquery-bootstrap-style select option, html.touchevents .use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item, html.touchevents .use-jquery-bootstrap-style .highcharts-menu option, html.touchevents .use-jquery-bootstrap-style .highcharts-button {
-  padding: 0.25rem 0.25rem;
-  font-size: 0.875rem;
+  padding: 0.25rem 0.25rem !important;
+  font-size: 0.875rem !important;
 }
 .use-jquery-bootstrap-style .any-highcharts-buttons text, .use-jquery-bootstrap-style select .highcharts-menu-item text, .use-jquery-bootstrap-style select option text, .use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item text, .use-jquery-bootstrap-style .highcharts-menu option text, .use-jquery-bootstrap-style .highcharts-button text {
-  fill: var(--jbh-button-color);
+  fill: var(--jbh-button-color) !important;
   font-weight: normal !important;
   font-size: inherit !important;
 }
-.use-jquery-bootstrap-style .highcharts-button-hover {
+.use-jquery-bootstrap-style .highcharts-button-hover, .use-jquery-bootstrap-style select .highcharts-menu-item:hover, .use-jquery-bootstrap-style select option:hover, .use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item:hover, .use-jquery-bootstrap-style .highcharts-menu option:hover {
   --jbh-button-background-color: #dee2e6;
   --jbh-button-border-color: rgb(181.2, 188.4, 195.6);
   --jbh-button-color: rgb(55.2, 58.8, 62.4);
 }
-.use-jquery-bootstrap-style .highcharts-button-pressed {
+.use-jquery-bootstrap-style .highcharts-button-pressed, .use-jquery-bootstrap-style select .highcharts-menu-item:active, .use-jquery-bootstrap-style select option:active, .use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item:active, .use-jquery-bootstrap-style .highcharts-menu option:active {
   /* As selected (blue):
       --jbh-button-background-color: rgb(30, 144, 255);
       --jbh-button-border-color    : rgb(181.2, 188.4, 195.6);
@@ -305,49 +309,20 @@ html.touchevents .use-jquery-bootstrap-style .any-highcharts-buttons, html.touch
   opacity: 0.65;
 }
 .use-jquery-bootstrap-style select, .use-jquery-bootstrap-style .highcharts-menu {
-  padding: 0;
+  padding: 0 !important;
 }
 .use-jquery-bootstrap-style select .highcharts-menu-item, .use-jquery-bootstrap-style select option, .use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item, .use-jquery-bootstrap-style .highcharts-menu option {
-  --bs-btn-color: #212529;
-  --bs-btn-bg: #f8f9fa;
-  --bs-btn-border-color: #adb5bd;
-  --bs-btn-hover-color: rgb(55.2, 58.8, 62.4);
-  --bs-btn-hover-bg: #dee2e6;
-  --bs-btn-hover-border-color: rgb(181.2, 188.4, 195.6);
-  --bs-btn-focus-shadow-rgb: 152, 159, 167;
-  --bs-btn-active-color: rgb(55.2, 58.8, 62.4);
-  --bs-btn-active-bg: #ced4da;
-  --bs-btn-active-border-color: rgb(181.2, 188.4, 195.6);
-  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  --bs-btn-disabled-color: #212529;
-  --bs-btn-disabled-bg: #f8f9fa;
-  --bs-btn-disabled-border-color: #adb5bd;
-  --hcmi-border-color: var(--bs-btn-border-color);
-  --hcmi-color: var(--bs-btn-color);
-  --hcmi-bg-color: var(--bs-btn-bg);
+  font-family: var(--bs-body-font-family);
   line-height: var(--bs-body-line-height) !important;
   text-decoration: none;
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
   user-select: none;
-  border: 1px solid var(--hcmi-border-color) !important;
   border-radius: 0 !important;
-  color: var(--hcmi-color) !important;
-  background-color: var(--hcmi-bg-color) !important;
-}
-.use-jquery-bootstrap-style select .highcharts-menu-item:hover, .use-jquery-bootstrap-style select option:hover, .use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item:hover, .use-jquery-bootstrap-style .highcharts-menu option:hover {
-  --hcmi-border-color: var(--bs-btn-hover-border-color);
-  --hcmi-color: var(--bs-btn-hover-color);
-  --hcmi-bg-color: var(--bs-btn-hover-bg);
-}
-.use-jquery-bootstrap-style select .highcharts-menu-item:active, .use-jquery-bootstrap-style select option:active, .use-jquery-bootstrap-style .highcharts-menu .highcharts-menu-item:active, .use-jquery-bootstrap-style .highcharts-menu option:active {
-  --hcmi-border-color: var(--bs-btn-active-border-color);
-  --hcmi-color: var(--bs-btn-active-color);
-  --hcmi-bg-color: var(--bs-btn-active-bg);
 }
 .use-jquery-bootstrap-style select option:disabled, .use-jquery-bootstrap-style .highcharts-menu option:disabled {
-  --hcmi-color: initial;
+  --jbh-button-color: initial;
 }
 .use-jquery-bootstrap-style select hr, .use-jquery-bootstrap-style .highcharts-menu hr {
   color: transparent;

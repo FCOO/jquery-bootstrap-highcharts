@@ -11,6 +11,19 @@
 
     <link  href="bower_components.css" rel="stylesheet">
     <link  href="../src/jquery-bootstrap-highcharts.css" rel="stylesheet">
+    
+    <style>
+        :root-TEST {
+           --jbh-button-background-color: red;
+            --jbh-button-border-color   : green;
+            --jbh-button-color          : yellow;
+            --bs-border-width           : 4px;
+            --bs-body-font-family       : NIELS, cursive;            
+        }            
+    
+        //.highcharts-contextmenu { display: block !important; }
+    
+    </style>
 </head>
 
 <body>
@@ -269,6 +282,8 @@ verticalAlign: 'bottom',
             data: data.data,
             pointStart: data.pointStart,
             pointInterval: data.pointInterval,
+            //color: '#00A0DC',
+            colorIndex: 2,
             dataGrouping: {
                 //enabled:false,
                 //approximation: 'high',
@@ -572,7 +587,7 @@ lineWidth: 10,
                 }],
 
                 exporting: {
-                    enabled: false
+                    enabled: true,//false
                 }
 
             }); // return chart

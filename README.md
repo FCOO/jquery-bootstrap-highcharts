@@ -11,20 +11,33 @@ It also adjust default options for [Highcharts]
 
 ## Styling
 
-### Highcharts
-In [Highcharts] the styling of any element can be controlled either by css or options by setting `chart.styledMode = true or false` ([documentation](https://www.highcharts.com/docs/chart-design-and-style/style-by-css)):
-> When the chart.styledMode option is true, no presentational attributes (like fill, stroke, font styles etc.) are applied to the chart SVG. Instead, the design is applied purely by CSS.
+To have a [Highcharts] chart styled similar to the styling of [jquery-bootstrap] regarding elements (buttons, menus, titles) a new chart-options and a new global variable are created:
 
-### jquery-bootstrap-highcharts
+### Options
 
-In `jquery-bootstrap-highcharts` a global variable is defined to control if the charts will have style similar to [jquery-bootstrap] regarding elements (buttons, menus, titles) and line colors:
+To have a single chart using [jquery-bootstrap] styles, set options `useJBStyle: true` in the chart-options for the chart
 
-	window.Highcharts.USE_JB_STYLE = true/false/STRING //Default = "only if styledMode = true"
+	{
+		chart: {
+			useJBStyle: true,
+			...
+		},
+		...
+	}
+
+
+### Global variable
+
+To enable or disable the use of [jquery-bootstrap] styling for all charts in an application a global variable is defined
+
+	window.Highcharts.USE_JB_STYLE = true/false/STRING //Default = "only if useJBStyle = true"
+
 Posible values
 
--     `true `: Allways. Force `options.chart.styledMode = true`
+-     `true `: Allways. Force `options.chart.useJBStyle = true`
 -     `false`: Never.
--     `STRING`: Individuel for each chart: Only if `options.chart.styledMode = true`
+-     `STRING`: Individuel for each chart: Only if `options.chart.useJBStyle = true`
+
 
 ## Installation
 ### bower
@@ -40,6 +53,7 @@ The following (known) issues need to be fixed:
 
 1. Axis labels in Waterfall do not work with `{da:"...", en:"..."}`
 2. `Title` for buttons in range-selector do not work with `{da:"...", en:"..."}`
+3. No color-scale on Speedometer
 
 ## Copyright and License
 This plugin is licensed under the [MIT license](https://github.com/FCOO/jquery-bootstrap-highcharts/LICENSE).

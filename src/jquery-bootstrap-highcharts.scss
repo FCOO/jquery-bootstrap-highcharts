@@ -75,23 +75,30 @@ Color
     Buttons
     ************************************************/
     .any-highcharts-buttons {
-        fill        : var(--jbh-button-background-color);
-        stroke      : var(--jbh-button-border-color);
         cursor      : pointer;
-        stroke-width: 1px !important;
+
+        fill            : var(--jbh-button-background-color);
+        background-color: var(--jbh-button-background-color);
+        background      : var(--jbh-button-background-color) !important;
+
+        color           : var(--jbh-button-color) !important;
+
+        stroke      : var(--jbh-button-border-color) !important;
+        stroke-width: var(--bs-border-width) !important;
+        border      : var(--bs-border-width) solid var(--jbh-button-border-color) !important;
 
         line-height : var(--bs-body-line-height) !important;
 
-        padding     : #{$btn-padding-y-xs} #{$btn-padding-x-xs};
-        font-size   : #{$jb-font-size-xs}; // = 12px
+        padding     : #{$btn-padding-y-xs} #{$btn-padding-x-xs} !important;
+        font-size   : #{$jb-font-size-xs} !important; // = 12px
         html.touchevents & {
-            padding  : #{$btn-padding-y-sm} #{$btn-padding-x-sm};
-            font-size: #{$jb-font-size-sm}; // = 14px
+            padding  : #{$btn-padding-y-sm} #{$btn-padding-x-sm} !important;
+            font-size: #{$jb-font-size-sm} !important; // = 14px
         }
         text {
-            fill       : var(--jbh-button-color);
+            fill       : var(--jbh-button-color) !important;
             font-weight: normal !important;
-            font-size: inherit !important;
+            font-size  : inherit !important;
         }
     }
 
@@ -128,25 +135,10 @@ Color
     Set look like jquery-bootstrap menu
     ************************************************/
     select, .highcharts-menu {
-        padding: 0;
+        padding: 0 !important;
+
         .highcharts-menu-item, option {
-            @include button-variant(
-                $background         : $jb-btn-standard-background-color,
-                $hover-background   : $jb-btn-standard-hover-background-color,
-                $active-background  : $jb-btn-standard-active-background-color,
-
-                $border             : $jb-element-border-color,
-                $hover-border       : $jb-element-hover-border-color,
-                $active-border      : $jb-element-active-and-focus-border-color,
-
-                $color              : $jb-element-color,
-                $hover-color        : $jb-element-hover-color,
-                $active-color       : $jb-element-active-color,
-                $disabled-color     : $jb-element-disabled-color
-            );
-            --hcmi-border-color: var(--bs-btn-border-color);
-            --hcmi-color       : var(--bs-btn-color);
-            --hcmi-bg-color    : var(--bs-btn-bg);
+            font-family     : var(--bs-body-font-family);
 
             line-height     : var(--bs-body-line-height) !important;
             text-decoration : none;
@@ -155,33 +147,21 @@ Color
             cursor          : pointer;
             user-select     : none;
 
-            border          : 1px solid var(--hcmi-border-color) !important;
             border-radius   : 0 !important;
-            color           : var(--hcmi-color) !important;
-            background-color: var(--hcmi-bg-color) !important;
-
-            &:hover {
-                --hcmi-border-color: var(--bs-btn-hover-border-color);
-                --hcmi-color       : var(--bs-btn-hover-color);
-                --hcmi-bg-color    : var(--bs-btn-hover-bg);
-            }
-            &:active {
-                --hcmi-border-color: var(--bs-btn-active-border-color);
-                --hcmi-color       : var(--bs-btn-active-color);
-                --hcmi-bg-color    : var(--bs-btn-active-bg);
-            }
 
             @extend .any-highcharts-buttons;
+
+            &:hover  { @extend .highcharts-button-hover;   }
+            &:active { @extend .highcharts-button-pressed; }
         }
 
         option:disabled {
-            --hcmi-color: initial;
+            --jbh-button-color: initial;
         }
 
         hr {
             color : transparent;
             margin: 0.25em;
-
         }
     }
 
