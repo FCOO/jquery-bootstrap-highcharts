@@ -9,6 +9,8 @@
 Adjust Highcharts style to match the style used in jquery-bootstrap
 
 ************************************************/
+@use 'sass:math';
+
 //BOURBON - http://bourbon.io/
 @import "../bower_components/bourbon/core/bourbon";
 
@@ -21,16 +23,6 @@ Adjust Highcharts style to match the style used in jquery-bootstrap
 
 //Bootstrap and jquery-bootstrap variables, functions, and mixins
 @import "../bower_components/jquery-bootstrap/src/_include-jquery-bootstrap-variables";
-
-
-/***********************************************
-Font-size
-************************************************/
-.use-jquery-bootstrap-style.highcharts-container {
-// @todo    font-size: $jb-font-size-sm !important;
-}
-
-
 
 
 /***********************************************
@@ -166,3 +158,197 @@ Color
     }
 
 }
+
+
+/**********************************************************************
+***********************************************************************
+FONT-SIZE
+To adjust highcharts font-size to match jquery-bootstrap some of
+the css-classes in Highchart are adjusted to have font-size equal
+to the jquery-bootstrap sizes =
+eXtra Small (xs = 12px), Small (sm = 14px) Normal (= 16px) or Large (lg =20px)
+
+Note: Only buttons and menus get different size in touch-mode
+
+It is also possible to create a small-version of a chart setting the class jbh-small-chart
+to the container
+
+Below is a list of all the classes containing font-size inside .use-jquery-bootstrap-style
+Not all of the has been changed yet
+The original Highcharts properties are marked with //HC:
+
+/**********************************************************************
+**********************************************************************/
+:root {
+    --jbh-font-size-lg : #{$jb-font-size-lg};
+    --jbh-font-size    : #{$jb-font-size};
+    --jbh-font-size-sm : #{$jb-font-size-sm};
+    --jbh-font-size-xs : #{$jb-font-size-xs};
+    --jbh-font-size-xxs: 10px; //Instead of #{$jb-font-size-xxs} = 11px
+}
+
+
+
+.use-jquery-bootstrap-style-font-family-and-size {
+    font-family: var(--bs-body-font-family);
+    > text, > text * {
+        font-size: inherit !important;
+    }
+}
+
+@mixin _font-size( $font-size-var-id){
+    font-size: var(--#{$font-size-var-id}) !important;
+    @extend .use-jquery-bootstrap-style-font-family-and-size;
+}
+
+@mixin font-size-lg() { @include _font-size( jbh-font-size-lg);  }
+@mixin font-size()    { @include _font-size( jbh-font-size);     }
+@mixin font-size-sm() { @include _font-size( jbh-font-size-sm);  }
+@mixin font-size-xs() { @include _font-size( jbh-font-size-xs);  }
+@mixin font-size-xxs(){ @include _font-size( jbh-font-size-xxs); }
+
+.use-jquery-bootstrap-style.jbh-small-chart {
+    --jbh-font-size-lg : #{$jb-font-size};
+    --jbh-font-size    : #{$jb-font-size-sm};
+    --jbh-font-size-sm : #{$jb-font-size-xs};
+    --jbh-font-size-xs : 10px; //Instead of #{$jb-font-size-xxs} = 11px
+}
+
+
+//.highcharts-container.use-jquery-bootstrap-style {
+.use-jquery-bootstrap-style {
+
+    font-family: var(--bs-body-font-family);
+
+    .highcharts-label {
+        //HC: font-size: 0.8em;
+        @include font-size-xs();
+    }
+
+    /* Titles */
+    .highcharts-title {
+        //HC: font-size: 1.2em;
+        //HC: font-weight: bold;
+        @include font-size-lg();
+        font-weight: normal !important;
+    }
+
+    .highcharts-subtitle {
+        //HC: font-size: 0.8em;
+        @include font-size-sm();
+    }
+
+    /* Axes */
+    .highcharts-axis-title {
+        //HC: font-size: 0.8em;
+        @include font-size-sm();
+    }
+
+    .highcharts-axis-labels {
+        //HC: font-size: 0.8em;
+        @include font-size-xs();
+    }
+
+
+    /* Credits */
+    .highcharts-credits {
+        //HC: font-size: 0.6em;
+        @include font-size-xxs();
+    }
+
+    .highcharts-credits:hover {
+        //HC: font-size: 0.7em;
+        @include font-size-xxs();
+        fill: black !important;
+    }
+
+    /* Tooltip */
+    .highcharts-tooltip {
+        @include font-size-xs();
+    }
+    //HC: .highcharts-tooltip text { font-size: 0.8em; }
+
+    .highcharts-tooltip .highcharts-tooltip-header { //In Highcharts it is .highcharts-tooltip .highcharts-header
+        @include font-size-xs();
+        //HC: font-size: 0.8em;
+    }
+
+            div.highcharts-tooltip {
+                //HC: font-size: 0.8em;
+            }
+
+    /* Series options */
+    /* Various series-specific */
+    .highcharts-data-label text,
+    text.highcharts-data-label {
+        @include font-size-xs();
+        font-weight: normal !important;
+        //HC: font-size: 0.7em;
+        //HC: font-weight: bold;
+    }
+
+
+    /* Legend */
+     .highcharts-legend-item {
+        @include font-size-sm();
+     }
+    .highcharts-legend-item > text {
+        //HC: font-weight: bold;
+        font-weight: normal !important;
+        //HC: font-size: 0.8em;
+    }
+
+            /* Bubble legend */
+            .highcharts-bubble-legend-labels {
+                //HC: font-size: 0.7em;
+            }
+
+    /* Plot bands and polar pane backgrounds */
+    .highcharts-plot-line-label {
+        //HC: font-size: 0.8em;
+        @include font-size-xs();
+    }
+
+    /* Highcharts More and modules */
+    .highcharts-navigator-xaxis.highcharts-axis-labels {
+        @include font-size-xxs();   //@todo Perhaps to small
+        //HC: font-size: 0.7em;
+    }
+
+    .highcharts-range-input {
+        @include font-size-xs();
+    }
+    .highcharts-range-input text {
+        //HC: font-size: 0.8em;
+    }
+
+            .highcharts-crosshair-label text {
+                //HC: font-size: 1.7em;
+            }
+
+            .highcharts-flags-series .highcharts-point text {
+                //HC: font-size: 0.9em;
+                //HC: font-weight: bold;
+            }
+
+            /* Highcharts Maps */
+            .highcharts-map-navigation {
+                //HC: font-size: 1.3em;
+                //HC: font-weight: bold;
+            }
+
+            /* No-data module */
+            .highcharts-no-data text {
+                //HC: font-weight: bold;
+                //HC: font-size: 0.8em;
+            }
+
+            /* Advanced annotations module */
+            /* Annotations module */
+            .highcharts-annotation-label text {
+                //HC: font-size: 0.8em;
+            }
+
+
+}   //End of use-jquery-bootstrap-style {
+

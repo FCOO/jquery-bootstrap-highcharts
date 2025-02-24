@@ -223,9 +223,6 @@ table-no-hover()
 Prevent any hover effect
 *****************************************************************/
 /***********************************************
-Font-size
-************************************************/
-/***********************************************
 Color
 ************************************************/
 .use-jquery-bootstrap-style {
@@ -327,4 +324,115 @@ html.touchevents .use-jquery-bootstrap-style .any-highcharts-buttons, html.touch
 .use-jquery-bootstrap-style select hr, .use-jquery-bootstrap-style .highcharts-menu hr {
   color: transparent;
   margin: 0.25em;
+}
+
+/**********************************************************************
+***********************************************************************
+FONT-SIZE
+To adjust highcharts font-size to match jquery-bootstrap some of
+the css-classes in Highchart are adjusted to have font-size equal
+to the jquery-bootstrap sizes =
+eXtra Small (xs = 12px), Small (sm = 14px) Normal (= 16px) or Large (lg =20px)
+
+Note: Only buttons and menus get different size in touch-mode
+
+It is also possible to create a small-version of a chart setting the class jbh-small-chart
+to the container
+
+Below is a list of all the classes containing font-size inside .use-jquery-bootstrap-style
+Not all of the has been changed yet
+The original Highcharts properties are marked with //HC:
+
+/**********************************************************************
+**********************************************************************/
+:root {
+  --jbh-font-size-lg: 1.25rem;
+  --jbh-font-size: 1rem;
+  --jbh-font-size-sm: 0.875rem;
+  --jbh-font-size-xs: 0.75rem;
+  --jbh-font-size-xxs: 10px;
+}
+
+.use-jquery-bootstrap-style-font-family-and-size, .use-jquery-bootstrap-style .highcharts-range-input, .use-jquery-bootstrap-style .highcharts-navigator-xaxis.highcharts-axis-labels, .use-jquery-bootstrap-style .highcharts-plot-line-label, .use-jquery-bootstrap-style .highcharts-legend-item, .use-jquery-bootstrap-style .highcharts-data-label text,
+.use-jquery-bootstrap-style text.highcharts-data-label, .use-jquery-bootstrap-style .highcharts-tooltip .highcharts-tooltip-header, .use-jquery-bootstrap-style .highcharts-tooltip, .use-jquery-bootstrap-style .highcharts-credits:hover, .use-jquery-bootstrap-style .highcharts-credits, .use-jquery-bootstrap-style .highcharts-axis-labels, .use-jquery-bootstrap-style .highcharts-axis-title, .use-jquery-bootstrap-style .highcharts-subtitle, .use-jquery-bootstrap-style .highcharts-title, .use-jquery-bootstrap-style .highcharts-label {
+  font-family: var(--bs-body-font-family);
+}
+.use-jquery-bootstrap-style-font-family-and-size > text, .use-jquery-bootstrap-style .highcharts-range-input > text, .use-jquery-bootstrap-style .highcharts-navigator-xaxis.highcharts-axis-labels > text, .use-jquery-bootstrap-style .highcharts-plot-line-label > text, .use-jquery-bootstrap-style .highcharts-legend-item > text, .use-jquery-bootstrap-style .highcharts-data-label text > text,
+.use-jquery-bootstrap-style text.highcharts-data-label > text, .use-jquery-bootstrap-style .highcharts-tooltip .highcharts-tooltip-header > text, .use-jquery-bootstrap-style .highcharts-tooltip > text, .use-jquery-bootstrap-style .highcharts-credits:hover > text, .use-jquery-bootstrap-style .highcharts-credits > text, .use-jquery-bootstrap-style .highcharts-axis-labels > text, .use-jquery-bootstrap-style .highcharts-axis-title > text, .use-jquery-bootstrap-style .highcharts-subtitle > text, .use-jquery-bootstrap-style .highcharts-title > text, .use-jquery-bootstrap-style .highcharts-label > text, .use-jquery-bootstrap-style-font-family-and-size > text *, .use-jquery-bootstrap-style .highcharts-range-input > text *, .use-jquery-bootstrap-style .highcharts-navigator-xaxis.highcharts-axis-labels > text *, .use-jquery-bootstrap-style .highcharts-plot-line-label > text *, .use-jquery-bootstrap-style .highcharts-legend-item > text *, .use-jquery-bootstrap-style .highcharts-data-label text > text *,
+.use-jquery-bootstrap-style text.highcharts-data-label > text *, .use-jquery-bootstrap-style .highcharts-tooltip .highcharts-tooltip-header > text *, .use-jquery-bootstrap-style .highcharts-tooltip > text *, .use-jquery-bootstrap-style .highcharts-credits:hover > text *, .use-jquery-bootstrap-style .highcharts-credits > text *, .use-jquery-bootstrap-style .highcharts-axis-labels > text *, .use-jquery-bootstrap-style .highcharts-axis-title > text *, .use-jquery-bootstrap-style .highcharts-subtitle > text *, .use-jquery-bootstrap-style .highcharts-title > text *, .use-jquery-bootstrap-style .highcharts-label > text * {
+  font-size: inherit !important;
+}
+
+.use-jquery-bootstrap-style.jbh-small-chart {
+  --jbh-font-size-lg: 1rem;
+  --jbh-font-size: 0.875rem;
+  --jbh-font-size-sm: 0.75rem;
+  --jbh-font-size-xs: 10px;
+}
+
+.use-jquery-bootstrap-style {
+  font-family: var(--bs-body-font-family);
+  /* Titles */
+  /* Axes */
+  /* Credits */
+  /* Tooltip */
+  /* Series options */
+  /* Various series-specific */
+  /* Legend */
+  /* Bubble legend */
+  /* Plot bands and polar pane backgrounds */
+  /* Highcharts More and modules */
+  /* Highcharts Maps */
+  /* No-data module */
+  /* Advanced annotations module */
+  /* Annotations module */
+}
+.use-jquery-bootstrap-style .highcharts-label {
+  font-size: var(--jbh-font-size-xs) !important;
+}
+.use-jquery-bootstrap-style .highcharts-title {
+  font-size: var(--jbh-font-size-lg) !important;
+  font-weight: normal !important;
+}
+.use-jquery-bootstrap-style .highcharts-subtitle {
+  font-size: var(--jbh-font-size-sm) !important;
+}
+.use-jquery-bootstrap-style .highcharts-axis-title {
+  font-size: var(--jbh-font-size-sm) !important;
+}
+.use-jquery-bootstrap-style .highcharts-axis-labels {
+  font-size: var(--jbh-font-size-xs) !important;
+}
+.use-jquery-bootstrap-style .highcharts-credits {
+  font-size: var(--jbh-font-size-xxs) !important;
+}
+.use-jquery-bootstrap-style .highcharts-credits:hover {
+  font-size: var(--jbh-font-size-xxs) !important;
+  fill: black !important;
+}
+.use-jquery-bootstrap-style .highcharts-tooltip {
+  font-size: var(--jbh-font-size-xs) !important;
+}
+.use-jquery-bootstrap-style .highcharts-tooltip .highcharts-tooltip-header {
+  font-size: var(--jbh-font-size-xs) !important;
+}
+.use-jquery-bootstrap-style .highcharts-data-label text,
+.use-jquery-bootstrap-style text.highcharts-data-label {
+  font-size: var(--jbh-font-size-xs) !important;
+  font-weight: normal !important;
+}
+.use-jquery-bootstrap-style .highcharts-legend-item {
+  font-size: var(--jbh-font-size-sm) !important;
+}
+.use-jquery-bootstrap-style .highcharts-legend-item > text {
+  font-weight: normal !important;
+}
+.use-jquery-bootstrap-style .highcharts-plot-line-label {
+  font-size: var(--jbh-font-size-xs) !important;
+}
+.use-jquery-bootstrap-style .highcharts-navigator-xaxis.highcharts-axis-labels {
+  font-size: var(--jbh-font-size-xxs) !important;
+}
+.use-jquery-bootstrap-style .highcharts-range-input {
+  font-size: var(--jbh-font-size-xs) !important;
 }

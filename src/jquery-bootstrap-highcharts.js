@@ -135,17 +135,17 @@
                     let chart = originalConstructor.apply(this, arguments);
 
                     if (chartOpt.useJBStyle){
-
-                        //Add class "use-jquery-bootstrap-style" to div with <select> for range-selector (stockChart)
+                        //Add class "use-jquery-bootstrap-style" + "jbh-small-chart" to div with <select> for range-selector (stockChart)
+                        const className = 'use-jquery-bootstrap-style' + (options.small ? ' jbh-small-chart' : '');
                         if (chart.rangeSelector)
-                            chart.rangeSelector.div ? $(chart.rangeSelector.div).addClass('use-jquery-bootstrap-style') : null;
+                            chart.rangeSelector.div ? $(chart.rangeSelector.div).addClass(className) : null;
 
                         //Adding class "use-jquery-bootstrap-style" to container
                         let container = chart.container;
                         if (chart.scrollablePlotArea)
                             container = chart.scrollablePlotArea.parentDiv;
                         if (container)
-                            $(container).addClass('use-jquery-bootstrap-style');
+                            $(container).addClass(className);
                     }
 
                     return chart;
