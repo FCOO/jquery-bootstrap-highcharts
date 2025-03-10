@@ -45,6 +45,7 @@
 <div id="container8" style="min-width: 310px; max-width: 400px; height: 400px; margin: 0 auto"></div>
 <div id="container9"></div>
 <div id="container10"></div>
+<div id="container11"></div>
 <script>
 
 
@@ -148,7 +149,7 @@ addButton('Reset zoom', () => console.log('Just a width-tester'));
 
 //**********************************************************************
 $.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/large-dataset.json', function (data) {
-
+return;
     // Create a timer
     var start = +new Date();
 
@@ -375,9 +376,9 @@ verticalAlign: 'bottom',
 $.getJSON(
     'https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/usdeur.json',
     function (data) {
-
+return;
         Highcharts.chart('container1', {
-niels: true,
+
             chart: {                 
                 scrollablePlotArea: {
                     minWidth       : 1000,
@@ -456,6 +457,7 @@ niels: true,
 
 //**********************************************************************
 //var tzChart = Highcharts.stockChart('container2', {
+/*    
 var tzChart = Highcharts.chart('container2', {
 
     title: {
@@ -505,7 +507,7 @@ $.getJSON(
     'https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/usdeur.json',
     function (data) {
         var detailChart;
-
+return;
         // create the detail chart
         function createDetail(masterChart) {
 
@@ -748,6 +750,7 @@ lineWidth: 10,
 //*/
 
 //****************************************************************************************
+/*
 Highcharts.chart('container4', {
     chart: {
         styledMode: false,
@@ -830,6 +833,7 @@ lineWidth: 1,
 //*/
 
 //****************************************************************************************
+/*
 Highcharts.chart('container5', {
     chart: {
         zoomType: 'xy'
@@ -911,7 +915,7 @@ Highcharts.chart('container5', {
 
 //****************************************************************************************
 $.getJSON('data/aapl-ohlc.json', function (data) {
-
+return;
     // create the chart
     Highcharts.stockChart('container6', {
         credits   : {
@@ -948,6 +952,7 @@ $.getJSON('data/aapl-ohlc.json', function (data) {
 //*/
 
 //****************************************************************************************
+/*
 Highcharts.chart('container7', {
     chart: {
         type: 'waterfall',
@@ -1019,6 +1024,7 @@ Highcharts.chart('container7', {
 //*/
 
 //****************************************************************************************
+//*
 Highcharts.chart('container8', {
 
     chart: {
@@ -1156,7 +1162,6 @@ var data = [
 ];
 
 $.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/germany.geo.json', function (geojson) {
-
     // Initiate the chart
     Highcharts.mapChart('container9', {
         chart: {
@@ -1265,7 +1270,7 @@ var ranges = [
         [1248998400000, 13.6]
     ];
 
-
+//*
 Highcharts.chart('container10', {
     styledMode: false,
     credits: {
@@ -1319,6 +1324,77 @@ Highcharts.chart('container10', {
 });
 
 //*/
+
+//****************************************************************************************
+//Chart with linkedTo options to test point and legend hover
+const data11 = [[2.9],[3.4],[0.4],[-3.5],[-2.1],[1.6],[6.0],[7.1],[5.4],[6.4],[7.6],[8.5],[7.4],[6.1],[3.2],[3.7],[1.7],[2.9],[3.2],[2.5],[3.2],[4.4],[5.4],[4.4],[3.6],[4.8],[5.1],[0.9],[6.6],[7.2]];
+
+Highcharts.chart("container11", {
+    title: { text: "Test of point and legend hover"},
+    xAxis: { type: "datetime" },
+    yAxis: {title: { text: null } },
+
+
+    
+
+    tooltip: {
+        crosshairs: true,
+        shared: true,
+        valueSuffix: "°C",
+    },
+
+    plotOptions: {
+        series: {
+            pointStart: "2024-05-01",
+            pointIntervalUnit: "day",
+        },
+    },
+
+    series: [{
+        id: 'main',
+        name: "Temperature",
+        data: data11,
+        color: 'red'
+    },{
+        name: "sub1",
+        data: data11,
+        pointStart: "2024-07-01",
+        lineWidth: 1,
+        linkedTo: 'main',
+        color: 'blue'
+    },{
+        name: "sub2",
+        data: data11,
+        pointStart: "2024-07-10",
+//pointIntervalUnit: 
+        dashStyle: 'dash',
+        linkedTo: 'main',
+        color: 'orange'
+    },{
+        name: "Another",
+        data: data11,
+        pointStart: "2024-06-01",
+        lineWidth: 1,
+        color: 'green'
+    }]
+})
+
+//*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //****************************************************************************************
 function openModal(){

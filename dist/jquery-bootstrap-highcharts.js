@@ -133,7 +133,6 @@
 
                     }
                     let chart = originalConstructor.apply(this, arguments);
-
                     if (chartOpt.useJBStyle){
                         //Add class "use-jquery-bootstrap-style" + "jbh-small-chart" to div with <select> for range-selector (stockChart)
                         const className = 'use-jquery-bootstrap-style' + (options.small ? ' jbh-small-chart' : '');
@@ -176,143 +175,65 @@
 
     /****************************************************************
     LEGEND
-    When two or more series are linked together via series.linkedTo:..
-    there was a 'bug': Hover over the legend for the multi series only highlight
-    the first series.
-    Based on a solution/fix provided by Highcharts the Legend.setItemEvents is altered below
-    The method is from version 10.3.1
-    The added code is left-side-aligned
-    See https://www.highcharts.com/forum/viewtopic.php?t=39679, and
-        https://jsfiddle.net/daniel_s/1hL6saxn/, and
-        https://github.com/highcharts/highcharts/issues/17961
+    When two or more series are linked together via series.linkedTo and the
+    user hover over the common legend only the 'main' series is highlighted
 
-    @todo Check if this is fixed in version 12
+    This is fixed by adding 'mouseover' and 'mouseout events to the legend elemens
     ****************************************************************/
-    /**
-     * @private
-     * @function Highcharts.Legend#setItemEvents
-     * @param {Highcharts.BubbleLegendItem|Point|Highcharts.Series} item
-     * @param {Highcharts.SVGElement} legendLabel
-     * @param {boolean} [useHTML=false]
-     * @emits Highcharts.Point#event:legendItemClick
-     * @emits Highcharts.Series#event:legendItemClick
-     */
-    //var merge = Highcharts.merge;
-    //var fireEvent = Highcharts.fireEvent;
+    Highcharts.Legend.prototype.setItemEvents = function( _setItemEvents ){
+        return function (item, legendLabel, useHTML) {
+            let result = _setItemEvents.apply(this, arguments );
 
+            if (!item.hoverLegendAddeds && (item instanceof Highcharts.Series)){
 
-    //Ready to add actions for setItemEvents
-    Highcharts.Legend.prototype.setItemEvents = function (setItemEvents) {
-        return  function(/*item*/ /*, legendLabel, useHTML*/){
-                    let result = setItemEvents.apply(this, arguments);
+                let legendItem     = item.legendItem || {},
+                    legendElements = useHTML ? [legendLabel, legendItem.symbol] : [legendItem.group];
 
-                    //Extra code added here
+                (legendElements || []).forEach( group => {
+                    if (group.element) {
+                        Highcharts.addEvent(group.element, 'mouseover', function() {
+                            (this.linkedSeries || []).forEach( series => series.setState('hover') );
+                        }.bind(item) );
 
-                    return result;
-                };
-
-    }( Highcharts.Legend.prototype.setItemEvents );
-
-    /* From version 4
-    Highcharts.Legend.prototype.setItemEvents = function (item, legendLabel, useHTML) {
-        var legend = this,
-            legendItem = item.legendItem || {},
-            boxWrapper = legend.chart.renderer.boxWrapper,
-            isPoint = item instanceof Highcharts.Point,
-            activeClass = 'highcharts-legend-' +
-                (isPoint ? 'point' : 'series') + '-active',
-            styledMode = legend.chart.styledMode,
-            // When `useHTML`, the symbol is rendered in other group, so
-            // we need to apply events listeners to both places
-            legendElements = useHTML ?
-                [legendLabel,
-            legendItem.symbol] :
-                [legendItem.group];
-        var setOtherItemsState = function (state) {
-                legend.allItems.forEach(function (otherItem) {
-                    if (item !== otherItem) {
-                        [otherItem]
-                            .concat(otherItem.linkedSeries || [])
-                            .forEach(function (otherItem) {
-                            otherItem.setState(state, !isPoint);
-                    });
-                }
-            });
-        };
-
-var setLinkedSeriesState = function ( state ){
-    console.log('kommer vi her?', state, this);return;
-    if (item.linkedSeries && item.linkedSeries.length){
-        item.linkedSeries.forEach(function(linkedItem){
-            linkedItem.setState(state);
-        });
-    }
-};
-
-        // Set the events on the item group, or in case of useHTML, the item
-        // itself (#1249)
-        for (var _i = 0, legendElements_1 = legendElements; _i < legendElements_1.length; _i++) {
-            var element = legendElements_1[_i];
-            if (element) {
-                element
-                    .on('mouseover', function () {
-                    if (item.visible) {
-                        setOtherItemsState('inactive');
-                    }
-                    item.setState('hover');
-setLinkedSeriesState('hover');
-                    // A CSS class to dim or hide other than the hovered
-                    // series.
-                    // Works only if hovered series is visible (#10071).
-                    if (item.visible) {
-                        boxWrapper.addClass(activeClass);
-                    }
-                    if (!styledMode) {
-                        legendLabel.css(legend.options.itemHoverStyle);
-                    }
-                })
-                    .on('mouseout', function () {
-                    if (!legend.chart.styledMode) {
-                        legendLabel.css(merge(item.visible ?
-                            legend.itemStyle :
-                            legend.itemHiddenStyle));
-                    }
-                    setOtherItemsState('');
-                    // A CSS class to dim or hide other than the hovered
-                    // series.
-                    boxWrapper.removeClass(activeClass);
-                    item.setState();
-setLinkedSeriesState();
-                })
-                    .on('click', function (event) {
-                    var strLegendItemClick = 'legendItemClick',
-                        fnLegendItemClick = function () {
-                            if (item.setVisible) {
-                                item.setVisible();
-                        }
-                        // Reset inactive state
-                        setOtherItemsState(item.visible ? 'inactive' : '');
-                    };
-                    // A CSS class to dim or hide other than the hovered
-                    // series. Event handling in iOS causes the activeClass
-                    // to be added prior to click in some cases (#7418).
-                    boxWrapper.removeClass(activeClass);
-                    // Pass over the click/touch event. #4.
-                    event = {
-                        browserEvent: event
-                    };
-                    // click the name or symbol
-                    if (item.firePointEvent) { // point
-                        item.firePointEvent(strLegendItemClick, event, fnLegendItemClick);
-                    }
-                    else {
-                        fireEvent(item, strLegendItemClick, event, fnLegendItemClick);
+                        Highcharts.addEvent(group.element, 'mouseout', function() {
+                            (this.linkedSeries || []).forEach( series => series.setState('') );
+                        }.bind(item) );
                     }
                 });
+                item.hoverLegendAdded = true;
             }
-        }
-    };
-    */
+
+            return result;
+        };
+    }(Highcharts.Legend.prototype.setItemEvents);
+
+
+    /****************************************************************
+    HOVER SERIES
+    In Highcharts hovering a series with linkedSeries will 'hover' all the "child"-series linkedSeries.
+    But hovering one of the linkedSeries will only hover the parent-series (linkedParent) but not its "sibling"-series
+    This is fixed by adding the following extention to setState
+    ****************************************************************/
+    Highcharts.wrap(Highcharts.Series.prototype, 'setState', function(proceed) {
+        const args = Array.prototype.slice.call(arguments, 1);
+        if (this.forcedState)
+            return proceed.apply(this, [this.forcedState]);
+
+        let siblingSeries = [];
+        (this.linkedParent ? this.linkedParent.linkedSeries || [] : []).forEach( series => {
+            if (series !== this)
+                siblingSeries.push(series);
+        }, this);
+
+        siblingSeries.forEach( series => {
+            series.forcedState = args[0];
+            if (series.forcedState)
+                series.setState( series.forcedState );
+        });
+
+        return proceed.apply(this, args);
+    });
+
 
     /***************************************************************
     LANGUAGE
