@@ -216,6 +216,12 @@
     ****************************************************************/
     Highcharts.wrap(Highcharts.Series.prototype, 'setState', function(proceed) {
         const args = Array.prototype.slice.call(arguments, 1);
+
+        //Force "children" series to have same state as parent
+        if (this.linkedParent)
+            return proceed.apply(this, [this.linkedParent.state]);
+
+//HER   console.log(this.linkedParent ? this.linkedParent.options.id+' '+ this.linkedParent.state: '', this.color, args[0], this.forcedState, this);
         if (this.forcedState)
             return proceed.apply(this, [this.forcedState]);
 

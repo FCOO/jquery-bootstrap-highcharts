@@ -1347,8 +1347,16 @@ Highcharts.chart("container11", {
         series: {
             pointStart: "2024-05-01",
             pointIntervalUnit: "day",
+
+            states: {
+                inactive: {
+                    //enabled: false, 
+                    brightness: 1, 
+                }
+            }
         },
     },
+
 
     series: [{
         id: 'main',
@@ -1370,12 +1378,43 @@ Highcharts.chart("container11", {
         dashStyle: 'dash',
         linkedTo: 'main',
         color: 'orange'
+
+    
     },{
+
+        
+        id: 'main2',
+        name: "Temperature2",
+        data: data11,
+        pointStart: "2024-05-02",
+        color: 'red'
+    },{
+        name: "sub2-1",
+        data: data11,
+        pointStart: "2024-07-02",
+        lineWidth: 1,
+        linkedTo: 'main2',
+        color: 'blue'
+    },{
+        name: "sub2-2",
+        data: data11,
+        pointStart: "2024-07-12",
+//pointIntervalUnit: 
+        dashStyle: 'dash',
+        linkedTo: 'main2',
+        color: 'orange'
+
+    
+/*
+    },{
+
+        
         name: "Another",
         data: data11,
         pointStart: "2024-06-01",
         lineWidth: 1,
         color: 'green'
+//*/        
     }]
 })
 
