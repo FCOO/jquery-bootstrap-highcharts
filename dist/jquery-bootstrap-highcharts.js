@@ -215,28 +215,28 @@
     This is fixed by adding the following extention to setState
     ****************************************************************/
     Highcharts.wrap(Highcharts.Series.prototype, 'setState', function(proceed) {
-        const args = Array.prototype.slice.call(arguments, 1);
+        let args = Array.prototype.slice.call(arguments, 1);
 
-        //Force "children" series to have same state as parent
-        if (this.linkedParent)
-            return proceed.apply(this, [this.linkedParent.state]);
-
-//HER   console.log(this.linkedParent ? this.linkedParent.options.id+' '+ this.linkedParent.state: '', this.color, args[0], this.forcedState, this);
         if (this.forcedState)
-            return proceed.apply(this, [this.forcedState]);
+            args[0] = this.forcedState;
+        else
+            //Force "children" and "sibling" series to have same state as parent
+            if (this.linkedParent){
 
-        let siblingSeries = [];
-        (this.linkedParent ? this.linkedParent.linkedSeries || [] : []).forEach( series => {
-            if (series !== this)
-                siblingSeries.push(series);
-        }, this);
+                args[0] = this.linkedParent.state;
 
-        siblingSeries.forEach( series => {
-            series.forcedState = args[0];
-            if (series.forcedState)
-                series.setState( series.forcedState );
-        });
+                let siblingSeries = [];
+                (this.linkedParent.linkedSeries || []).forEach( series => {
+                    if (series !== this)
+                        siblingSeries.push(series);
+                }, this);
 
+                siblingSeries.forEach( series => {
+                    series.forcedState = args[0];
+                if (series.forcedState)
+                    series.setState( series.forcedState );
+            });
+        }
         return proceed.apply(this, args);
     });
 
