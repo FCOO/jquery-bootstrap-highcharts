@@ -149,7 +149,6 @@ addButton('Reset zoom', () => console.log('Just a width-tester'));
 
 //**********************************************************************
 $.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/large-dataset.json', function (data) {
-return;
     // Create a timer
     var start = +new Date();
 
@@ -376,7 +375,6 @@ verticalAlign: 'bottom',
 $.getJSON(
     'https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/usdeur.json',
     function (data) {
-return;
         Highcharts.chart('container1', {
 
             chart: {                 
@@ -457,7 +455,7 @@ return;
 
 //**********************************************************************
 //var tzChart = Highcharts.stockChart('container2', {
-/*    
+//*    
 var tzChart = Highcharts.chart('container2', {
 
     title: {
@@ -507,7 +505,7 @@ $.getJSON(
     'https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/usdeur.json',
     function (data) {
         var detailChart;
-return;
+
         // create the detail chart
         function createDetail(masterChart) {
 
@@ -750,7 +748,7 @@ lineWidth: 10,
 //*/
 
 //****************************************************************************************
-/*
+//*
 Highcharts.chart('container4', {
     chart: {
         styledMode: false,
@@ -833,7 +831,7 @@ lineWidth: 1,
 //*/
 
 //****************************************************************************************
-/*
+//*
 Highcharts.chart('container5', {
     chart: {
         zoomType: 'xy'
@@ -915,7 +913,6 @@ Highcharts.chart('container5', {
 
 //****************************************************************************************
 $.getJSON('data/aapl-ohlc.json', function (data) {
-return;
     // create the chart
     Highcharts.stockChart('container6', {
         credits   : {
@@ -952,7 +949,7 @@ return;
 //*/
 
 //****************************************************************************************
-/*
+//*
 Highcharts.chart('container7', {
     chart: {
         type: 'waterfall',
@@ -1347,13 +1344,13 @@ Highcharts.chart("container11", {
         series: {
             pointStart: "2024-05-01",
             pointIntervalUnit: "day",
-
             states: {
-                inactive: {
-                    //enabled: false, 
-                    brightness: 1, 
-                }
-            }
+//HER                   hover   : { enabled: true },
+                inactive: { 
+                    opacity: 1,
+                    enabled: false 
+                    } 
+            },
         },
     },
 
@@ -1374,7 +1371,6 @@ Highcharts.chart("container11", {
         name: "sub2",
         data: data11,
         pointStart: "2024-07-10",
-//pointIntervalUnit: 
         dashStyle: 'dash',
         linkedTo: 'main',
         color: 'orange'
@@ -1399,10 +1395,9 @@ Highcharts.chart("container11", {
         name: "sub2-2",
         data: data11,
         pointStart: "2024-07-12",
-//pointIntervalUnit: 
         dashStyle: 'dash',
         linkedTo: 'main2',
-        color: 'orange'
+        color: 'green'
 
     
 /*
