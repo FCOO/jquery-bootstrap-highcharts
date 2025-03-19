@@ -73,6 +73,19 @@
     }
 
 
+    //Need to extend getLabel for tooltips outside the charts container to add class highcharts-light
+    nsHC.Tooltip.prototype.getLabel = function( _getLabel ){
+        return function(){
+            if (this.container && !this.containerClassAdded && this.chart && this.chart.options && this.chart.options.useJBStyle){
+                $(this.container).addClass('highcharts-light');
+                this.containerClassAdded = true;
+            }
+
+            return _getLabel.apply(this, arguments);
+        }
+    }(nsHC.Tooltip.prototype.getLabel);
+
+
     ['chart', 'stockChart', 'mapChart',  'ganttChart'].forEach( constructorId => {
         if (nsHC[constructorId])
             nsHC[constructorId] = function( originalConstructor ){
@@ -83,7 +96,11 @@
                     if ( (  Highcharts.USE_JB_STYLE === true) ||
                          ( (Highcharts.USE_JB_STYLE !== false) && chartOpt.useJBStyle) ){
 
+                        options.useJBStyle = true;
                         chartOpt.useJBStyle = true;
+
+                        //Force light theme
+                        chartOpt.className = (chartOpt.className || '') + ' highcharts-light';
 
                         //Get jquery-bootstrap padding, font-size and line-height from css to calc height of buttons.
                         let $elem = $('<div/>')

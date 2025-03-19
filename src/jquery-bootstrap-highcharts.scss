@@ -28,21 +28,6 @@ Adjust Highcharts style to match the style used in jquery-bootstrap
 /***********************************************
 Color
 ************************************************/
-.use-jquery-bootstrap-style {
-/* @todo
-    --highcharts-color-0: #2caffe;
-    --highcharts-color-1: #544fc5;
-    --highcharts-color-2: #00e272;
-    --highcharts-color-3: #fe6a35;
-    --highcharts-color-4: #6b8abc;
-    --highcharts-color-5: #d568fb;
-    --highcharts-color-6: #2ee0ca;
-    --highcharts-color-7: #fa4b42;
-    --highcharts-color-8: #feb56a;
-    --highcharts-color-9: #91e8e1;
-*/
-}
-
 :root {
     --jbh-button-background-color: #{$jb-btn-standard-background-color};
     --jbh-button-border-color    : #{$jb-element-border-color};
@@ -61,6 +46,15 @@ Color
     background-color: var(--bs-body-bg) !important;
     -webkit-text-size-adjust    : 100%  !important;
     -webkit-tap-highlight-color : rgba(0, 0, 0, 0) !important;
+
+
+    /***********************************************
+    Background
+    ************************************************/
+//HER       --highcharts-background-color: red;
+//HER       .highcharts-background {
+//HER           fill: transparent !important;
+//HER       }
 
 
     /***********************************************
